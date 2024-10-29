@@ -25,7 +25,12 @@ const NavBar = () => {
       className="flex justify-between sticky top-0 dark:bg-primary bg-white"
     >
       <div className="flex gap-x-2">
-        <img src={theme === "light" ? lightLogoUrl : darkLogoUrl} alt="logo" />
+        <img
+          width="16"
+          height="17"
+          src={theme === "light" ? lightLogoUrl : darkLogoUrl}
+          alt="logo"
+        />
         <span className="font-bold text-[1rem] dark:text-white self-center">
           Yacine
         </span>
