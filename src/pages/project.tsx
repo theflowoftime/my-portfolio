@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 function Project() {
   const { projectId } = useParams();
 
-  return projectId;
+  return <div className="container">{projectId}</div>;
 }
 
 export default Project;

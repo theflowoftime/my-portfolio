@@ -1,5 +1,15 @@
+import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
+
 function Contact() {
-  return <div>Contact</div>;
+  const { navLinks } = useCachedNavLinks();
+
+  const worksSlug = navLinks?.links?.[3].slug || "contact";
+
+  return (
+    <div className="min-h-screen" id={worksSlug}>
+      Contact
+    </div>
+  );
 }
 
 export default Contact;

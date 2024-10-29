@@ -1,11 +1,11 @@
-import Header from "@/components/header";
+import NavBar from "@/components/ui/navbar";
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-import type { ActiveNavLinkProps } from "@/lib/types";
+import type { ActiveNavLinkProps } from "@/types/types";
 import { cn } from "@/lib/utils";
 import { NavLink, Outlet } from "react-router-dom";
 
@@ -27,8 +27,8 @@ export function ActiveNavLink({ to, children }: ActiveNavLinkProps) {
 
 function Projects() {
   return (
-    <>
-      <Header />
+    <div className="container">
+      <NavBar />
       <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>
@@ -49,7 +49,7 @@ function Projects() {
         </NavigationMenuList>
       </NavigationMenu>
       <Outlet />
-    </>
+    </div>
   );
 }
 

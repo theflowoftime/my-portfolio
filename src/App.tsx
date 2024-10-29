@@ -2,14 +2,15 @@ import AboutMe from "./components/about-me";
 import Contact from "./components/contact";
 import Footer from "./components/footer";
 import Header from "./components/header";
-import Hero from "./components/hero";
 import Projects from "./components/projects";
+import useScrollHash from "./hooks/useScrollHash";
 
 function App() {
+  useScrollHash();
+
   return (
-    <div className="min-h-screen dark:bg-background dark:text-foreground">
+    <div id="top" className="min-h-screen container">
       <Header />
-      <Hero />
       <AboutMe />
       <Projects />
       <Contact />

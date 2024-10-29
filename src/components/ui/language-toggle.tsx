@@ -6,8 +6,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import type { Language } from "@/lib/types";
-import { useLanguageStore } from "@/stores/language-store";
+import type { Language } from "@/types/types";
+import { languages, useLanguageStore } from "@/stores/language-store";
 
 export function LanguageToggle() {
   const { setLanguage, language } = useLanguageStore(); // Get language and setLanguage from Zustand store
@@ -26,15 +26,14 @@ export function LanguageToggle() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => changeLanguage("EN")}>
-          English
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => changeLanguage("FR")}>
-          French
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => changeLanguage("AR")}>
-          Arabic
-        </DropdownMenuItem>
+        {languages.map(
+          (lng) =>
+            language !== lng && (
+              <DropdownMenuItem key={lng} onClick={() => changeLanguage(lng)}>
+                {lng}
+              </DropdownMenuItem>
+            )
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

@@ -1,5 +1,5 @@
 import { projects_QUERY as query } from "@/lib/queries";
-import type { Language } from "@/lib/types";
+import type { Language } from "@/types/types";
 import client from "@/sanity/client";
 import { useQuery } from "@tanstack/react-query";
 

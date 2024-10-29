@@ -1,4 +1,4 @@
-import type { ThemeStore } from "@/lib/types";
+import type { ThemeStore } from "@/types/types";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 

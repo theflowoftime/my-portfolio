@@ -1,17 +1,11 @@
+import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
 import { useProjects } from "@/hooks/useProjects";
-import type { Project } from "@/lib/types";
-import { queryClient } from "@/main";
-import { useLanguageStore } from "@/stores/language-store";
-import { Link, useLocation } from "react-router-dom";
+import type { Project } from "@/types/types";
+import { Link } from "react-router-dom";
 
 function Projects() {
-  const language = useLanguageStore((state) => state.language);
+  const { language, navLinks } = useCachedNavLinks();
   const { projects, isLoading, error } = useProjects(language);
-
-  const location = useLocation();
-  const navLinks =
-    location.state?.navLinks ||
-    queryClient.getQueryData(["navLinks", language]);
 
   if (isLoading) return <p>Loading projects...</p>;
   if (error) return <p>Error fetching projects: {error.message}</p>;
@@ -22,7 +16,7 @@ function Projects() {
   const worksSlug = navLinks?.links?.[2].slug || "works";
 
   return (
-    <div id={worksSlug}>
+    <div className="min-h-screen" id={worksSlug}>
       <h1>Projects List</h1>
       <Link to={"/projects"}>View all</Link>
       {projects.length > 0 ? (
