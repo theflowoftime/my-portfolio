@@ -1,0 +1,39 @@
+import "@/styles/index.css";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import App from "./App.js";
+import Project from "./pages/project.js";
+import Projects from "./pages/projects.js";
+
+// Create a reactquery client
+export const queryClient = new QueryClient();
+
+// define the routers
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+  },
+  {
+    path: "/projects",
+    element: <Projects />,
+    children: [
+      {
+        path: ":projectId",
+        element: <Project />,
+      },
+    ],
+  },
+]);
+
+createRoot(document.getElementById("root")!).render(
+  <StrictMode>
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+      <ReactQueryDevtools initialIsOpen={true} />
+    </QueryClientProvider>
+  </StrictMode>
+);
