@@ -7,11 +7,16 @@ module.exports = {
   theme: {
     container: {
       center: "true",
-      padding: "10.69rem",
-      screens: {
-        "2xl": "1366px",
+      padding: {
+        DEFAULT: "2rem", // default padding for all screen sizes
+        sm: "2rem", // padding from sm screens and up
+        md: "4rem", // padding from md screens and up
+        lg: "6rem", // padding from lg screens and up
+        xl: "8rem", // padding from xl screens and up
+        "2xl": "10.69rem", // padding from 2xl screens and up
       },
     },
+
     extend: {
       colors: {
         border: "hsl(var(--border))",

@@ -6,7 +6,7 @@ function AboutMe() {
   const worksSlug = navLinks?.links?.[1].slug || "about-me";
 
   return (
-    <div className="min-h-screen" id={worksSlug}>
+    <div className="min-h-screen container" id={worksSlug}>
       About me
     </div>
   );

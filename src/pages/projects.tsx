@@ -12,7 +12,9 @@ import { NavLink, Outlet } from "react-router-dom";
 export function ActiveNavLink({ to, children }: ActiveNavLinkProps) {
   return (
     <NavLink
+      defaultValue={"/projects"}
       to={to}
+      end
       className={({ isActive }) =>
         cn(
           navigationMenuTriggerStyle(),
@@ -27,29 +29,19 @@ export function ActiveNavLink({ to, children }: ActiveNavLinkProps) {
 
 function Projects() {
   return (
-    <div className="container">
+    <>
       <NavBar />
-      <NavigationMenu>
-        <NavigationMenuList>
-          <NavigationMenuItem>
-            <ActiveNavLink to="/projects">all</ActiveNavLink>
-          </NavigationMenuItem>
+      <div className="container">
+        <ActiveNavLink to="/projects">all</ActiveNavLink>
 
-          <NavigationMenuItem>
-            <ActiveNavLink to="1">1</ActiveNavLink>
-          </NavigationMenuItem>
+        <ActiveNavLink to="1">1</ActiveNavLink>
 
-          <NavigationMenuItem>
-            <ActiveNavLink to="2">2</ActiveNavLink>
-          </NavigationMenuItem>
+        <ActiveNavLink to="2">2</ActiveNavLink>
 
-          <NavigationMenuItem>
-            <ActiveNavLink to="3">3</ActiveNavLink>
-          </NavigationMenuItem>
-        </NavigationMenuList>
-      </NavigationMenu>
-      <Outlet />
-    </div>
+        <ActiveNavLink to="3">3</ActiveNavLink>
+        <Outlet />
+      </div>
+    </>
   );
 }
 

@@ -9,7 +9,7 @@ function App() {
   useScrollHash();
 
   return (
-    <div id="top" className="min-h-screen container">
+    <div id="top">
       <Header />
       <AboutMe />
       <Projects />

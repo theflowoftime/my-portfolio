@@ -9,7 +9,7 @@ import {
 import type { Language } from "@/types/types";
 import { languages, useLanguageStore } from "@/stores/language-store";
 
-export function LanguageToggle() {
+export function LanguageToggle({ className }: { className?: string }) {
   const { setLanguage, language } = useLanguageStore(); // Get language and setLanguage from Zustand store
 
   const changeLanguage = (lng: Language) => {
@@ -19,17 +19,21 @@ export function LanguageToggle() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="icon">
+        <Button className={className} variant="outline" size="icon">
           <span>{language}</span>
           {/* Assuming you have a 'language' key for the toggle */}
           <span className="sr-only">Toggle language</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align="end" className="border-none">
         {languages.map(
           (lng) =>
             language !== lng && (
-              <DropdownMenuItem key={lng} onClick={() => changeLanguage(lng)}>
+              <DropdownMenuItem
+                className={className}
+                key={lng}
+                onClick={() => changeLanguage(lng)}
+              >
                 {lng}
               </DropdownMenuItem>
             )

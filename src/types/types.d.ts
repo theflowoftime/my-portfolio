@@ -7,7 +7,7 @@ export interface LanguageStore {
   setLanguage: (language: Language) => void;
 }
 
-export type Theme = "dark" | "light" | "system";
+export type Theme = (typeof themes)[number];
 export type ThemeStore = {
   theme: Theme;
   setTheme: (theme: Theme) => void;
@@ -23,6 +23,8 @@ export type ActiveNavLinkProps = {
   to: NavLinkProps["to"];
   children: React.ReactNode;
 };
+
+export type Link = { slug: string; title: string; path: string };
 
 export type Project = {
   _id: string;

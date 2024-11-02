@@ -16,7 +16,7 @@ function Projects() {
   const worksSlug = navLinks?.links?.[2].slug || "works";
 
   return (
-    <div className="min-h-screen" id={worksSlug}>
+    <div className="min-h-screen container" id={worksSlug}>
       <h1>Projects List</h1>
       <Link to={"/projects"}>View all</Link>
       {projects.length > 0 ? (

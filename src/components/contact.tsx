@@ -6,7 +6,7 @@ function Contact() {
   const worksSlug = navLinks?.links?.[3].slug || "contact";
 
   return (
-    <div className="min-h-screen" id={worksSlug}>
+    <div className="min-h-screen container" id={worksSlug}>
       Contact
     </div>
   );
