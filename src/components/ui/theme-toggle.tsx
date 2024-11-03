@@ -8,11 +8,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import useThemeStore, { themes } from "@/stores/theme-store";
+import { motion } from "framer-motion";
+import { DropdownMenuArrow } from "@radix-ui/react-dropdown-menu";
 
 export function ThemeToggle({ className }: { className?: string }) {
   const { theme, setTheme } = useThemeStore();
-
-  console.log(className);
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -38,7 +38,10 @@ export function ThemeToggle({ className }: { className?: string }) {
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="border-none">
+      <DropdownMenuContent
+        align="end"
+        className="border-none animate-accordion-down"
+      >
         {themes.map(
           (thm) =>
             theme !== thm && (

@@ -26,7 +26,10 @@ const Toggles = ({
   isDesktop?: boolean;
 } & ComponentProps<"div">) => {
   return (
-    <div className="flex justify-center gap-x-8" {...props}>
+    <div
+      className={cn(isDesktop && "gap-x-2", !isDesktop && "gap-x-8", "flex")}
+      {...props}
+    >
       <LanguageToggle className={cn(!isDesktop && "text-2xl")} />
       <ThemeToggle className={cn(!isDesktop && "text-2xl")} />
     </div>
@@ -83,7 +86,7 @@ const NavBar = () => {
     };
   }, [isMobileMenuOpen]);
 
-  if (isLoading) return <div>Loading...</div>;
+  // if (isLoading) return <div>Loading...</div>;
 
   return (
     <div
@@ -91,11 +94,16 @@ const NavBar = () => {
       className="container z-10 flex justify-between sticky top-0 dark:bg-primary bg-background h-[4.56rem]"
     >
       {/* Desktop Social Icons */}
-      <div className="fixed lg:block hidden left-[2.5%] -ml-0.5 h-[30%] top-0 border-r-2 border-l-2 border-r-gray-500 border-l-gray-500">
+      <motion.div
+        initial={{ opacity: 0, y: "-100%" }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, ease: "easeInOut", delay: 3.5 }}
+        className="fixed lg:block hidden left-[2.5%] -ml-0.5 h-[30%] top-0 border-r-2 border-l-2 border-r-gray-500 border-l-gray-500"
+      >
         <div className="relative top-full mt-2 flex flex-col items-center space-y-2">
           <SocialIcons size="lg" />
         </div>
-      </div>
+      </motion.div>
 
       <LogoWithName />
 
@@ -110,7 +118,7 @@ const NavBar = () => {
       {/* Desktop Navigation */}
       <div className="lg:flex justify-end hidden">
         <NavigationMenu className="p-4 space-x-8">
-          <NavigationMenuList className="flex space-x-16">
+          <NavigationMenuList className="flex space-x-8 xl:space-x-16">
             {navLinks?.links?.map((link: LinkType) => (
               <NavigationMenuItem key={link.slug}>
                 <NavigationMenuLink asChild>
