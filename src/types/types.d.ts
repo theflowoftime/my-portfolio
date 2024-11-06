@@ -32,3 +32,29 @@ export type Project = {
   description: string;
   link: string;
 };
+
+type Quote = {
+  author: string;
+  quote: string;
+  _key: string;
+};
+
+type ProfileImage = {
+  _type: "image";
+  asset: {
+    _ref: string;
+    _type: "reference";
+  };
+};
+
+type Hero = {
+  intro: string;
+  separator: string;
+  jobs: string[];
+  bio: string;
+  currentProject?: string;
+  quotes: Quote[];
+  profileImage?: ProfileImage;
+  imageSubtitle?: string;
+  buttonContent: string;
+};

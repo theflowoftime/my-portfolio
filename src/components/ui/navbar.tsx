@@ -1,5 +1,5 @@
 import { cloneElement, ComponentProps, useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, Variants } from "framer-motion";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -68,6 +68,7 @@ const SocialIcons = ({ size }: SocialIconsProps) => {
     </>
   );
 };
+
 const NavBar = () => {
   const { data: navLinks, isLoading } = useNavLinks();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -91,97 +92,99 @@ const NavBar = () => {
   return (
     <div
       id="navbar"
-      className="container z-10 flex justify-between sticky top-0 dark:bg-primary bg-background h-[4.56rem]"
+      className="z-10 sticky top-0 dark:bg-primary bg-background h-[4.56rem]"
     >
-      {/* Desktop Social Icons */}
-      <motion.div
-        initial={{ opacity: 0, y: "-100%" }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, ease: "easeInOut", delay: 3.5 }}
-        className="fixed lg:block hidden left-[2.5%] -ml-0.5 h-[30%] top-0 border-r-2 border-l-2 border-r-gray-500 border-l-gray-500"
-      >
-        <div className="relative top-full mt-2 flex flex-col items-center space-y-2">
-          <SocialIcons size="lg" />
+      <div className="container flex justify-between">
+        {/* Desktop Social Icons */}
+        <motion.div
+          initial={{ opacity: 0, y: "-100%" }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: "easeInOut", delay: 3.5 }}
+          className="fixed lg:block hidden left-[2.5%] -ml-0.5 h-[30%] top-0 border-r-2 border-l-2 border-r-gray-500 border-l-gray-500"
+        >
+          <div className="relative top-full mt-2 flex flex-col items-center space-y-2">
+            <SocialIcons size="lg" />
+          </div>
+        </motion.div>
+
+        <LogoWithName />
+
+        {/* Hamburger  */}
+        <Button
+          className="lg:hidden p-2 dark:text-white text-black self-center bg-transparent hover:bg-transparent hover:text-primary-foreground dark:hover:text-popover-foreground/80"
+          onClick={toggleMenu}
+        >
+          {!isMobileMenuOpen ? <MenuIcon /> : null}
+        </Button>
+
+        {/* Desktop Navigation */}
+        <div className="lg:flex justify-end hidden">
+          <NavigationMenu className="p-4 space-x-8">
+            <NavigationMenuList className="flex space-x-8 xl:space-x-16">
+              {navLinks?.links?.map((link: LinkType) => (
+                <NavigationMenuItem key={link.slug}>
+                  <NavigationMenuLink asChild>
+                    <Link
+                      state={{ data: navLinks }}
+                      className="dark:hover:text-popover-foreground/80"
+                      to={link.path || `#${link.slug}`}
+                    >
+                      <span className="text-primary-foreground">#</span>
+                      {link.title.replace("-", " ")}
+                    </Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              ))}
+            </NavigationMenuList>
+            <Toggles isDesktop />
+          </NavigationMenu>
         </div>
-      </motion.div>
 
-      <LogoWithName />
-
-      {/* Hamburger / Close Button */}
-      <Button
-        className="lg:hidden p-2 dark:text-white text-black self-center bg-transparent hover:bg-transparent hover:text-primary-foreground dark:hover:text-popover-foreground/80"
-        onClick={toggleMenu}
-      >
-        {!isMobileMenuOpen ? <MenuIcon /> : null}
-      </Button>
-
-      {/* Desktop Navigation */}
-      <div className="lg:flex justify-end hidden">
-        <NavigationMenu className="p-4 space-x-8">
-          <NavigationMenuList className="flex space-x-8 xl:space-x-16">
-            {navLinks?.links?.map((link: LinkType) => (
-              <NavigationMenuItem key={link.slug}>
-                <NavigationMenuLink asChild>
-                  <Link
-                    state={{ data: navLinks }}
-                    className="dark:hover:text-popover-foreground/80"
-                    to={link.path || `#${link.slug}`}
-                  >
-                    <span className="text-primary-foreground">#</span>
-                    {link.title.replace("-", " ")}
-                  </Link>
-                </NavigationMenuLink>
-              </NavigationMenuItem>
-            ))}
-          </NavigationMenuList>
-          <Toggles isDesktop />
-        </NavigationMenu>
-      </div>
-
-      {/* Mobile Navigation */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, x: "-100%" }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: "-100%" }}
-            transition={{ type: "spring", stiffness: 120 }}
-            className="fixed inset-0 z-20 flex flex-col dark:bg-primary bg-background text-black dark:text-white p-4 lg:hidden"
-          >
-            <div className="flex justify-between pb-8">
-              <LogoWithName />
-              {/* Close Button Inside Mobile Menu */}
-              <Button
-                onClick={toggleMenu}
-                className="self-end dark:text-white text-black bg-transparent hover:bg-transparent hover:text-primary-foreground dark:hover:text-popover-foreground/80 p-0 inline-flex items-center"
-                size="icon" // Adjust to minimize Button's default height/width
-              >
-                <X className="!w-8 !h-8" />
-              </Button>
-            </div>
-
-            <div className="mt-[47px] flex flex-col justify-between h-full">
-              <nav className="flex flex-col space-y-16 text-3xl">
-                {navLinks?.links?.map((link: LinkType) => (
-                  <Link
-                    key={link.slug}
-                    to={link.path || `#${link.slug}`}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="dark:hover:text-popover-foreground/80"
-                  >
-                    <span className="text-primary-foreground">#</span>
-                    {link.title.replace("-", " ")}
-                  </Link>
-                ))}
-                <Toggles isDesktop={false} />
-              </nav>
-              <div className="flex justify-center items-center p-0 mb-9 gap-x-8">
-                <SocialIcons size="md" />
+        {/* Mobile Navigation */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, x: "-100%" }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: "-100%" }}
+              transition={{ type: "spring", stiffness: 120 }}
+              className="fixed inset-0 z-20 flex flex-col dark:bg-primary bg-background text-black dark:text-white p-4 lg:hidden"
+            >
+              <div className="flex justify-between pb-8">
+                <LogoWithName />
+                {/* Close Button Inside Mobile Menu */}
+                <Button
+                  onClick={toggleMenu}
+                  className="self-end dark:text-white text-black bg-transparent hover:bg-transparent hover:text-primary-foreground dark:hover:text-popover-foreground/80 p-0 inline-flex items-center"
+                  size="icon" // Adjust to minimize Button's default height/width
+                >
+                  <X className="!w-8 !h-8" />
+                </Button>
               </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+
+              <div className="mt-[47px] flex flex-col justify-between h-full">
+                <nav className="flex flex-col space-y-16 text-3xl">
+                  {navLinks?.links?.map((link: LinkType) => (
+                    <Link
+                      key={link.slug}
+                      to={link.path || `#${link.slug}`}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className="dark:hover:text-popover-foreground/80"
+                    >
+                      <span className="text-primary-foreground">#</span>
+                      {link.title.replace("-", " ")}
+                    </Link>
+                  ))}
+                  <Toggles isDesktop={false} />
+                </nav>
+                <div className="flex justify-center items-center p-0 mb-9 gap-x-8">
+                  <SocialIcons size="md" />
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 };

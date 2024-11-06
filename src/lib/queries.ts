@@ -8,3 +8,16 @@ export const projects_QUERY = `*[_type == "project" && language == $language] {
     description,
     link,
   }`;
+
+export const hero_QUERY = `*[_type == "hero" && language == $language][0]{
+    _id,
+    intro,
+    separator,
+    jobs[],
+    bio,
+    currentProject,
+    quotes[],
+    profileImage,
+    imageSubtitle,
+    buttonContent
+  }`;

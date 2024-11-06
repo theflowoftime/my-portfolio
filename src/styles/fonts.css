@@ -15,6 +15,13 @@
 @font-face {
   font-family: "Fira Code";
   font-style: normal;
-  font-weight: 700;
+  font-weight: 400;
   src: url("../assets/fonts/FiraCode-SemiBold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Fira Code";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../assets/fonts/FiraCode-Medium.ttf") format("truetype");
 }

@@ -63,7 +63,6 @@ const LogoHero = ({ className }: SVGProps<SVGSVGElement>) => {
         initial="hidden"
         animate="visible"
         variants={leftCAnimation}
-        whileHover="whileHover"
       />
       {/* Right C (flipped horizontally) */}
       <motion.path
@@ -72,7 +71,6 @@ const LogoHero = ({ className }: SVGProps<SVGSVGElement>) => {
         initial="hidden"
         animate="visible"
         variants={rightCAnimation}
-        whileHover="whileHover"
       />
     </motion.svg>
   );
