@@ -71,7 +71,7 @@ function Contact() {
 
   return (
     <>
-      <SectionLayout slug={slug} title="contact">
+      <SectionLayout slug={slug}>
         <div className="flex flex-col mt-16 gap-y-2">
           <div className="py-2 space-y-8">
             <h1 className="lg:text-[5em] md:text-[3em] text-4xl pb-4">

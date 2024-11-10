@@ -21,7 +21,7 @@ function AboutMe() {
   const slug = navLinks?.links?.[1].slug || "about-me";
 
   return (
-    <SectionLayout slug={slug} title="about-me">
+    <SectionLayout slug={slug}>
       <Rectangle />
       <Matrix
         className="absolute right-0 hidden md:grid top-1/2"

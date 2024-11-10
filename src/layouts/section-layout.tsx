@@ -23,16 +23,15 @@ export const SectionTitle = ({ title }: { title: string }) => {
 
 const SectionLayout = ({
   slug,
-  title,
   children,
-}: PropsWithChildren & { slug: string; title: string }) => {
+}: PropsWithChildren & { slug: string }) => {
   return (
     <div
       className="relative min-h-screen py-16 overflow-hidden dark:bg-neutral-950"
       id={slug}
     >
       <div className="container">
-        <SectionTitle title={title} />
+        <SectionTitle title={slug} />
         {children}
       </div>
     </div>
