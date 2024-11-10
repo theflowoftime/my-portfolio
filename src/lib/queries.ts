@@ -21,3 +21,27 @@ export const hero_QUERY = `*[_type == "hero" && language == $language][0]{
     imageSubtitle,
     buttonContent
   }`;
+
+export const contact_QUERY = `*[_type == "contact" && language == $language][0]{
+    _id,
+    description {
+      title,
+      subtitle
+    },
+    fields {
+      inputs[] {
+        label,
+        placeholder,
+        name
+      },
+      selects[] {
+        label,
+        placeholder,
+        name,
+        options
+      }
+    },
+    button {
+      value
+    }
+  }`;

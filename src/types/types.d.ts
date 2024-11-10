@@ -58,3 +58,18 @@ type Hero = {
   imageSubtitle?: string;
   buttonContent: string;
 };
+
+type Name = "name" | "email" | "reason" | "phoneNumber";
+type Input = { label: string; placeholder: string; name: Name };
+type Select = Input & { options: string[] };
+type Field = {
+  inputs: Input[];
+  selects: Select[];
+};
+
+type Contact = {
+  _id: string;
+  description: { title: string; subtitle: string };
+  fields: Field;
+  button: { value: string };
+};

@@ -10,7 +10,6 @@ import {
   FormLabel,
   FormControl,
   FormMessage,
-  FormDescription,
 } from "@/components/ui/form";
 import {
   Select,
@@ -20,8 +19,8 @@ import {
   SelectValue,
 } from "@/components/ui/select"; // Adjust this import based on your setup
 import { Input } from "./ui/input";
-import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
+import useContact from "@/hooks/useContact";
 
 const formSchema = z.object({
   // Name: required, min 2 and max 30 characters
@@ -39,14 +38,8 @@ const formSchema = z.object({
       "Please enter a valid phone number (e.g., +1234567890 or 1234567890)",
   }),
 
-  // Service: required string, ensures at least one selection
-  service: z.string().min(1, { message: "Please select a service" }), // Require at least one character,
-
-  // Message: optional, max 500 characters
-  message: z
-    .string()
-    .max(500, { message: "Message must be no more than 500 characters" })
-    .optional(),
+  // Reason: required string, ensures at least one selection
+  reason: z.string().min(1, { message: "Please select a reason" }), // Require at least one character,
 });
 
 type FormSchemaType = z.infer<typeof formSchema>;
@@ -55,11 +48,11 @@ const defaultValues: FormSchemaType = {
   name: "",
   email: "",
   phoneNumber: "",
-  service: "",
-  message: "",
+  reason: "",
 };
 
 function Contact() {
+  const { data: contactData, isLoading } = useContact();
   const { navLinks } = useCachedNavLinks();
   const slug = navLinks?.links?.[3].slug || "contact";
 
@@ -72,142 +65,88 @@ function Contact() {
     console.log("Form submitted:", data);
   };
 
+  console.log(contactData);
+
+  // if (isLoading) return <div>Loading...</div>
+
   return (
     <>
       <SectionLayout slug={slug} title="contact">
-        <Form {...form}>
-          <form
-            className="px-8 py-16 space-y-8 rounded-md lg:w-1/2"
-            onSubmit={form.handleSubmit(onSubmit)}
-          >
-            <FormDescription className="leading-relaxed tracking-wider text-primary-foreground">
-              To request my services, contact me directly using one of my
-              provided social links or fill out the form and I will get back to
-              you soon.
-            </FormDescription>
-            {/* Name Field */}
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xs">
-                    name (<span className="text-purple-400">*</span>)
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      className="border-t-0 border-l-0 border-r-0 rounded-none border-b-primary-foreground/20 bg-inherit focus-visible:ring-0"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-xs" />
-                </FormItem>
-              )}
-            />
-
-            {/* Email Field */}
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xs">
-                    email (<span className="text-purple-400">*</span>)
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      className="border-t-0 border-l-0 border-r-0 rounded-none border-b-primary-foreground/20 bg-inherit focus-visible:ring-0"
-                      type="email"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-xs" />
-                </FormItem>
-              )}
-            />
-
-            {/* Phone Number Field */}
-            <FormField
-              control={form.control}
-              name="phoneNumber"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xs">
-                    phone number (<span className="text-purple-400">*</span>)
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      className="border-t-0 border-l-0 border-r-0 rounded-none border-b-primary-foreground/20 bg-inherit focus-visible:ring-0"
-                      type="tel"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-xs" />
-                </FormItem>
-              )}
-            />
-
-            {/* Service Field */}
-            <FormField
-              control={form.control}
-              name="service"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xs">
-                    service (<span className="text-purple-400">*</span>)
-                  </FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger className="border-t-0 border-l-0 border-r-0 rounded-none border-b-primary-foreground/20 bg-inherit focus:ring-0">
-                        <SelectValue />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent className="border-none focus:ring-0">
-                      <SelectItem value="option1">Option 1</SelectItem>
-                      <SelectItem value="option2">Option 2</SelectItem>
-                      <SelectItem value="option3">Option 3</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage className="text-xs" />
-                </FormItem>
-              )}
-            />
-
-            {/* Message Field */}
-            <FormField
-              control={form.control}
-              name="message"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-xs">message</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      cols={5}
-                      rows={5}
-                      className="border-t-0 border-l-0 border-r-0 rounded-none resize-none border-b-primary-foreground/20 bg-inherit focus-visible:ring-0"
-                      maxLength={500}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage className="text-xs" />
-                </FormItem>
-              )}
-            />
-
-            {/* Submit Button */}
-            <Button
-              variant="outline"
-              className="w-full text-sm bg-inherit font-extralight tracking-widest dark:text-white border-[1px] border-primary-foreground/20 rounded-sm 
-                hover:bg-purple-500/20 hover:transition-all hover:duration-250 shadow-sm shadow-black hover:bg-opacity-20"
-              type="submit"
+        <div className="flex flex-col mt-16 gap-y-2">
+          <div className="py-2 space-y-8">
+            <h1 className="lg:text-[5em] md:text-[3em] text-4xl pb-4">
+              {contactData?.description.title}
+            </h1>
+            <p className="text-sm opacity-60">
+              {contactData?.description.subtitle}
+            </p>
+          </div>
+          <Form {...form}>
+            <form
+              className="px-8 py-16 space-y-8 rounded-md shadow-sm shadow-black"
+              onSubmit={form.handleSubmit(onSubmit)}
             >
-              send
-            </Button>
-          </form>
-        </Form>
+              {contactData?.fields.inputs.map((input) => (
+                <FormField
+                  control={form.control}
+                  name={input.name}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{input.label}</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder={input.placeholder}
+                          className="border-t-0 border-l-0 border-r-0 rounded-none placeholder:text-center dark:placeholder:text-primary border-b-primary-foreground/20 bg-inherit focus-visible:ring-0"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage className="text-xs" />
+                    </FormItem>
+                  )}
+                />
+              ))}
+
+              {/* Service Field */}
+              {contactData?.fields.selects.map((select) => (
+                <FormField
+                  control={form.control}
+                  name={select.name}
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>{select.label}</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger className="border-t-0 border-l-0 border-r-0 rounded-none w-full dark:data-[placeholder]:text-primary  [&>span]:w-full  [&>span]:text-center data-[placeholder]:text-center border-b-primary-foreground/20 bg-inherit focus:ring-0">
+                            <SelectValue placeholder={select.placeholder} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent className="border-none focus:ring-0">
+                          {select.options.map((option) => (
+                            <SelectItem value={option}>{option}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FormMessage className="text-xs" />
+                    </FormItem>
+                  )}
+                />
+              ))}
+
+              {/* Submit Button */}
+              <Button
+                variant="outline"
+                className="w-full py-6 px-4 bg-inherit font-extralight tracking-widest dark:text-white border-[1px] border-primary-foreground/20 rounded-sm 
+                hover:bg-purple-500/20 hover:transition-all hover:duration-250 shadow-sm shadow-black hover:bg-opacity-20"
+                type="submit"
+              >
+                {contactData?.button.value}
+              </Button>
+            </form>
+          </Form>
+        </div>
       </SectionLayout>
     </>
   );
