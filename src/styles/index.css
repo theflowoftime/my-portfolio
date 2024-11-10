@@ -6,7 +6,7 @@
 
 @layer base {
   :root {
-    --background: 34 77.8% 91.2%;
+    --background: 0 0% 87%;
     --foreground: 224 71.4% 4.1%;
 
     --font-sans: "Fira Code", sans-serif;
@@ -34,6 +34,13 @@
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 20% 98%;
+
+    --app-color-1: hsl(14 59% 48%);
+    --app-color-2: hsl(0 0% 87%);
+    --app-color-3: hsl(336 69% 51%);
+    --app-color-4: hsl(198 100% 25%);
+    --app-color-5: hsl(164 100% 26%);
+    --app-color-6: hsl(160, 100%, 75%);
 
     --ring: 224 71.4% 4.1%;
 
@@ -95,11 +102,15 @@
 }
 
 @layer base {
+  .clip-wave-left {
+    clip-path: inset(0 0 0 10%) round 20% 0 20% 50%;
+  }
+
   * {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply font-sans bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }

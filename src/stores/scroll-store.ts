@@ -5,8 +5,8 @@ const useScrollStore = create<ScrollStore>((set, get) => ({
   setHash: (newHash: string) => set({ hash: newHash }),
   scrollToHash: () => {
     const { hash } = get();
-    const navbar = document.getElementById("navbar");
-    const navbarHeight = navbar ? navbar.offsetHeight : 0;
+    // const navbar = document.getElementById("navbar");
+    // const navbarHeight = navbar ? navbar.offsetHeight : 0;
 
     if (hash === "#top") {
       window.scrollTo({
@@ -18,7 +18,8 @@ const useScrollStore = create<ScrollStore>((set, get) => ({
       if (element) {
         const elementPosition =
           element.getBoundingClientRect().top + window.scrollY;
-        const offsetPosition = elementPosition - navbarHeight;
+        // const offsetPosition = elementPosition - navbarHeight;
+        const offsetPosition = elementPosition;
 
         window.scrollTo({
           top: offsetPosition,

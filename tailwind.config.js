@@ -36,6 +36,16 @@ module.exports = {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
+
+        appcolors: {
+          one: "var(--app-color-1)",
+          two: "var(--app-color-2)",
+          three: "var(--app-color-3)",
+          four: "var(--app-color-4)",
+          five: "var(--app-color-5)",
+          six: "var(--app-color-6)",
+        },
+
         muted: {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
@@ -85,10 +95,20 @@ module.exports = {
             height: "0",
           },
         },
+        gradient: {
+          "0%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+          "100%": { backgroundPosition: "0% 50%" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        gradient: "gradient 10s ease infinite",
+      },
+      backgroundImage: {
+        gradient:
+          "linear-gradient(-45deg, var(--app-color-1), var(--app-color-3), var(--app-color-4), var(--app-color-5))",
       },
     },
   },

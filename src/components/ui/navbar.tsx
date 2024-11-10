@@ -1,5 +1,3 @@
-import { cloneElement, ComponentProps, useEffect, useState } from "react";
-import { AnimatePresence, motion, Variants } from "framer-motion";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -7,17 +5,17 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 import useNavLinks from "@/hooks/useNavLinks";
+import { cn } from "@/lib/utils";
+import type { Link as LinkType } from "@/types/types";
+import { AnimatePresence, motion } from "framer-motion";
+import { MenuIcon, X } from "lucide-react";
+import { ComponentProps, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { SocialIcons } from "../hero";
+import { Button } from "./button";
+import Logo from "./icons/Logo";
 import { LanguageToggle } from "./language-toggle";
 import { ThemeToggle } from "./theme-toggle";
-import { Link } from "react-router-dom";
-import Logo from "./icons/Logo";
-import Github from "./icons/Github";
-import Dribble from "./icons/Dribble";
-import Figma from "./icons/Figma";
-import type { Link as LinkType } from "@/types/types";
-import { MenuIcon, X } from "lucide-react";
-import { Button } from "./button";
-import { cn } from "@/lib/utils";
 
 const Toggles = ({
   isDesktop,
@@ -30,42 +28,24 @@ const Toggles = ({
       className={cn(isDesktop && "gap-x-2", !isDesktop && "gap-x-8", "flex")}
       {...props}
     >
-      <LanguageToggle className={cn(!isDesktop && "text-2xl")} />
-      <ThemeToggle className={cn(!isDesktop && "text-2xl")} />
+      <LanguageToggle
+        className={cn(!isDesktop && "text-2xl", "shadow-sm shadow-black")}
+      />
+      <ThemeToggle
+        className={cn(!isDesktop && "text-2xl", "shadow-sm shadow-black")}
+      />
     </div>
   );
 };
 
 const LogoWithName = (props: ComponentProps<"div">) => {
   return (
-    <div className="flex gap-x-2 items-center" {...props}>
+    <div className="flex items-center gap-x-2" {...props}>
       <Logo className="w-4 h-[17px] dark:fill-white fill-black" />
       <span className="font-bold text-[1rem] dark:text-white self-center">
         Yacine
       </span>
     </div>
-  );
-};
-
-type Size = "md" | "lg";
-type SocialIconsProps = { size?: Size };
-
-const SocialIcons = ({ size }: SocialIconsProps) => {
-  const icons = [
-    { component: <Github />, mdClass: "w-[42px] h-[40px]" },
-    { component: <Dribble />, mdClass: "w-[46px] h-[46px]" },
-    { component: <Figma />, mdClass: "w-[28px] h-[40px]" },
-  ];
-
-  return (
-    <>
-      {icons.map((icon, index) =>
-        cloneElement(icon.component, {
-          className: size === "md" ? icon.mdClass : undefined,
-          key: index,
-        })
-      )}
-    </>
   );
 };
 
@@ -90,35 +70,20 @@ const NavBar = () => {
   // if (isLoading) return <div>Loading...</div>;
 
   return (
-    <div
-      id="navbar"
-      className="z-10 sticky top-0 dark:bg-primary bg-background h-[4.56rem]"
-    >
+    <div id="navbar" className="z-10 bg-inherit sticky top-0 h-[4.56rem]">
       <div className="container flex justify-between">
-        {/* Desktop Social Icons */}
-        <motion.div
-          initial={{ opacity: 0, y: "-100%" }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: "easeInOut", delay: 3.5 }}
-          className="fixed lg:block hidden left-[2.5%] -ml-0.5 h-[30%] top-0 border-r-2 border-l-2 border-r-gray-500 border-l-gray-500"
-        >
-          <div className="relative top-full mt-2 flex flex-col items-center space-y-2">
-            <SocialIcons size="lg" />
-          </div>
-        </motion.div>
-
         <LogoWithName />
 
         {/* Hamburger  */}
         <Button
-          className="lg:hidden p-2 dark:text-white text-black self-center bg-transparent hover:bg-transparent hover:text-primary-foreground dark:hover:text-popover-foreground/80"
+          className="self-center p-2 text-black bg-transparent lg:hidden dark:text-white hover:bg-transparent hover:text-primary-foreground dark:hover:text-popover-foreground/80"
           onClick={toggleMenu}
         >
           {!isMobileMenuOpen ? <MenuIcon /> : null}
         </Button>
 
         {/* Desktop Navigation */}
-        <div className="lg:flex justify-end hidden">
+        <div className="justify-end hidden lg:flex">
           <NavigationMenu className="p-4 space-x-8">
             <NavigationMenuList className="flex space-x-8 xl:space-x-16">
               {navLinks?.links?.map((link: LinkType) => (
@@ -148,14 +113,14 @@ const NavBar = () => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: "-100%" }}
               transition={{ type: "spring", stiffness: 120 }}
-              className="fixed inset-0 z-20 flex flex-col dark:bg-primary bg-background text-black dark:text-white p-4 lg:hidden"
+              className="fixed inset-0 z-20 flex flex-col p-4 text-black bg-white dark:text-white lg:hidden bg-clip-padding backdrop-blur-xl backdrop-filter bg-opacity-10 "
             >
               <div className="flex justify-between pb-8">
                 <LogoWithName />
                 {/* Close Button Inside Mobile Menu */}
                 <Button
                   onClick={toggleMenu}
-                  className="self-end dark:text-white text-black bg-transparent hover:bg-transparent hover:text-primary-foreground dark:hover:text-popover-foreground/80 p-0 inline-flex items-center"
+                  className="inline-flex items-center self-end p-0 text-black bg-transparent dark:text-white hover:bg-transparent hover:text-primary-foreground dark:hover:text-popover-foreground/80"
                   size="icon" // Adjust to minimize Button's default height/width
                 >
                   <X className="!w-8 !h-8" />
@@ -177,7 +142,7 @@ const NavBar = () => {
                   ))}
                   <Toggles isDesktop={false} />
                 </nav>
-                <div className="flex justify-center items-center p-0 mb-9 gap-x-8">
+                <div className="flex items-center justify-center p-0 mb-9 gap-x-8">
                   <SocialIcons size="md" />
                 </div>
               </div>

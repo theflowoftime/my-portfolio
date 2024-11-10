@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import {
+  cn,
   getRandomColor,
   getRandomOffset,
   getRandomRotation,
@@ -7,7 +8,15 @@ import {
 import { motion, Variants } from "framer-motion";
 const SHAPE = "•";
 
-const Matrix = ({ rows, columns }: { rows: number; columns: number }) => {
+const Matrix = ({
+  className,
+  rows,
+  columns,
+}: {
+  className?: string;
+  rows: number;
+  columns: number;
+}) => {
   const initialPositions = useMemo(
     () => Array.from({ length: rows * columns }, () => getRandomOffset(1000)),
     [rows, columns]
@@ -48,15 +57,16 @@ const Matrix = ({ rows, columns }: { rows: number; columns: number }) => {
   };
 
   return (
-    <div
-      className="grid gap-5 w-[5.25rem] h-[5.25rem] absolute bottom-12 right-10"
+    <motion.div
+      viewport={{ once: true }}
+      className={cn("grid gap-5 w-[5.25rem] h-[5.25rem]", className)}
       style={{ gridTemplateColumns: `repeat(${columns}, auto)` }}
     >
       {Array.from({ length: rows * columns }).map((_, index) => (
         <motion.div
           key={index}
           custom={index}
-          className="flex justify-center items-center w-1 h-1 rounded-full text-primary-foreground dark:text-white text-opacity-70"
+          className="flex items-center justify-center w-1 h-1 text-opacity-50 rounded-full text-primary-foreground dark:text-white"
           style={{
             textShadow: "0px 0px 8px rgba(255,255,255,0.7)", // Glow effect for "light trail" look
             fontSize: "1.5rem", // Increase size slightly for visibility
@@ -68,7 +78,7 @@ const Matrix = ({ rows, columns }: { rows: number; columns: number }) => {
           {SHAPE}
         </motion.div>
       ))}
-    </div>
+    </motion.div>
   );
 };
 

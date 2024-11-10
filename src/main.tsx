@@ -4,9 +4,10 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import App from "./App.js";
-import Project from "./pages/project.js";
-import Projects from "./pages/projects.js";
+import App from "./App";
+import Project from "./pages/project";
+import Projects from "./pages/projects";
+import AboutMe from "./pages/about-me";
 
 // Create a reactquery client
 export const queryClient = new QueryClient();
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
         element: <Project />,
       },
     ],
+  },
+  {
+    path: "/about-me",
+    element: <AboutMe />,
   },
 ]);
 

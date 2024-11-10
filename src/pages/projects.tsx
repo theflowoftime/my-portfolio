@@ -1,10 +1,5 @@
 import NavBar from "@/components/ui/navbar";
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuList,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
+import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
 import type { ActiveNavLinkProps } from "@/types/types";
 import { cn } from "@/lib/utils";
 import { NavLink, Outlet } from "react-router-dom";
