@@ -45,3 +45,7 @@ export const contact_QUERY = `*[_type == "contact" && language == $language][0]{
       value
     }
   }`;
+
+export const contact_email_exists_QUERY = `*[_type == "message" && language == $language && email == $email] {
+  createdAt,
+}`;

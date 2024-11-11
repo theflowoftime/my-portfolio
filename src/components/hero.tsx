@@ -63,14 +63,14 @@ function Hero() {
       <div className="container flex flex-col items-center mt-4 gap-x-2 lg:flex-row lg:gap-y-4">
         {/* Main Text Section */}
         <motion.div
-          className="lg:w-1/2 space-y-8 dark:text-white pt-16 lg:mt-[3.5rem] text-center lg:text-start"
+          className="lg:w-1/2 space-y-8 text-white pt-16 lg:mt-[3.5rem] text-center lg:text-start"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
           variants={textVariants}
           custom={0.2} // Delay for sequential text appearance
         >
-          <h3 className="text-[2rem] leading-[3rem] tracking-normal">
+          <h3 className="text-4xl leading-[3rem] tracking-normal">
             {heroData?.intro}{" "}
             {heroData?.jobs.map((job, idx) => {
               const isLast = idx === heroData.jobs.length - 1;
@@ -89,16 +89,20 @@ function Hero() {
               );
             })}
           </h3>
-          <p className="text-foreground leading-[1.5625rem] text-[1rem] font-normal">
+          <p className="text-white leading-[1.5625rem] text-lg font-normal">
             {heroData?.bio}
           </p>
 
           <Button
             type="button"
-            className="hidden font-medium dark:text-white rounded-none lg:block border-[1px] border-purple-400 hover:bg-purple-500/20 hover:transition-all hover:duration-250"
+            className="hidden lg:flex py-4 px-8 rounded-none justify-center items-center bg-transparent shadow-sm  font-medium text-white w-[10.25rem] border-[1px] border-purple-400 hover:bg-purple-500/20 hover:transition-all hover:duration-250"
+            asChild
           >
-            <Link to={navLinks?.links?.[3].path || "#contact"}>
-              {heroData?.buttonContent} !!
+            <Link
+              className="text-lg"
+              to={navLinks?.links?.[3].path || "#contact"}
+            >
+              {heroData?.buttonContent}
             </Link>
           </Button>
         </motion.div>
@@ -141,9 +145,7 @@ function Hero() {
           >
             <div className="inline-block w-4 h-4 bg-purple-400" />
             {heroData?.imageSubtitle}{" "}
-            <span className="dark:text-white">
-              {heroData?.currentProject}...
-            </span>
+            <span className="text-white">{heroData?.currentProject}...</span>
           </motion.div>
         </motion.div>
       </div>
@@ -151,7 +153,7 @@ function Hero() {
       {/* Quotes Section */}
       <div
         ref={scrollRef}
-        className="container flex justify-center w-full mt-[7rem] dark:text-white mb-4"
+        className="container flex justify-center w-full mt-[7rem] text-white mb-4"
       >
         {heroData?.quotes.map((_quote, idx) => (
           <motion.div
@@ -168,7 +170,7 @@ function Hero() {
                          before:absolute before:content-['“'] after:content-['“'] before:text-6xl after:text-6xl before:text-gray-400 
                          motion-safe:before:animate-in before:duration-300 
                        after:text-gray-400  after:absolute before:-top-4 before:left-4 after:-bottom-4 after:right-4 
-                         dark:before:bg-transparent dark:after:bg-transparent before:h-8 after:h-8
+                         before:h-8 after:h-8
                          bg-white bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-10
                          shadow-sm shadow-black rounded-md z-20
                          "

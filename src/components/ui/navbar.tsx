@@ -76,7 +76,7 @@ const NavBar = () => {
 
         {/* Hamburger  */}
         <Button
-          className="self-center p-2 text-black bg-transparent lg:hidden dark:text-white hover:bg-transparent hover:text-primary-foreground dark:hover:text-popover-foreground/80"
+          className="self-center p-2 text-white bg-transparent lg:hidden hover:bg-transparent hover:text-primary-foreground dark:hover:text-popover-foreground/80"
           onClick={toggleMenu}
         >
           {!isMobileMenuOpen ? <MenuIcon /> : null}
@@ -91,7 +91,7 @@ const NavBar = () => {
                   <NavigationMenuLink asChild>
                     <Link
                       state={{ data: navLinks }}
-                      className="dark:hover:text-popover-foreground/80"
+                      className="text-white hover:text-popover-foreground/80"
                       to={link.path || `#${link.slug}`}
                     >
                       <span className="text-primary-foreground">#</span>

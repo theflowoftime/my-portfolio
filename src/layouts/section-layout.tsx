@@ -1,5 +1,6 @@
-import { PropsWithChildren } from "react";
+import { HTMLProps } from "react";
 import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 export const SectionTitle = ({ title }: { title: string }) => {
   return (
@@ -22,17 +23,18 @@ export const SectionTitle = ({ title }: { title: string }) => {
 };
 
 const SectionLayout = ({
+  className,
   slug,
   children,
-}: PropsWithChildren & { slug: string }) => {
+}: HTMLProps<"div"> & { slug: string }) => {
   return (
     <div
-      className="relative min-h-screen py-16 overflow-hidden dark:bg-neutral-950"
+      className={cn("relative min-h-screen overflow-hidden mt-16", className)}
       id={slug}
     >
       <div className="container">
         <SectionTitle title={slug} />
-        {children}
+        <div className="mt-16">{children}</div>
       </div>
     </div>
   );

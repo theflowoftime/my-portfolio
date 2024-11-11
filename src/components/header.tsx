@@ -23,7 +23,7 @@ function Header() {
           visible: { opacity: 1, y: "0%" },
         }}
         className="h-full min-h-screen relative overflow-hidden 
-         bg-gradient bg-[length:400%_400%]  animate-gradient"
+         bg-gradient bg-[length:400%_400%]  animate-gradient z-10"
       >
         <NavBar />
         <Hero />

@@ -37,7 +37,7 @@ function AboutMe() {
             viewport={{ once: true, amount: 0.2 }}
             variants={textVariants}
             custom={0.2} // Controls delay for paragraph fade-in
-            className="space-y-8 w-[32.19rem] leading-[1.8rem] text-[1rem] font-normal tracking-normal"
+            className="space-y-8 w-[32.19rem] leading-[1.8rem] text-[1rem] font-normal tracking-normal self-start"
           >
             <motion.p custom={0.2} variants={textVariants}>
               Hello, I'm yacine!
@@ -55,11 +55,15 @@ function AboutMe() {
             </motion.p>
             <motion.div custom={0.8} variants={textVariants}>
               <Button
-                className="w-[9.25rem] dark:text-white border-[1px] border-purple-400 rounded-none 
-                hover:bg-purple-500/20 hover:transition-all hover:duration-250 shadow-sm shadow-black"
+                className="group w-[9.25rem] dark:text-white border-[1px] border-purple-400 rounded-none 
+                hover:bg-purple-500/20 hover:transition-all hover:duration-250 shadow-sm shadow-black bg-transparent"
                 type="button"
+                asChild
               >
-                <Link to="/about-me">Read more {"->"}</Link>
+                <Link to="/about-me">
+                  Read more
+                  <span className="group-hover:animate-pulse">{"->"}</span>
+                </Link>
               </Button>
             </motion.div>
           </motion.div>

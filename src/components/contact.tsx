@@ -3,6 +3,7 @@ import SectionLayout from "@/layouts/section-layout";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { motion } from "framer-motion";
 import {
   Form,
   FormField,
@@ -21,28 +22,29 @@ import {
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import useContact from "@/hooks/useContact";
+import { textVariants } from "./hero";
+import { Loader2 } from "lucide-react";
+import useMessage from "@/hooks/useMessage";
+import { useToast } from "@/hooks/use-toast";
+import { Toaster } from "./ui/toaster";
 
 const formSchema = z.object({
-  // Name: required, min 2 and max 30 characters
   name: z
     .string()
     .min(2, { message: "Name must be at least 2 characters long" })
     .max(30, { message: "Name must be no more than 30 characters long" }),
 
-  // Email: required, must be a valid email format
   email: z.string().email({ message: "Please enter a valid email address" }),
 
-  // Phone number: required, with basic format validation
   phoneNumber: z.string().regex(/^(\+\d{1,3}[- ]?)?\d{10}$/, {
     message:
       "Please enter a valid phone number (e.g., +1234567890 or 1234567890)",
   }),
 
-  // Reason: required string, ensures at least one selection
-  reason: z.string().min(1, { message: "Please select a reason" }), // Require at least one character,
+  reason: z.string().min(1, { message: "Please select a reason" }),
 });
 
-type FormSchemaType = z.infer<typeof formSchema>;
+export type FormSchemaType = z.infer<typeof formSchema>;
 
 const defaultValues: FormSchemaType = {
   name: "",
@@ -53,100 +55,147 @@ const defaultValues: FormSchemaType = {
 
 function Contact() {
   const { data: contactData, isLoading } = useContact();
-  const { navLinks } = useCachedNavLinks();
+  const { navLinks, language } = useCachedNavLinks();
   const slug = navLinks?.links?.[3].slug || "contact";
+  const createNewMessage = useMessage();
+  const { toast } = useToast();
 
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues,
   });
 
-  const onSubmit = (data: FormSchemaType) => {
-    console.log("Form submitted:", data);
+  const onSubmit = async (data: FormSchemaType) => {
+    createNewMessage.mutate(data, {
+      onSuccess: (response) => {
+        form.reset(); // Reset form after successful submission
+        toast({
+          description: "Your message was sent successfully!",
+        });
+      },
+      onError: (error) => {
+        toast({
+          description: "An error occurred. Please try again later.",
+        });
+      },
+    });
   };
-
-  console.log(contactData);
 
   // if (isLoading) return <div>Loading...</div>
 
   return (
     <>
       <SectionLayout slug={slug}>
-        <div className="flex flex-col mt-16 gap-y-2">
-          <div className="py-2 space-y-8">
-            <h1 className="lg:text-[5em] md:text-[3em] text-4xl pb-4">
-              {contactData?.description.title}
-            </h1>
-            <p className="text-sm opacity-60">
-              {contactData?.description.subtitle}
-            </p>
-          </div>
-          <Form {...form}>
-            <form
-              className="px-8 py-16 space-y-8 rounded-md shadow-sm shadow-black"
-              onSubmit={form.handleSubmit(onSubmit)}
+        <div className="flex flex-col">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={textVariants}
+            custom={0.2} // Controls delay for paragraph fade-in
+            className="space-y-4"
+          >
+            <motion.h1
+              custom={0.2}
+              variants={textVariants}
+              className="lg:text-[5em] md:text-[3em] text-4xl pb-4"
             >
-              {contactData?.fields.inputs.map((input) => (
-                <FormField
-                  control={form.control}
-                  name={input.name}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{input.label}</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder={input.placeholder}
-                          className="border-t-0 border-l-0 border-r-0 rounded-none placeholder:text-center dark:placeholder:text-primary border-b-primary-foreground/20 bg-inherit focus-visible:ring-0"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage className="text-xs" />
-                    </FormItem>
-                  )}
-                />
-              ))}
-
-              {/* Service Field */}
-              {contactData?.fields.selects.map((select) => (
-                <FormField
-                  control={form.control}
-                  name={select.name}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{select.label}</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger className="border-t-0 border-l-0 border-r-0 rounded-none w-full dark:data-[placeholder]:text-primary  [&>span]:w-full  [&>span]:text-center data-[placeholder]:text-center border-b-primary-foreground/20 bg-inherit focus:ring-0">
-                            <SelectValue placeholder={select.placeholder} />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent className="border-none focus:ring-0">
-                          {select.options.map((option) => (
-                            <SelectItem value={option}>{option}</SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage className="text-xs" />
-                    </FormItem>
-                  )}
-                />
-              ))}
-
-              {/* Submit Button */}
-              <Button
-                variant="outline"
-                className="w-full py-6 px-4 bg-inherit font-extralight tracking-widest dark:text-white border-[1px] border-primary-foreground/20 rounded-sm 
-                hover:bg-purple-500/20 hover:transition-all hover:duration-250 shadow-sm shadow-black hover:bg-opacity-20"
-                type="submit"
+              {contactData?.description.title}
+            </motion.h1>
+            <motion.p
+              custom={0.4}
+              variants={textVariants}
+              className="italic opacity-40"
+            >
+              {contactData?.description.subtitle}
+            </motion.p>
+          </motion.div>
+          <div className="grid shadow-sm lg:grid-cols-2 dark:shadow-black">
+            <Form {...form}>
+              <motion.form
+                custom={0.6}
+                variants={textVariants}
+                className="px-8 py-16 space-y-8 rounded-md"
+                onSubmit={form.handleSubmit(onSubmit)}
               >
-                {contactData?.button.value}
-              </Button>
-            </form>
-          </Form>
+                {contactData?.fields.inputs.map((input) => (
+                  <FormField
+                    key={input.label}
+                    control={form.control}
+                    name={input.name}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{input.label}</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder={input.placeholder}
+                            className="border-t-0 border-l-0 border-r-0 rounded-none placeholder:text-center dark:placeholder:text-primary border-b-primary-foreground/20 focus-within:border-b-primary-foreground bg-inherit focus-visible:ring-0"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage className="text-xs" />
+                      </FormItem>
+                    )}
+                  />
+                ))}
+
+                {/* Service Field */}
+                {contactData?.fields.selects.map((select) => (
+                  <FormField
+                    key={select.label}
+                    control={form.control}
+                    name={select.name}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{select.label}</FormLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                        >
+                          <FormControl>
+                            <SelectTrigger className="border-t-0 border-l-0 border-r-0 rounded-none w-full dark:data-[placeholder]:text-primary  [&>span]:w-full  [&>span]:text-center data-[placeholder]:text-center border-b-primary-foreground/20 bg-inherit focus:ring-0">
+                              <SelectValue placeholder={select.placeholder} />
+                            </SelectTrigger>
+                          </FormControl>
+                          <SelectContent className="border-none focus:ring-0">
+                            {select.options.map((option) => (
+                              <SelectItem key={option} value={option}>
+                                {option}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FormMessage className="text-xs" />
+                      </FormItem>
+                    )}
+                  />
+                ))}
+
+                {/* Submit Button */}
+                <Button
+                  disabled={
+                    createNewMessage.status === "pending" ||
+                    form.formState.isSubmitting
+                  }
+                  variant="outline"
+                  className="w-full py-6 px-4 bg-inherit font-extralight tracking-widest dark:text-white border-[1px] border-primary-foreground/20 rounded-sm 
+                hover:bg-purple-500/20 hover:transition-all hover:duration-250 shadow-sm shadow-black hover:bg-opacity-20"
+                  type="submit"
+                >
+                  {createNewMessage.status === "pending" ? (
+                    <>
+                      <Loader2 className="animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    contactData?.button.value
+                  )}
+                </Button>
+              </motion.form>
+            </Form>
+          </div>
         </div>
+        <Toaster />
       </SectionLayout>
     </>
   );

@@ -1,5 +1,6 @@
 import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
 import { useProjects } from "@/hooks/useProjects";
+import SectionLayout from "@/layouts/section-layout";
 import type { Project } from "@/types/types";
 import { Link } from "react-router-dom";
 
@@ -13,11 +14,10 @@ function Projects() {
   if (!navLinks) return <p>Loading navigation...</p>;
 
   // Find the slug for the "works" section, as the 3rd link
-  const worksSlug = navLinks?.links?.[2].slug || "works";
+  const slug = navLinks?.links?.[2].slug || "works";
 
   return (
-    <div className="min-h-screen container" id={worksSlug}>
-      <h1>Projects List</h1>
+    <SectionLayout slug={slug}>
       <Link to={"/projects"}>View all</Link>
       {projects.length > 0 ? (
         projects.map((project: Project) => (
@@ -30,7 +30,7 @@ function Projects() {
       ) : (
         <p>No projects found.</p>
       )}
-    </div>
+    </SectionLayout>
   );
 }
 
