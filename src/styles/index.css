@@ -35,12 +35,19 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 20% 98%;
 
-    --app-color-1: hsl(14 59% 48%);
+    /* --app-color-1: hsl(14 59% 48%);
     --app-color-2: hsl(0 0% 87%);
     --app-color-3: hsl(336 69% 51%);
     --app-color-4: hsl(198 100% 25%);
     --app-color-5: hsl(164 100% 26%);
-    --app-color-6: hsl(160, 100%, 75%);
+    --app-color-6: hsl(160, 100%, 75%); */
+
+    --app-color-1: hsl(239, 94%, 19%);
+    --app-color-2: hsl(214, 97%, 27%);
+    --app-color-3: hsl(201, 100%, 36%);
+    --app-color-4: hsl(195, 100%, 39%);
+    --app-color-5: hsl(190, 100%, 42%);
+    --app-color-6: hsl(190, 74%, 59%);
 
     --ring: 224 71.4% 4.1%;
 

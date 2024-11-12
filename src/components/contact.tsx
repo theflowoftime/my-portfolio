@@ -1,6 +1,6 @@
 import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
 import SectionLayout from "@/layouts/section-layout";
-import { z } from "zod";
+import { z, ZodSchema } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
@@ -27,30 +27,47 @@ import { Loader2 } from "lucide-react";
 import useMessage from "@/hooks/useMessage";
 import { useToast } from "@/hooks/use-toast";
 import { Toaster } from "./ui/toaster";
+import { ErrorMessages } from "@/types/types";
+import { useEffect } from "react";
 
-const formSchema = z.object({
-  name: z
-    .string()
-    .min(2, { message: "Name must be at least 2 characters long" })
-    .max(30, { message: "Name must be no more than 30 characters long" }),
+function buildFormSchema(errorMessages: ErrorMessages = null) {
+  return z.object({
+    name: z
+      .string()
+      .min(2, {
+        message:
+          errorMessages?.name?.min || "Name must be at least 2 characters long",
+      })
+      .max(30, {
+        message:
+          errorMessages?.name?.max ||
+          "Name must be no more than 30 characters long",
+      }),
 
-  email: z.string().email({ message: "Please enter a valid email address" }),
+    email: z.string().email({
+      message:
+        errorMessages?.email?.invalid || "Please enter a valid email address",
+    }),
 
-  phoneNumber: z.string().regex(/^(\+\d{1,3}[- ]?)?\d{10}$/, {
-    message:
-      "Please enter a valid phone number (e.g., +1234567890 or 1234567890)",
-  }),
+    phoneNumber: z.string().regex(/^(\+\d{1,3}[- ]?)?\d{10}$/, {
+      message:
+        errorMessages?.phoneNumber?.invalid ||
+        "Please enter a valid phone number (e.g., +1234567890 or 1234567890)",
+    }),
 
-  reason: z.string().min(1, { message: "Please select a reason" }),
-});
+    reason: z.string().min(1, {
+      message: errorMessages?.reason?.min || "Please select a reason",
+    }),
+  });
+}
 
-export type FormSchemaType = z.infer<typeof formSchema>;
+export type FormSchemaType = z.infer<ReturnType<typeof buildFormSchema>>;
 
 const defaultValues: FormSchemaType = {
   name: "",
   email: "",
   phoneNumber: "",
-  reason: "",
+  reason: "", // form.reset isn't resetting it.
 };
 
 function Contact() {
@@ -59,6 +76,7 @@ function Contact() {
   const slug = navLinks?.links?.[3].slug || "contact";
   const createNewMessage = useMessage();
   const { toast } = useToast();
+  const formSchema = buildFormSchema(contactData?.errorMessages);
 
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
@@ -69,6 +87,7 @@ function Contact() {
     createNewMessage.mutate(data, {
       onSuccess: (response) => {
         form.reset(); // Reset form after successful submission
+        form.resetField("reason");
         toast({
           description: "Your message was sent successfully!",
         });
@@ -80,6 +99,12 @@ function Contact() {
       },
     });
   };
+
+  const onError = () => {};
+
+  useEffect(() => {
+    form.reset();
+  }, [language]);
 
   // if (isLoading) return <div>Loading...</div>
 
@@ -116,7 +141,7 @@ function Contact() {
                 custom={0.6}
                 variants={textVariants}
                 className="px-8 py-16 space-y-8 rounded-md"
-                onSubmit={form.handleSubmit(onSubmit)}
+                onSubmit={form.handleSubmit(onSubmit, onError)}
               >
                 {contactData?.fields.inputs.map((input) => (
                   <FormField

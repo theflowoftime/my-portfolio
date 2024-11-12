@@ -38,7 +38,7 @@ const Toggles = ({
   );
 };
 
-const LogoWithName = (props: ComponentProps<"div">) => {
+export const LogoWithName = (props: ComponentProps<"div">) => {
   return (
     <div className="flex items-center gap-x-2" {...props}>
       <Logo className="w-4 h-[17px] dark:fill-white fill-black" />
@@ -91,7 +91,7 @@ const NavBar = () => {
                   <NavigationMenuLink asChild>
                     <Link
                       state={{ data: navLinks }}
-                      className="text-white hover:text-popover-foreground/80"
+                      className="text-white hover:text-popover-foreground/40"
                       to={link.path || `#${link.slug}`}
                     >
                       <span className="text-primary-foreground">#</span>

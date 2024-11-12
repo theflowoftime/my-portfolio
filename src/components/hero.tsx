@@ -1,4 +1,9 @@
-import React, { cloneElement, useRef } from "react";
+import React, {
+  cloneElement,
+  ComponentPropsWithoutRef,
+  HTMLProps,
+  useRef,
+} from "react";
 import { Button } from "./ui/button";
 import LogoHero from "./ui/icons/Logo-Hero";
 import { motion, Variants } from "framer-motion";
@@ -22,7 +27,10 @@ export const textVariants: Variants = {
 type Size = "md" | "lg";
 type SocialIconsProps = { size?: Size };
 
-export const SocialIcons = ({ size }: SocialIconsProps) => {
+export const SocialIcons = ({
+  className,
+  size,
+}: ComponentPropsWithoutRef<"div"> & SocialIconsProps) => {
   const icons = [
     { component: <Github />, mdClass: "w-[42px] h-[40px]" },
     { component: <Dribble />, mdClass: "w-[46px] h-[46px]" },
@@ -30,14 +38,14 @@ export const SocialIcons = ({ size }: SocialIconsProps) => {
   ];
 
   return (
-    <>
+    <div className={className}>
       {icons.map((icon, index) =>
         cloneElement(icon.component, {
           className: size === "md" ? icon.mdClass : undefined,
           key: index,
         })
       )}
-    </>
+    </div>
   );
 };
 
@@ -58,7 +66,7 @@ function Hero() {
   // if (isLoading) return <div>loading...</div>
 
   return (
-    <div className="relative flex flex-col overflow-hidden">
+    <div className="relative flex flex-col min-h-screen overflow-hidden bg-clip-padding backdrop-filter bg-opacity-20 bg-neutral-900">
       <Rectangle />
       <div className="container flex flex-col items-center mt-4 gap-x-2 lg:flex-row lg:gap-y-4">
         {/* Main Text Section */}
@@ -139,12 +147,12 @@ function Hero() {
           <motion.div
             variants={textVariants}
             custom={0.9} // Delayed appearance for caption under the image
-            className="flex items-center gap-x-2 p-2 leading-[2rem] mr-4 ml-2 tracking-wider font-normal
+            className="flex items-center gap-x-2 p-2 leading-[2rem] mr-0 ml-0 tracking-wider font-normal
             bg-white bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-10 shadow-sm shadow-black
             "
           >
             <div className="inline-block w-4 h-4 bg-purple-400" />
-            {heroData?.imageSubtitle}{" "}
+            <span className="text-white/80">{heroData?.imageSubtitle} </span>
             <span className="text-white">{heroData?.currentProject}...</span>
           </motion.div>
         </motion.div>
@@ -153,7 +161,7 @@ function Hero() {
       {/* Quotes Section */}
       <div
         ref={scrollRef}
-        className="container flex justify-center w-full mt-[7rem] text-white mb-4"
+        className="container flex justify-center w-full mt-[7rem] dark:text-white mb-4"
       >
         {heroData?.quotes.map((_quote, idx) => (
           <motion.div
@@ -166,18 +174,18 @@ function Hero() {
             custom={idx * 0.2 + 1.0} // Staggered delay for each quote
           >
             <motion.q
-              className="text-2xl py-8 px-4 relative 
+              className="text-2xl py-8 px-4 relative text-white
                          before:absolute before:content-['“'] after:content-['“'] before:text-6xl after:text-6xl before:text-gray-400 
                          motion-safe:before:animate-in before:duration-300 
                        after:text-gray-400  after:absolute before:-top-4 before:left-4 after:-bottom-4 after:right-4 
                          before:h-8 after:h-8
                          bg-white bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-10
-                         shadow-sm shadow-black rounded-md z-20
+                         shadow-sm shadow-black rounded-md z-10
                          "
             >
               {_quote.quote}
             </motion.q>
-            <motion.p className="self-end px-4 py-8 text-xl bg-white rounded-md shadow-sm bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-10 shadow-black">
+            <motion.p className="self-end px-4 py-8 text-xl text-white bg-white rounded-md shadow-sm bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-10 shadow-black">
               — {_quote.author}
             </motion.p>
           </motion.div>

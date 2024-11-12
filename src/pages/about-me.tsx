@@ -1,5 +1,7 @@
-const AboutMe = () => {
-  return "AboutMe";
+import PageLayout from "@/layouts/page-layout";
+
+const AboutMePage = () => {
+  return <PageLayout title="about me"></PageLayout>;
 };
 
-export default AboutMe;
+export default AboutMePage;

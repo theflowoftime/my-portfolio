@@ -13,7 +13,7 @@ export const SectionTitle = ({ title }: { title: string }) => {
     >
       <span className="text-purple-400">#</span>
       <span
-        className="dark:text-white absolute ml-1 after:content-[''] after:block after:w-[20.38rem] after:h-[2px] 
+        className="dark:text-white relative ml-1 after:content-[''] after:block after:w-[20.38rem] after:h-[2px] 
         after:mx-4 after:bg-purple-400 after:absolute after:top-1/2 after:left-full after:-translate-y-1/2"
       >
         {title}

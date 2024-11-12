@@ -55,14 +55,16 @@ function AboutMe() {
             </motion.p>
             <motion.div custom={0.8} variants={textVariants}>
               <Button
-                className="group w-[9.25rem] dark:text-white border-[1px] border-purple-400 rounded-none 
-                hover:bg-purple-500/20 hover:transition-all hover:duration-250 shadow-sm shadow-black bg-transparent"
+                className="group w-[9.25rem] dark:text-white text-black border-[1px] border-purple-400 rounded-none 
+                hover:bg-purple-500/20 hover:transition-all hover:duration-250 bg-transparent"
                 type="button"
                 asChild
               >
                 <Link to="/about-me">
                   Read more
-                  <span className="group-hover:animate-pulse">{"->"}</span>
+                  <span className="text-purple-400 dark:group-hover:text-purple-400 group-hover:animate-pulse group-hover:text-black">
+                    {"->"}
+                  </span>
                 </Link>
               </Button>
             </motion.div>

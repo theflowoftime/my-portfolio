@@ -43,6 +43,21 @@ export const contact_QUERY = `*[_type == "contact" && language == $language][0]{
     },
     button {
       value
+    },
+    errorMessages {
+      name {
+        min,
+        max
+      },
+      email {
+        invalid
+      },
+      phoneNumber {
+        invalid
+      },
+      reason {
+        min
+      }
     }
   }`;
 
