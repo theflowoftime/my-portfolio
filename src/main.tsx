@@ -9,6 +9,7 @@ import Project from "./pages/project";
 import Projects from "./pages/projects";
 import AboutMePage from "./pages/about-me";
 import { SpeedInsights } from "@vercel/speed-insights/react";
+import { Analytics } from "@vercel/analytics/react";
 
 // Create a reactquery client
 export const queryClient = new QueryClient();
@@ -42,5 +43,6 @@ createRoot(document.getElementById("root")!).render(
       <ReactQueryDevtools initialIsOpen={true} />
     </QueryClientProvider>
     <SpeedInsights />
+    <Analytics />
   </StrictMode>
 );
