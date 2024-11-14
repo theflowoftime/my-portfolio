@@ -212,6 +212,7 @@ function Contact() {
                 ))}
 
                 <ReCAPTCHA
+                  className="hidden"
                   ref={recaptchaRef}
                   sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY!}
                   size="invisible"
