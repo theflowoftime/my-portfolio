@@ -1,6 +1,6 @@
-import { projects_QUERY as query } from "@/lib/queries";
+import { projects_QUERY as query } from "@/sanity/lib/queries";
 import type { Language } from "@/types/types";
-import client from "@/sanity/client";
+import client from "@/sanity/lib/client";
 import { useQuery } from "@tanstack/react-query";
 
 export const fetchprojects = async (language: Language) => {

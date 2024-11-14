@@ -1,5 +1,5 @@
 import type { Language } from "@/types/types";
-import client from "@/sanity/client";
+import client from "@/sanity/lib/client";
 import { useLanguageStore } from "@/stores/language-store";
 import { useMutation } from "@tanstack/react-query";
 import type { FormSchemaType } from "@/components/contact";

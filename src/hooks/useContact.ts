@@ -1,6 +1,6 @@
-import { contact_QUERY as query } from "@/lib/queries";
+import { contact_QUERY as query } from "@/sanity/lib/queries";
 import type { Contact, Language } from "@/types/types";
-import client from "@/sanity/client";
+import client from "@/sanity/lib/client";
 import { useLanguageStore } from "@/stores/language-store";
 import { useQuery } from "@tanstack/react-query";
 

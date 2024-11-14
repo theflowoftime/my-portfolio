@@ -24,11 +24,13 @@ import { Button } from "./ui/button";
 import useContact from "@/hooks/useContact";
 import { textVariants } from "./hero";
 import { Loader2 } from "lucide-react";
-import useMessage from "@/hooks/useMessage";
 import { useToast } from "@/hooks/use-toast";
 import { Toaster } from "./ui/toaster";
 import { ErrorMessages } from "@/types/types";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import axios from "axios";
+import ReCAPTCHA from "react-google-recaptcha";
+import { useMutation } from "@tanstack/react-query";
 
 function buildFormSchema(errorMessages: ErrorMessages = null) {
   return z.object({
@@ -74,9 +76,26 @@ function Contact() {
   const { data: contactData, isLoading } = useContact();
   const { navLinks, language } = useCachedNavLinks();
   const slug = navLinks?.links?.[3].slug || "contact";
-  const createNewMessage = useMessage();
+  // const createNewMessage = useMessage();
   const { toast } = useToast();
   const formSchema = buildFormSchema(contactData?.errorMessages);
+  const recaptchaRef = useRef<ReCAPTCHA | null>(null);
+  const { mutate, status } = useMutation({
+    mutationFn: async (data: FormSchemaType & { recaptchaToken: string }) => {
+      const response = await axios.post(
+        "/api/verifyRecaptchaAndSubmitMessage",
+        data
+      );
+      return response.data;
+    },
+    onSuccess: () => {
+      form.reset();
+      toast({ description: "Your message was sent successfully!" });
+    },
+    onError: () => {
+      toast({ description: "An error occurred. Please try again later." });
+    },
+  });
 
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
@@ -84,20 +103,16 @@ function Contact() {
   });
 
   const onSubmit = async (data: FormSchemaType) => {
-    createNewMessage.mutate(data, {
-      onSuccess: (response) => {
-        form.reset(); // Reset form after successful submission
-        form.resetField("reason");
-        toast({
-          description: "Your message was sent successfully!",
-        });
-      },
-      onError: (error) => {
-        toast({
-          description: "An error occurred. Please try again later.",
-        });
-      },
-    });
+    const recaptchaToken = await recaptchaRef.current?.executeAsync();
+    recaptchaRef.current?.reset();
+
+    if (recaptchaToken) {
+      mutate({ ...data, recaptchaToken });
+    } else {
+      toast({
+        description: "reCAPTCHA verification failed. Please try again.",
+      });
+    }
   };
 
   const onError = () => {};
@@ -196,18 +211,21 @@ function Contact() {
                   />
                 ))}
 
+                <ReCAPTCHA
+                  ref={recaptchaRef}
+                  sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY!}
+                  size="invisible"
+                />
+
                 {/* Submit Button */}
                 <Button
-                  disabled={
-                    createNewMessage.status === "pending" ||
-                    form.formState.isSubmitting
-                  }
+                  disabled={status === "pending" || form.formState.isSubmitting}
                   variant="outline"
                   className="w-full py-6 px-4 bg-inherit font-extralight tracking-widest dark:text-white border-[1px] border-primary-foreground/20 rounded-sm 
                 hover:bg-purple-500/20 hover:transition-all hover:duration-250 shadow-sm shadow-black hover:bg-opacity-20"
                   type="submit"
                 >
-                  {createNewMessage.status === "pending" ? (
+                  {status === "pending" ? (
                     <>
                       <Loader2 className="animate-spin" />
                       Sending...
