@@ -1,6 +1,6 @@
 import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
 import SectionLayout from "@/layouts/section-layout";
-import { z, ZodSchema } from "zod";
+import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
@@ -26,7 +26,7 @@ import { textVariants } from "./hero";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Toaster } from "./ui/toaster";
-import { ErrorMessages } from "@/types/types";
+import type { ErrorMessages, Field } from "@/types/types";
 import { useEffect, useRef } from "react";
 import axios from "axios";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -92,10 +92,20 @@ function Contact() {
     },
     onSuccess: () => {
       form.reset();
-      toast({ description: "Your message was sent successfully!" });
+
+      toast({
+        description:
+          contactData?.toast.success.message ||
+          "Your message was sent successfully!",
+      });
     },
-    onError: () => {
-      toast({ description: "An error occurred. Please try again later." });
+    onError: (data) => {
+      toast({
+        description:
+          contactData?.toast.error?.[
+            data.message as keyof typeof contactData.toast.error
+          ] || "An error occurred. Please try again later.",
+      });
     },
   });
 
@@ -112,7 +122,10 @@ function Contact() {
       mutate({ ...data, recaptchaToken });
     } else {
       toast({
-        description: "reCAPTCHA verification failed. Please try again.",
+        description:
+          contactData?.toast.error?.[
+            "recaptcha" as keyof typeof contactData.toast.error
+          ] || "reCAPTCHA verification failed. Please try again.",
       });
     }
   };

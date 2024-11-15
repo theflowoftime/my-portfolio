@@ -83,10 +83,23 @@ export type ErrorMessages = {
   reason: { min: string };
 } | null;
 
+export type Field = "recaptcha" | "rate-limit" | "message";
+// Utility type to enforce exactly one key from Field
+export type ExactlyOneField<T> = {
+  [K in keyof T]: Pick<T, K> & Partial<Record<Exclude<keyof T, K>, never>>;
+}[keyof T];
+
+// Toast type mapping Status to the appropriate structure
+export type Toast = {
+  error: ExactlyOneField<Record<Field, string>>;
+  success: { message: string };
+};
+
 type Contact = {
   _id: string;
   description: { title: string; subtitle: string };
   fields: Field;
   button: { value: string };
   errorMessages?: ErrorMessages;
+  toast: Toast;
 };
