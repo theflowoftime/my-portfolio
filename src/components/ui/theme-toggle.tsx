@@ -32,24 +32,20 @@ export function ThemeToggle({ className }: { className?: string }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className={className} variant="outline" size="icon">
-          <Sun className="!h-[1.2rem] !w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute !h-[1.2rem] !w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+        <Button className={className} variant="ghost" size="icon">
+          <Sun className="absolute !h-[1rem] !w-[1rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+          <Moon className="absolute !h-[1rem] !w-[1rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
           <span className="sr-only">Toggle theme</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
-        className="border-none animate-accordion-down"
+        className="border-none animate-accordion-down min-w-min"
       >
         {themes.map(
           (thm) =>
             theme !== thm && (
-              <DropdownMenuItem
-                className={className}
-                key={thm}
-                onClick={() => setTheme(thm)}
-              >
+              <DropdownMenuItem key={thm} onClick={() => setTheme(thm)}>
                 {thm}
               </DropdownMenuItem>
             )

@@ -14,6 +14,7 @@ import Dribble from "./ui/icons/Dribble";
 import Figma from "./ui/icons/Figma";
 import { Link } from "react-router-dom";
 import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
+import { Loader2 } from "lucide-react";
 
 export const textVariants: Variants = {
   hidden: { opacity: 0, y: 50 },
@@ -63,7 +64,10 @@ function Hero() {
   const { navLinks } = useCachedNavLinks();
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // if (isLoading) return <div>loading...</div>
+  if (isLoading) return;
+  <div className="relative flex flex-col min-h-screen overflow-hidden bg-clip-padding backdrop-filter bg-opacity-20 bg-neutral-900">
+    <Loader2 />
+  </div>;
 
   return (
     <div className="relative flex flex-col min-h-screen overflow-hidden bg-clip-padding backdrop-filter bg-opacity-20 bg-neutral-900">
@@ -71,14 +75,14 @@ function Hero() {
       <div className="container flex flex-col items-center mt-4 gap-x-2 lg:flex-row lg:gap-y-4">
         {/* Main Text Section */}
         <motion.div
-          className="lg:w-1/2 space-y-8 text-white pt-16 lg:mt-[3.5rem] text-center lg:text-start"
+          className="lg:w-1/2 space-y-4 text-white pt-16 lg:mt-[3.5rem] text-center lg:text-start"
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
           variants={textVariants}
           custom={0.2} // Delay for sequential text appearance
         >
-          <h3 className="text-4xl leading-[3rem] tracking-normal">
+          <h3 className="text-4xl leading-[3rem] tracking-normal font-bold">
             {heroData?.intro}{" "}
             {heroData?.jobs.map((job, idx) => {
               const isLast = idx === heroData.jobs.length - 1;
@@ -97,7 +101,7 @@ function Hero() {
               );
             })}
           </h3>
-          <p className="text-white leading-[1.5625rem] text-lg font-normal">
+          <p className="text-white/70 leading-[1.5rem] tracking-tight text-base font-light">
             {heroData?.bio}
           </p>
 
@@ -152,7 +156,9 @@ function Hero() {
             "
           >
             <div className="inline-block w-4 h-4 bg-purple-400" />
-            <span className="text-white/80">{heroData?.imageSubtitle} </span>
+            <span className="text-white/80 whitespace-nowrap">
+              {heroData?.imageSubtitle}{" "}
+            </span>
             <span className="text-white">{heroData?.currentProject}...</span>
           </motion.div>
         </motion.div>

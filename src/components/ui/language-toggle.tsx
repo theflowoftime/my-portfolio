@@ -19,21 +19,20 @@ export function LanguageToggle({ className }: { className?: string }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className={className} variant="outline" size="icon">
+        <Button className={className} variant="ghost" size="icon">
           <span>{language}</span>
           {/* Assuming you have a 'language' key for the toggle */}
           <span className="sr-only">Toggle language</span>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="border-none">
+      <DropdownMenuContent
+        align="end"
+        className="border-none animate-accordion-down min-w-min"
+      >
         {languages.map(
           (lng) =>
             language !== lng && (
-              <DropdownMenuItem
-                className={className}
-                key={lng}
-                onClick={() => changeLanguage(lng)}
-              >
+              <DropdownMenuItem key={lng} onClick={() => changeLanguage(lng)}>
                 {lng}
               </DropdownMenuItem>
             )

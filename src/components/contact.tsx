@@ -136,7 +136,12 @@ function Contact() {
     form.reset();
   }, [language]);
 
-  // if (isLoading) return <div>Loading...</div>
+  if (isLoading)
+    return (
+      <SectionLayout slug={slug}>
+        <Loader2 />
+      </SectionLayout>
+    );
 
   return (
     <>
@@ -153,14 +158,14 @@ function Contact() {
             <motion.h1
               custom={0.2}
               variants={textVariants}
-              className="lg:text-[5em] md:text-[3em] text-4xl pb-4"
+              className="lg:text-[2em] whitespace-nowrap dark:text-white md:text-[1.5em] text-4xl font-light tracking-tighter"
             >
               {contactData?.description.title}
             </motion.h1>
             <motion.p
               custom={0.4}
               variants={textVariants}
-              className="italic opacity-40"
+              className="italic mx-4 opacity-40 text-[0.75rem] text-wrap tracking-tighter"
             >
               {contactData?.description.subtitle}
             </motion.p>

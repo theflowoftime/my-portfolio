@@ -29,10 +29,16 @@ const Toggles = ({
       {...props}
     >
       <LanguageToggle
-        className={cn(!isDesktop && "text-2xl", "shadow-sm shadow-black")}
+        className={cn(
+          !isDesktop && "text-2xl",
+          "shadow-sm shadow-black text-white text-xs"
+        )}
       />
       <ThemeToggle
-        className={cn(!isDesktop && "text-2xl", "shadow-sm shadow-black")}
+        className={cn(
+          !isDesktop && "text-2xl",
+          "shadow-sm shadow-black text-white text-xs"
+        )}
       />
     </div>
   );
@@ -42,7 +48,7 @@ export const LogoWithName = (props: ComponentProps<"div">) => {
   return (
     <div className="flex items-center gap-x-2" {...props}>
       <Logo className="w-4 h-[17px] dark:fill-white fill-black" />
-      <span className="font-bold text-[1rem] dark:text-white self-center">
+      <span className="self-center text-base font-bold dark:text-white">
         Yacine
       </span>
     </div>
@@ -67,7 +73,7 @@ const NavBar = () => {
     };
   }, [isMobileMenuOpen]);
 
-  // if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return null;
 
   return (
     <div id="navbar" className="z-10 bg-inherit sticky top-0 h-[4.56rem]">
@@ -84,14 +90,14 @@ const NavBar = () => {
 
         {/* Desktop Navigation */}
         <div className="justify-end hidden lg:flex">
-          <NavigationMenu className="p-4 space-x-8">
-            <NavigationMenuList className="flex space-x-8 xl:space-x-16">
+          <NavigationMenu className="py-2 space-x-8 ">
+            <NavigationMenuList className="flex space-x-8 xl:space-x-8">
               {navLinks?.links?.map((link: LinkType) => (
                 <NavigationMenuItem key={link.slug}>
                   <NavigationMenuLink asChild>
                     <Link
                       state={{ data: navLinks }}
-                      className="text-white hover:text-popover-foreground/40"
+                      className="text-[0.85rem] text-white hover:text-popover-foreground/40"
                       to={link.path || `#${link.slug}`}
                     >
                       <span className="text-primary-foreground">#</span>
@@ -142,9 +148,10 @@ const NavBar = () => {
                   ))}
                   <Toggles isDesktop={false} />
                 </nav>
-                <div className="flex items-center justify-center p-0 mb-9 gap-x-8">
-                  <SocialIcons size="md" />
-                </div>
+                <SocialIcons
+                  className="flex flex-row items-center justify-center py-2 mb-2 flex-nowrap gap-x-4"
+                  size="md"
+                />
               </div>
             </motion.div>
           )}
