@@ -34,7 +34,11 @@ const router = createBrowserRouter([
     path: "/about-me",
     element: <AboutMePage />,
   },
-]);
+], {
+  future: {
+    v7_fetcherPersist: true,
+  },
+});
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
