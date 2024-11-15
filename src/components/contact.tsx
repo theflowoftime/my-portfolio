@@ -27,10 +27,12 @@ import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Toaster } from "./ui/toaster";
 import type { ErrorMessages } from "@/types/types";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import axios from "axios";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useMutation } from "@tanstack/react-query";
+
+const THROTTLE_DELAY = 5000;
 
 function buildFormSchema(errorMessages: ErrorMessages = null) {
   return z.object({
@@ -71,6 +73,28 @@ const defaultValues: FormSchemaType = {
   phoneNumber: "",
   reason: "", // form.reset isn't resetting it.
 };
+
+function useThrottle<F extends (...args: any[]) => any>(
+  func: F,
+  delay: number
+): (...args: Parameters<F>) => void {
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const throttledFunc = useCallback(
+    (...args: Parameters<F>) => {
+      if (timeoutRef.current) return;
+
+      func(...args);
+
+      timeoutRef.current = setTimeout(() => {
+        timeoutRef.current = null;
+      }, delay);
+    },
+    [func, delay]
+  );
+
+  return throttledFunc;
+}
 
 function Contact() {
   const { data: contactData, isLoading } = useContact();
@@ -114,7 +138,7 @@ function Contact() {
     defaultValues,
   });
 
-  const onSubmit = async (data: FormSchemaType) => {
+  const throttledSubmit = useThrottle(async (data: FormSchemaType) => {
     const recaptchaToken = await recaptchaRef.current?.executeAsync();
     recaptchaRef.current?.reset();
 
@@ -128,6 +152,10 @@ function Contact() {
           ] || "reCAPTCHA verification failed. Please try again.",
       });
     }
+  }, THROTTLE_DELAY);
+
+  const onSubmit = (data: FormSchemaType) => {
+    throttledSubmit(data);
   };
 
   const onError = () => {};
