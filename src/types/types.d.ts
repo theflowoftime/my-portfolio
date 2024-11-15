@@ -83,7 +83,7 @@ export type ErrorMessages = {
   reason: { min: string };
 } | null;
 
-export type Field = "recaptcha" | "rate-limit" | "message";
+export type Field = "recaptcha" | "rateLimit" | "message";
 // Utility type to enforce exactly one key from Field
 export type ExactlyOneField<T> = {
   [K in keyof T]: Pick<T, K> & Partial<Record<Exclude<keyof T, K>, never>>;

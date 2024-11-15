@@ -47,7 +47,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     if (lastMessageTimestamp) {
       return res.status(429).json({
-        message: "rate-limit",
+        message: "rateLimit",
       });
     }
 
