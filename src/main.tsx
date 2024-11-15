@@ -34,16 +34,12 @@ const router = createBrowserRouter([
     path: "/about-me",
     element: <AboutMePage />,
   },
-], {
-  future: {
-    v7_fetcherPersist: true,
-  },
-});
+]);
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <RouterProvider router={router} future={{ v7_startTransition: true }} />
       <ReactQueryDevtools initialIsOpen={true} />
     </QueryClientProvider>
     <SpeedInsights />

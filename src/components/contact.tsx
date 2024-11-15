@@ -244,7 +244,8 @@ function Contact() {
                   {status === "pending" ? (
                     <>
                       <Loader2 className="animate-spin" />
-                      Sending... // either remove or add in contact document (contactData?.button.loaderText)
+                      Sending...
+                      {/* either remove or add in contact document (contactData?.button.loaderText)  */}
                     </>
                   ) : (
                     contactData?.button.value
