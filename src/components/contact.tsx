@@ -92,27 +92,19 @@ function Contact() {
     },
     onSuccess: () => {
       form.reset();
-      const description =
-        contactData?.toast.success.message ||
-        "Your message was sent successfully!";
-
-      console.log({ description });
 
       toast({
-        description,
+        description: contactData?.toast.success.message,
       });
     },
     onError: (data: any) => {
       const msg = data.response.data.message;
-      const description =
-        contactData?.toast.error?.[
-          msg as keyof typeof contactData.toast.error
-        ] || "An error occurred. Please try again later.";
-
-      console.log({ description });
 
       toast({
-        description,
+        description:
+          contactData?.toast.error?.[
+            msg as keyof typeof contactData.toast.error
+          ],
       });
     },
   });
