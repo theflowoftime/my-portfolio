@@ -16,7 +16,7 @@ const useContact = () => {
   return useQuery<Contact>({
     queryKey: ["contact", language],
     queryFn: () => fetchContact(language),
-    staleTime: 1000 * 60 * 5, // // Cache for 5 minutes
+    // staleTime: 1000 * 60 * 5, // // Cache for 5 minutes
   });
 };
 
