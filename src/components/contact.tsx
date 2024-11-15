@@ -99,13 +99,15 @@ function Contact() {
           "Your message was sent successfully!",
       });
     },
-    onError: (data) => {
-      console.log(data);
+    onError: (data: any) => {
+      const msg = data.response.data.message;
+
+      console.log(data.response.data.message);
 
       toast({
         description:
           contactData?.toast.error?.[
-            data.message as keyof typeof contactData.toast.error
+            msg as keyof typeof contactData.toast.error
           ] || "An error occurred. Please try again later.",
       });
     },
