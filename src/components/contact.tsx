@@ -26,7 +26,7 @@ import { textVariants } from "./hero";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Toaster } from "./ui/toaster";
-import type { ErrorMessages, Field } from "@/types/types";
+import type { ErrorMessages } from "@/types/types";
 import { useEffect, useRef } from "react";
 import axios from "axios";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -100,6 +100,8 @@ function Contact() {
       });
     },
     onError: (data) => {
+      console.log(contactData?.toast.success.message);
+
       toast({
         description:
           contactData?.toast.error?.[
