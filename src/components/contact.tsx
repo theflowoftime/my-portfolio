@@ -100,13 +100,7 @@ function Contact() {
       });
     },
     onError: (data) => {
-      console.log(data.message);
-
-      console.log(
-        contactData?.toast.error?.[
-          data.message as keyof typeof contactData.toast.error
-        ]
-      );
+      console.log(data);
 
       toast({
         description:
