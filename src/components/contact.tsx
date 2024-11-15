@@ -80,10 +80,12 @@ function Contact() {
   const { toast } = useToast();
   const formSchema = buildFormSchema(contactData?.errorMessages);
   const recaptchaRef = useRef<ReCAPTCHA | null>(null);
+  // const url = import.meta.env.VITE_WEBSITE_URL;
+
   const { mutate, status } = useMutation({
     mutationFn: async (data: FormSchemaType & { recaptchaToken: string }) => {
       const response = await axios.post(
-        "/api/verifyRecaptchaAndSubmitMessage",
+        `/api/verifyRecaptchaAndSubmitMessage`,
         data
       );
       return response.data;
