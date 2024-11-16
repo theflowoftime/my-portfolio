@@ -32,6 +32,7 @@ import useThrottle from "@/hooks/useThrottle";
 import { defaultValues, textVariants, THROTTLE_DELAY } from "@/lib/constants";
 import { buildFormSchema } from "@/lib/zod-schemas";
 import type { Contact as TContact, FormSchemaType } from "@/types/types";
+import countryData from "@/assets/data/dial_codes.json";
 
 const SendMessage = async (
   data: FormSchemaType & { recaptchaToken: string }
@@ -197,7 +198,7 @@ function Contact() {
                           defaultValue={field.value}
                         >
                           <FormControl>
-                            <SelectTrigger className="border-t-0 border-l-0 border-r-0 rounded-none w-full dark:data-[placeholder]:text-primary  [&>span]:w-full  [&>span]:text-center data-[placeholder]:text-center border-b-primary-foreground/20 bg-inherit focus:ring-0">
+                            <SelectTrigger className="border-t-0 border-l-0 border-r-0 rounded-none w-full dark:data-[placeholder]:text-primary  [&>span]:w-full  [&>span]:text-center data-[placeholder]:text-center border-b-primary-foreground/20 bg-inherit focus:ring-0 focus-within:border-b-primary">
                               <SelectValue placeholder={select.placeholder} />
                             </SelectTrigger>
                           </FormControl>

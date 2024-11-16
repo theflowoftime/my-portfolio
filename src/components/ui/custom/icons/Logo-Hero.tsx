@@ -2,8 +2,14 @@ import { SVGProps } from "react";
 import { motion } from "framer-motion";
 
 const LogoHero = ({ className }: SVGProps<SVGSVGElement>) => {
-  const strokeStyle = {
+  const strokeStyleR = {
     stroke: "#C778DD", // Base color for the stroke
+    strokeWidth: 4, // Adjust stroke width as needed
+    fill: "none", // Ensure no fill for the path
+  };
+
+  const strokeStyleL = {
+    stroke: "#fff", // Base color for the stroke
     strokeWidth: 4, // Adjust stroke width as needed
     fill: "none", // Ensure no fill for the path
   };
@@ -44,7 +50,7 @@ const LogoHero = ({ className }: SVGProps<SVGSVGElement>) => {
       strokeWidth: 4,
       strokeDasharray: 0,
       strokeDashoffset: 0,
-      transition: { duration: 1.2, delay: 2 },
+      transition: { duration: 1.5, delay: 2 },
     },
   };
 
@@ -59,7 +65,7 @@ const LogoHero = ({ className }: SVGProps<SVGSVGElement>) => {
       {/* Left C */}
       <motion.path
         d="M0 39.75h77.5V78.5H38.75v38.75H77.5V156H0V39.75Z"
-        style={strokeStyle}
+        style={strokeStyleL}
         initial="hidden"
         animate="visible"
         variants={leftCAnimation}
@@ -67,7 +73,7 @@ const LogoHero = ({ className }: SVGProps<SVGSVGElement>) => {
       {/* Right C (flipped horizontally) */}
       <motion.path
         d="M77.5 1H155v116.25H77.5V78.5h38.75V39.75H77.5V1Z"
-        style={strokeStyle}
+        style={strokeStyleR}
         initial="hidden"
         animate="visible"
         variants={rightCAnimation}
