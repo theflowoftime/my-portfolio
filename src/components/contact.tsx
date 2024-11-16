@@ -1,6 +1,5 @@
 import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
 import SectionLayout from "@/layouts/section-layout";
-import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
@@ -22,89 +21,25 @@ import {
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import useContact from "@/hooks/useContact";
-import { textVariants } from "./hero";
 import { Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Toaster } from "./ui/toaster";
-import type { ErrorMessages } from "@/types/types";
-import { useCallback, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import axios from "axios";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useMutation } from "@tanstack/react-query";
-
-const THROTTLE_DELAY = 5000;
-
-function buildFormSchema(errorMessages: ErrorMessages = null) {
-  return z.object({
-    name: z
-      .string()
-      .min(2, {
-        message:
-          errorMessages?.name?.min || "Name must be at least 2 characters long",
-      })
-      .max(30, {
-        message:
-          errorMessages?.name?.max ||
-          "Name must be no more than 30 characters long",
-      }),
-
-    email: z.string().email({
-      message:
-        errorMessages?.email?.invalid || "Please enter a valid email address",
-    }),
-
-    phoneNumber: z.string().regex(/^(\+\d{1,3}[- ]?)?\d{10}$/, {
-      message:
-        errorMessages?.phoneNumber?.invalid ||
-        "Please enter a valid phone number (e.g., +1234567890 or 1234567890)",
-    }),
-
-    reason: z.string().min(1, {
-      message: errorMessages?.reason?.min || "Please select a reason",
-    }),
-  });
-}
-
-export type FormSchemaType = z.infer<ReturnType<typeof buildFormSchema>>;
-
-const defaultValues: FormSchemaType = {
-  name: "",
-  email: "",
-  phoneNumber: "",
-  reason: "", // form.reset isn't resetting it.
-};
-
-function useThrottle<F extends (...args: any[]) => any>(
-  func: F,
-  delay: number
-): (...args: Parameters<F>) => void {
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  const throttledFunc = useCallback(
-    (...args: Parameters<F>) => {
-      if (timeoutRef.current) return;
-
-      func(...args);
-
-      timeoutRef.current = setTimeout(() => {
-        timeoutRef.current = null;
-      }, delay);
-    },
-    [func, delay]
-  );
-
-  return throttledFunc;
-}
+import useThrottle from "@/hooks/useThrottle";
+import { defaultValues, textVariants, THROTTLE_DELAY } from "@/lib/constants";
+import { buildFormSchema } from "@/lib/zod-schemas";
+import { FormSchemaType } from "@/types/types";
 
 function Contact() {
   const { data: contactData, isLoading } = useContact();
   const { navLinks, language } = useCachedNavLinks();
   const slug = navLinks?.links?.[3].slug || "contact";
-  // const createNewMessage = useMessage();
   const { toast } = useToast();
   const formSchema = buildFormSchema(contactData?.errorMessages);
   const recaptchaRef = useRef<ReCAPTCHA | null>(null);
-  // const url = import.meta.env.VITE_WEBSITE_URL;
 
   const { mutate, status } = useMutation({
     mutationFn: async (data: FormSchemaType & { recaptchaToken: string }) => {

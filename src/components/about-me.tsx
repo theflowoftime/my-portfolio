@@ -1,10 +1,10 @@
-import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
 import { Button } from "./ui/button";
 import Matrix from "./ui/matrix-shape-generator";
 import { motion } from "framer-motion";
-import { textVariants } from "./hero";
 import SectionLayout from "@/layouts/section-layout";
 import { Link } from "react-router-dom";
+import useNavLinks from "@/hooks/useNavLinks";
+import { textVariants } from "@/lib/constants";
 
 const Rectangle = () => {
   return (
@@ -17,7 +17,7 @@ const Rectangle = () => {
 };
 
 function AboutMe() {
-  const { navLinks } = useCachedNavLinks();
+  const { data: navLinks } = useNavLinks();
   const slug = navLinks?.links?.[1].slug || "about-me";
 
   return (

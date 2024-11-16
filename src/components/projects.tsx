@@ -1,12 +1,15 @@
-import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
+// import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
+import useNavLinks from "@/hooks/useNavLinks";
 import { useProjects } from "@/hooks/useProjects";
 import SectionLayout from "@/layouts/section-layout";
+import { useLanguageStore } from "@/stores/language-store";
 import type { Project } from "@/types/types";
 import { Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 
 function Projects() {
-  const { language, navLinks } = useCachedNavLinks();
+  const { data: navLinks } = useNavLinks();
+  const language = useLanguageStore((state) => state.language);
   const { projects, isLoading, error } = useProjects(language);
   // Find the slug for the "works" section, as the 3rd link
   const slug = navLinks?.links?.[2].slug || "works";

@@ -1,12 +1,7 @@
-import React, {
-  cloneElement,
-  ComponentPropsWithoutRef,
-  HTMLProps,
-  useRef,
-} from "react";
+import React, { cloneElement, ComponentPropsWithoutRef, useRef } from "react";
 import { Button } from "./ui/button";
 import LogoHero from "./ui/icons/Logo-Hero";
-import { motion, Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import Matrix from "./ui/matrix-shape-generator";
 import useHero from "@/hooks/useHero";
 import Github from "./ui/icons/Github";
@@ -15,15 +10,7 @@ import Figma from "./ui/icons/Figma";
 import { Link } from "react-router-dom";
 import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
 import { Loader2 } from "lucide-react";
-
-export const textVariants: Variants = {
-  hidden: { opacity: 0, y: 50 },
-  visible: (delay) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay, duration: 0.6 },
-  }),
-};
+import { textVariants } from "@/lib/constants";
 
 type Size = "md" | "lg";
 type SocialIconsProps = { size?: Size };
@@ -83,20 +70,22 @@ function Hero() {
           custom={0.2} // Delay for sequential text appearance
         >
           <h3 className="text-4xl leading-[3rem] tracking-normal font-bold">
-            {heroData?.intro}{" "}
+            <span>{heroData?.intro} </span>
             {heroData?.jobs.map((job, idx) => {
               const isLast = idx === heroData.jobs.length - 1;
               const isSecondLast = idx === heroData.jobs.length - 2;
               const sep = isLast
                 ? ""
                 : isSecondLast
-                ? ` ${heroData.separator} `
+                ? ` ${heroData.separator} a `
                 : ", ";
 
               return (
                 <React.Fragment key={job + idx}>
-                  <span className="text-primary-foreground">{job}</span>
-                  {!isLast && sep}
+                  <span className="text-primary-foreground text-effect">
+                    {job}
+                  </span>
+                  <span> {!isLast && sep}</span>
                 </React.Fragment>
               );
             })}
@@ -151,12 +140,12 @@ function Hero() {
           <motion.div
             variants={textVariants}
             custom={0.9} // Delayed appearance for caption under the image
-            className="flex items-center gap-x-2 p-2 leading-[2rem] mr-0 ml-0 tracking-wider font-normal
-            bg-white bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-10 shadow-sm shadow-black
+            className="flex items-center gap-x-2 py-1 px-2 leading-[2rem] tracking-wider font-normal w-fit mx-auto
+            bg-white bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-10 rounded-b-md mix-blend-lighten
             "
           >
-            <div className="inline-block w-4 h-4 bg-purple-400" />
-            <span className="text-white/80 whitespace-nowrap">
+            <div className="inline-block w-3 h-3 bg-purple-400 rounded-full" />
+            <span className="text-center text-white/80 whitespace-nowrap">
               {heroData?.imageSubtitle}{" "}
             </span>
             <span className="text-white">{heroData?.currentProject}...</span>

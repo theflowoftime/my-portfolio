@@ -1,5 +1,7 @@
+import { buildFormSchema } from "@/lib/zod-schemas";
 import { languages } from "@/stores/language-store";
 import { NavLinkProps } from "react-router-dom";
+import { z } from "zod";
 
 export type Language = (typeof languages)[number];
 export interface LanguageStore {
@@ -58,6 +60,8 @@ type Hero = {
   imageSubtitle?: string;
   buttonContent: string;
 };
+
+export type FormSchemaType = z.infer<ReturnType<typeof buildFormSchema>>;
 
 type NameField = "name" | "email" | "reason" | "phoneNumber";
 
