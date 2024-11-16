@@ -77,7 +77,7 @@ function Hero() {
               const sep = isLast
                 ? ""
                 : isSecondLast
-                ? ` ${heroData.separator} a `
+                ? ` ${heroData.separator} `
                 : ", ";
 
               return (
