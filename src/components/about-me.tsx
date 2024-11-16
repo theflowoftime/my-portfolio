@@ -1,5 +1,5 @@
 import { Button } from "./ui/button";
-import Matrix from "./ui/matrix-shape-generator";
+import Matrix from "./ui/custom/matrix-shape-generator";
 import { motion } from "framer-motion";
 import SectionLayout from "@/layouts/section-layout";
 import { Link } from "react-router-dom";

@@ -1,6 +1,6 @@
 import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
 import SectionLayout from "@/layouts/section-layout";
-import { useForm } from "react-hook-form";
+import { useForm, UseFormReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import {
@@ -31,24 +31,27 @@ import { useMutation } from "@tanstack/react-query";
 import useThrottle from "@/hooks/useThrottle";
 import { defaultValues, textVariants, THROTTLE_DELAY } from "@/lib/constants";
 import { buildFormSchema } from "@/lib/zod-schemas";
-import { FormSchemaType } from "@/types/types";
+import type { Contact as TContact, FormSchemaType } from "@/types/types";
 
-function Contact() {
-  const { data: contactData, isLoading } = useContact();
-  const { navLinks, language } = useCachedNavLinks();
-  const slug = navLinks?.links?.[3].slug || "contact";
+const SendMessage = async (
+  data: FormSchemaType & { recaptchaToken: string }
+) => {
+  const response = await axios.post(
+    `/api/verifyRecaptchaAndSubmitMessage`,
+    data
+  );
+  return response.data;
+};
+
+const useSendMessage = (
+  contactData: TContact | undefined,
+  form: UseFormReturn<FormSchemaType>
+) => {
   const { toast } = useToast();
-  const formSchema = buildFormSchema(contactData?.errorMessages);
   const recaptchaRef = useRef<ReCAPTCHA | null>(null);
 
   const { mutate, status } = useMutation({
-    mutationFn: async (data: FormSchemaType & { recaptchaToken: string }) => {
-      const response = await axios.post(
-        `/api/verifyRecaptchaAndSubmitMessage`,
-        data
-      );
-      return response.data;
-    },
+    mutationFn: SendMessage,
     onSuccess: () => {
       form.reset();
 
@@ -68,14 +71,15 @@ function Contact() {
     },
   });
 
-  const form = useForm<FormSchemaType>({
-    resolver: zodResolver(formSchema),
-    defaultValues,
-  });
+  const handleRecaptcha = async () => {
+    const token = await recaptchaRef.current?.executeAsync();
+    recaptchaRef.current?.reset();
+
+    return token;
+  };
 
   const throttledSubmit = useThrottle(async (data: FormSchemaType) => {
-    const recaptchaToken = await recaptchaRef.current?.executeAsync();
-    recaptchaRef.current?.reset();
+    const recaptchaToken = await handleRecaptcha();
 
     if (recaptchaToken) {
       mutate({ ...data, recaptchaToken });
@@ -88,6 +92,23 @@ function Contact() {
       });
     }
   }, THROTTLE_DELAY);
+
+  return { throttledSubmit, status, recaptchaRef };
+};
+
+function Contact() {
+  const { data: contactData, isLoading } = useContact();
+  const { navLinks, language } = useCachedNavLinks();
+  const slug = navLinks?.links?.[3].slug || "contact";
+  const formSchema = buildFormSchema(contactData?.errorMessages);
+  const form = useForm<FormSchemaType>({
+    resolver: zodResolver(formSchema),
+    defaultValues,
+  });
+  const { throttledSubmit, status, recaptchaRef } = useSendMessage(
+    contactData,
+    form
+  );
 
   const onSubmit = (data: FormSchemaType) => {
     throttledSubmit(data);

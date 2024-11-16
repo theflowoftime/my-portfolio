@@ -1,5 +1,5 @@
 import { SocialIcons } from "./hero";
-import { LogoWithName } from "./ui/navbar";
+import { LogoWithName } from "./ui/custom/navbar";
 
 function Footer() {
   return (

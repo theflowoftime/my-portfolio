@@ -1,12 +1,12 @@
 import React, { cloneElement, ComponentPropsWithoutRef, useRef } from "react";
 import { Button } from "./ui/button";
-import LogoHero from "./ui/icons/Logo-Hero";
+import LogoHero from "./ui/custom/icons/Logo-Hero";
 import { motion } from "framer-motion";
-import Matrix from "./ui/matrix-shape-generator";
+import Matrix from "./ui/custom/matrix-shape-generator";
 import useHero from "@/hooks/useHero";
-import Github from "./ui/icons/Github";
-import Dribble from "./ui/icons/Dribble";
-import Figma from "./ui/icons/Figma";
+import Github from "./ui/custom/icons/Github";
+import Dribble from "./ui/custom/icons/Dribble";
+import Figma from "./ui/custom/icons/Figma";
 import { Link } from "react-router-dom";
 import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
 import { Loader2 } from "lucide-react";

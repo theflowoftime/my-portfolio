@@ -9,13 +9,14 @@ import { cn } from "@/lib/utils";
 import type { Link as LinkType } from "@/types/types";
 import { AnimatePresence, motion } from "framer-motion";
 import { MenuIcon, X } from "lucide-react";
-import { ComponentProps, useEffect, useState } from "react";
+import { ComponentProps } from "react";
 import { Link } from "react-router-dom";
-import { SocialIcons } from "../hero";
-import { Button } from "./button";
+import { SocialIcons } from "../../hero";
+import { Button } from "../button";
 import Logo from "./icons/Logo";
 import { LanguageToggle } from "./language-toggle";
 import { ThemeToggle } from "./theme-toggle";
+import { useHideScrollBar } from "@/hooks/useHideScrollbar";
 
 const Toggles = ({
   isDesktop,
@@ -57,21 +58,7 @@ export const LogoWithName = (props: ComponentProps<"div">) => {
 
 const NavBar = () => {
   const { data: navLinks, isLoading } = useNavLinks();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  const toggleMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
-
-  useEffect(() => {
-    if (isMobileMenuOpen) {
-      document.body.classList.add("overflow-hidden");
-    } else {
-      document.body.classList.remove("overflow-hidden");
-    }
-
-    return () => {
-      document.body.classList.remove("overflow-hidden");
-    };
-  }, [isMobileMenuOpen]);
+  const { toggleMenu, isMobileMenuOpen } = useHideScrollBar();
 
   if (isLoading) return null;
 
@@ -139,7 +126,7 @@ const NavBar = () => {
                     <Link
                       key={link.slug}
                       to={link.path || `#${link.slug}`}
-                      onClick={() => setIsMobileMenuOpen(false)}
+                      onClick={toggleMenu}
                       className="dark:hover:text-popover-foreground/80"
                     >
                       <span className="text-primary-foreground">#</span>

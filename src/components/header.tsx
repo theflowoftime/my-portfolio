@@ -1,5 +1,5 @@
 import Hero from "./hero";
-import NavBar from "./ui/navbar";
+import NavBar from "./ui/custom/navbar";
 
 import { motion } from "framer-motion";
 
