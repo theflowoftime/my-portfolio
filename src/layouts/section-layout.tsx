@@ -1,4 +1,4 @@
-import { HTMLProps } from "react";
+import { forwardRef, HTMLProps } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -22,22 +22,18 @@ export const SectionTitle = ({ title }: { title: string }) => {
   );
 };
 
-const SectionLayout = ({
-  className,
-  slug,
-  children,
-}: HTMLProps<"div"> & { slug: string }) => {
+const SectionLayout = forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement> & { slug: string }
+>(({ className, slug, children }, ref) => {
   return (
-    <div
-      className={cn("relative min-h-screen overflow-hidden mt-16", className)}
-      id={slug}
-    >
-      <div className="container">
+    <div className={cn("relative overflow-hidden mt-16", className)} id={slug}>
+      <div ref={ref} className="container min-h-screen">
         <SectionTitle title={slug} />
-        <div className="mt-16">{children}</div>
+        <div className="w-full h-full mt-16">{children}</div>
       </div>
     </div>
   );
-};
+});
 
 export default SectionLayout;

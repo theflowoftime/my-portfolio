@@ -11,12 +11,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import { MenuIcon, X } from "lucide-react";
 import { ComponentProps } from "react";
 import { Link } from "react-router-dom";
-import { SocialIcons } from "../../hero";
-import { Button } from "../button";
+import { Button } from "../ui/button";
 import Logo from "./icons/Logo";
 import { LanguageToggle } from "./language-toggle";
 import { ThemeToggle } from "./theme-toggle";
 import { useHideScrollBar } from "@/hooks/useHideScrollbar";
+import SocialIcons from "./icons/social-icons";
 
 const Toggles = ({
   isDesktop,

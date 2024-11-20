@@ -49,6 +49,12 @@
     --app-color-5: hsl(190, 100%, 42%);
     --app-color-6: hsl(190, 74%, 59%);
 
+    --slide-height: 30rem;
+    --slide-spacing: -1rem;
+    --slide-size: 100%;
+    --text-body: rgb(54, 49, 61);
+    --detail-medium-contrast: rgb(240, 240, 242);
+
     --ring: 224 71.4% 4.1%;
 
     --radius: 0.5rem;
@@ -77,7 +83,7 @@
     --popover: 224 71.4% 4.1%;
     --popover-foreground: 210 20% 98%;
 
-    --border: 287 59.8% 66.9%;
+    --border: 287 34% 8%;
     --input: 215 27.9% 16.9%;
 
     --card: 224 71.4% 4.1%;
@@ -91,6 +97,9 @@
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 20% 98%;
+
+    --text-body: rgb(222, 222, 222);
+    --detail-medium-contrast: rgb(21, 21, 21);
 
     --ring: 216 12.2% 83.9%;
 

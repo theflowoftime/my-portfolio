@@ -29,7 +29,8 @@ import axios from "axios";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useMutation } from "@tanstack/react-query";
 import useThrottle from "@/hooks/useThrottle";
-import { defaultValues, textVariants, THROTTLE_DELAY } from "@/lib/constants";
+import { defaultValues, THROTTLE_DELAY } from "@/lib/constants";
+import { waterFall } from "@/lib/framer-variants";
 import { buildFormSchema } from "@/lib/zod-schemas";
 import type { Contact as TContact, FormSchemaType } from "@/types/types";
 import countryData from "@/assets/data/dial_codes.json";
@@ -136,20 +137,20 @@ function Contact() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
-            variants={textVariants}
+            variants={waterFall}
             custom={0.2} // Controls delay for paragraph fade-in
             className="space-y-4"
           >
             <motion.h1
               custom={0.2}
-              variants={textVariants}
+              variants={waterFall}
               className="lg:text-[2em] whitespace-nowrap dark:text-white md:text-[1.5em] text-4xl font-light tracking-tighter"
             >
               {contactData?.description.title}
             </motion.h1>
             <motion.p
               custom={0.4}
-              variants={textVariants}
+              variants={waterFall}
               className="italic mx-4 opacity-40 text-[0.75rem] text-wrap tracking-tighter"
             >
               {contactData?.description.subtitle}
@@ -159,7 +160,7 @@ function Contact() {
             <Form {...form}>
               <motion.form
                 custom={0.6}
-                variants={textVariants}
+                variants={waterFall}
                 className="px-8 py-16 space-y-8 rounded-md"
                 onSubmit={form.handleSubmit(onSubmit, onError)}
               >

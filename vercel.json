@@ -4,6 +4,9 @@
       "source": "/((?!api/.*).*)",
       "destination": "/index.html"
     },
-    { "source": "/(.*)", "destination": "/" }
+     {
+      "source": "/:path(api/.*)",
+      "destination": "/api"
+    }
   ]
 }

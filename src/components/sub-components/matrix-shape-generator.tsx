@@ -58,6 +58,8 @@ const Matrix = ({
 
   return (
     <motion.div
+      initial="hidden"
+      animate="visible"
       viewport={{ once: true }}
       className={cn("grid gap-5 w-[5.25rem] h-[5.25rem]", className)}
       style={{ gridTemplateColumns: `repeat(${columns}, auto)` }}
@@ -72,8 +74,6 @@ const Matrix = ({
             fontSize: "1.5rem", // Increase size slightly for visibility
           }}
           variants={matrixAnimation}
-          initial="hidden"
-          animate="visible"
         >
           {SHAPE}
         </motion.div>

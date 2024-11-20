@@ -49,17 +49,19 @@ type ProfileImage = {
   };
 };
 
-type Hero = {
-  intro: string;
-  separator: string;
-  jobs: string[];
-  bio: string;
-  currentProject?: string;
-  quotes: Quote[];
-  profileImage?: ProfileImage;
-  imageSubtitle?: string;
-  buttonContent: string;
-};
+type Hero =
+  | {
+      intro: string;
+      separator: string;
+      jobs: string[];
+      bio: string;
+      currentProject?: string;
+      quotes: Quote[];
+      profileImage?: ProfileImage;
+      imageSubtitle?: string;
+      buttonContent: string;
+    }
+  | undefined;
 
 export type FormSchemaType = z.infer<ReturnType<typeof buildFormSchema>>;
 

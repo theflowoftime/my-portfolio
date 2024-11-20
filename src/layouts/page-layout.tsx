@@ -1,4 +1,4 @@
-import NavBar from "@/components/ui/custom/navbar";
+import NavBar from "@/components/sub-components/navbar";
 import { ComponentPropsWithoutRef } from "react";
 import { motion } from "framer-motion";
 
