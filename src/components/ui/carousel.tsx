@@ -4,10 +4,13 @@ import * as React from "react";
 import useEmblaCarousel, {
   type UseEmblaCarouselType,
 } from "embla-carousel-react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, CalendarDays } from "lucide-react";
 
-import { cn } from "@/lib/utils";
+import { cn, urlFor } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "./hover-card";
+import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
+import { Project } from "@/types/types";
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
@@ -320,8 +323,8 @@ const DotButton: React.FC<PropType> = (props) => {
 
 const CarouselControls = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => {
+  React.HTMLAttributes<HTMLDivElement> & { projects: Project[] }
+>(({ className, projects, ...props }, ref) => {
   const { scrollSnaps, selectedIndex, scrollTo } = useCarousel();
 
   return (
@@ -342,16 +345,42 @@ const CarouselControls = React.forwardRef<
       {/* Dots */}
       <div className="flex flex-wrap justify-end items-center mr-[calc((2.6rem_-_1.4rem)_/_2_*_-1)]">
         {scrollSnaps.map((_, index) => (
-          <DotButton
-            key={index}
-            onClick={() => scrollTo(index)}
-            className={cn(
-              "appearance-none bg-transparent touch-manipulation  no-underline cursor-pointer w-[2.6rem] h-[2.6rem] flex items-center justify-center m-0 p-0 rounded-[50%] border-0 after:shadow-[inset_0_0_0_0.2rem_var(--detail-medium-contrast)] after:w-[1.4rem] after:h-[1.4rem] after:flex after:items-center after:content-[''] after:rounded-[50%]",
-              index === selectedIndex
-                ? "after:shadow-[inset_0_0_0_0.2rem_var(--text-body)]"
-                : ""
-            )}
-          />
+          <HoverCard>
+            <HoverCardTrigger asChild>
+              <Button variant="link">
+                <DotButton
+                  key={index}
+                  onClick={() => scrollTo(index)}
+                  className={cn(
+                    "appearance-none bg-transparent touch-manipulation  no-underline cursor-pointer w-[2.6rem] h-[2.6rem] flex items-center justify-center m-0 p-0 rounded-[50%] border-0 after:shadow-[inset_0_0_0_0.2rem_var(--detail-medium-contrast)] after:w-[1.4rem] after:h-[1.4rem] after:flex after:items-center after:content-[''] after:rounded-[50%]",
+                    index === selectedIndex
+                      ? "after:shadow-[inset_0_0_0_0.2rem_var(--text-body)]"
+                      : ""
+                  )}
+                />
+              </Button>
+            </HoverCardTrigger>
+            <HoverCardContent className="w-80">
+              <div className="flex justify-between space-x-4">
+                <Avatar>
+                  <AvatarImage src={urlFor(projects[index].image).url()} />
+                  <AvatarFallback>VC</AvatarFallback>
+                </Avatar>
+                <div className="space-y-1">
+                  <h4 className="text-sm font-semibold">
+                    {projects[index].title}
+                  </h4>
+                  <p className="text-sm">{projects[index].description}</p>
+                  <div className="flex items-center pt-2">
+                    <CalendarDays className="w-4 h-4 mr-2 opacity-70" />{" "}
+                    <span className="text-xs text-muted-foreground">
+                      Created December 2021
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </HoverCardContent>
+          </HoverCard>
         ))}
       </div>
     </div>

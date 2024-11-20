@@ -1,5 +1,5 @@
 import { projects_QUERY as query } from "@/sanity/lib/queries";
-import type { Language } from "@/types/types";
+import type { Language, Projects } from "@/types/types";
 import client from "@/sanity/lib/client";
 import { useQuery } from "@tanstack/react-query";
 
@@ -13,7 +13,7 @@ export const useProjects = (language: Language) => {
     data: projects,
     error,
     isLoading,
-  } = useQuery({
+  } = useQuery<Projects>({
     queryKey: ["projects", language],
     queryFn: () => fetchprojects(language),
   });

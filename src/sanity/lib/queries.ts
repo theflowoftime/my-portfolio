@@ -7,6 +7,7 @@ export const projects_QUERY = `*[_type == "project" && language == $language] {
     title,
     description,
     link,
+    image
   }`;
 
 export const hero_QUERY = `*[_type == "hero" && language == $language][0]{

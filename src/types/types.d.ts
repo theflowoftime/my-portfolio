@@ -2,6 +2,7 @@ import { buildFormSchema } from "@/lib/zod-schemas";
 import { languages } from "@/stores/language-store";
 import { NavLinkProps } from "react-router-dom";
 import { z } from "zod";
+import { type SanityImageSource } from "@sanity/image-url/lib/types/types";
 
 export type Language = (typeof languages)[number];
 export interface LanguageStore {
@@ -33,7 +34,10 @@ export type Project = {
   title: string;
   description: string;
   link: string;
+  image: SanityImageSource;
 };
+
+export type Projects = Project[];
 
 type Quote = {
   author: string;
