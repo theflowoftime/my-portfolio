@@ -356,7 +356,7 @@ const CarouselControls = React.forwardRef<
       <div className="flex flex-wrap justify-end items-center mr-[calc((2.6rem_-_1.4rem)_/_2_*_-1)]">
         {scrollSnaps.map((_, index) => (
           <HoverCard key={index}>
-            <HoverCardTrigger>
+            <HoverCardTrigger asChild>
               <DotButton
                 onClick={() => scrollTo(index)}
                 className={cn(
