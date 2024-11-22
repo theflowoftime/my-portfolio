@@ -48,22 +48,22 @@ const Toggles = ({
 export const LogoWithName = (props: ComponentProps<"div">) => {
   return (
     <div className="flex items-center select-none gap-x-2" {...props}>
-      <Logo className="w-4 h-[17px] dark:fill-white fill-black" />
-      <span className="self-center text-base font-bold dark:text-white">
+      <Logo className="w-4 h-[17px] fill-white" />
+      <span className="self-center text-base font-bold text-white">
         Yacine;
       </span>
     </div>
   );
 };
 
-const NavBar = () => {
+const NavBar = ({ className }: ComponentProps<"div">) => {
   const { data: navLinks, isLoading } = useNavLinks();
   const { toggleMenu, isMobileMenuOpen } = useHideScrollBar();
 
   if (isLoading) return null;
 
   return (
-    <div id="navbar" className="z-10 bg-inherit sticky top-0 h-[4.56rem]">
+    <div id="navbar" className={cn("z-10 bg-inherit h-[4.56rem]", className)}>
       <div className="container flex justify-between">
         <LogoWithName />
 
@@ -124,6 +124,7 @@ const NavBar = () => {
                 <nav className="flex flex-col space-y-16 text-3xl">
                   {navLinks?.links?.map((link: LinkType) => (
                     <Link
+                      state={{ data: navLinks }}
                       key={link.slug}
                       to={link.path || `#${link.slug}`}
                       onClick={toggleMenu}

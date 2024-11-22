@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 import useEmblaCarousel, {
   type UseEmblaCarouselType,
@@ -69,8 +67,12 @@ const Carousel = React.forwardRef<
       },
       plugins
     );
-    const [selectedIndex, setSelectedIndex] = React.useState(0);
-    const [scrollSnaps, setScrollSnaps] = React.useState<number[]>([]);
+    const [selectedIndex, setSelectedIndex] = React.useState(
+      api?.selectedScrollSnap() || 0
+    );
+    const [scrollSnaps, setScrollSnaps] = React.useState<number[]>(
+      api?.scrollSnapList() || []
+    );
 
     const onInit = React.useCallback((api: CarouselApi) => {
       if (!api) return;
@@ -88,8 +90,6 @@ const Carousel = React.forwardRef<
 
     const scrollTo = React.useCallback(
       (index: number) => {
-        console.log(index);
-
         if (!api) return;
         api.scrollTo(index); // Scroll to the exact index
       },
@@ -151,10 +151,16 @@ const Carousel = React.forwardRef<
     React.useEffect(() => {
       if (!api) return;
 
-      onInit(api);
-      onSelect(api);
-      api.on("reInit", onInit).on("reInit", onSelect).on("select", onSelect);
-    }, [api, onInit, onSelect]);
+      api.on("init", onInit);
+      api.on("reInit", onInit);
+      api.on("select", onSelect);
+
+      return () => {
+        api.off("init", onInit);
+        api.off("reInit", onInit);
+        api.off("select", onSelect);
+      };
+    }, [api]);
 
     return (
       <CarouselContext.Provider
@@ -302,13 +308,15 @@ const CarouselNext = React.forwardRef<
 });
 CarouselNext.displayName = "CarouselNext";
 
-type PropType = React.ComponentProps<typeof Button>;
-
-const DotButton: React.FC<PropType> = (props) => {
+const DotButton = React.forwardRef<
+  HTMLButtonElement,
+  React.ComponentProps<typeof Button>
+>((props, ref) => {
   const { children, className, ...restProps } = props;
 
   return (
     <Button
+      ref={ref}
       type="button"
       {...restProps}
       className={cn(
@@ -319,13 +327,15 @@ const DotButton: React.FC<PropType> = (props) => {
       {children}
     </Button>
   );
-};
+});
 
 const CarouselControls = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & { projects: Project[] }
 >(({ className, projects, ...props }, ref) => {
   const { scrollSnaps, selectedIndex, scrollTo } = useCarousel();
+
+  console.log(scrollSnaps);
 
   return (
     <div
@@ -345,20 +355,17 @@ const CarouselControls = React.forwardRef<
       {/* Dots */}
       <div className="flex flex-wrap justify-end items-center mr-[calc((2.6rem_-_1.4rem)_/_2_*_-1)]">
         {scrollSnaps.map((_, index) => (
-          <HoverCard>
+          <HoverCard key={index}>
             <HoverCardTrigger asChild>
-              <Button variant="link">
-                <DotButton
-                  key={index}
-                  onClick={() => scrollTo(index)}
-                  className={cn(
-                    "appearance-none bg-transparent touch-manipulation  no-underline cursor-pointer w-[2.6rem] h-[2.6rem] flex items-center justify-center m-0 p-0 rounded-[50%] border-0 after:shadow-[inset_0_0_0_0.2rem_var(--detail-medium-contrast)] after:w-[1.4rem] after:h-[1.4rem] after:flex after:items-center after:content-[''] after:rounded-[50%]",
-                    index === selectedIndex
-                      ? "after:shadow-[inset_0_0_0_0.2rem_var(--text-body)]"
-                      : ""
-                  )}
-                />
-              </Button>
+              <DotButton
+                onClick={() => scrollTo(index)}
+                className={cn(
+                  "appearance-none bg-transparent touch-manipulation  no-underline cursor-pointer w-[2.6rem] h-[2.6rem] flex items-center justify-center m-0 p-0 rounded-[50%] border-0 after:shadow-[inset_0_0_0_0.2rem_var(--detail-medium-contrast)] after:w-[1.4rem] after:h-[1.4rem] after:flex after:items-center after:content-[''] after:rounded-[50%]",
+                  index === selectedIndex
+                    ? "after:shadow-[inset_0_0_0_0.2rem_var(--text-body)]"
+                    : ""
+                )}
+              />
             </HoverCardTrigger>
             <HoverCardContent className="w-80">
               <div className="flex justify-between space-x-4">

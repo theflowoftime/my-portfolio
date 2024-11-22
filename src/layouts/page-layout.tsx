@@ -27,7 +27,7 @@ export default function PageLayout({
 }: ComponentPropsWithoutRef<"div"> & { title: string }) {
   return (
     <div>
-      <NavBar />
+      <NavBar className="bg-neutral-900 backdrop-blur-2xl backdrop-filter bg-opacity-40" />
       <div className="container">
         <PageTitle title={title} />
         <div>{children}</div>

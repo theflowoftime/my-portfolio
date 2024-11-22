@@ -140,3 +140,10 @@
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
+
+@layer utilities {
+  .dynamic-bg {
+    @apply bg-cover bg-center bg-no-repeat;
+    background-image: var(--background-image, none);
+  }
+}

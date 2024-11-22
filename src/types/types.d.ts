@@ -45,14 +45,6 @@ type Quote = {
   _key: string;
 };
 
-type ProfileImage = {
-  _type: "image";
-  asset: {
-    _ref: string;
-    _type: "reference";
-  };
-};
-
 type Hero =
   | {
       intro: string;
@@ -61,7 +53,7 @@ type Hero =
       bio: string;
       currentProject?: string;
       quotes: Quote[];
-      profileImage?: ProfileImage;
+      profileImage?: SanityImageSource;
       imageSubtitle?: string;
       buttonContent: string;
     }
@@ -112,4 +104,5 @@ type Contact = {
   button: { value: string };
   errorMessages?: ErrorMessages;
   toast: Toast;
+  contactImage: SanityImageSource;
 };

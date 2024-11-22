@@ -1,22 +1,22 @@
 // import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
-import useNavLinks from "@/hooks/useNavLinks";
 import { useProjects } from "@/hooks/useProjects";
 import SectionLayout from "@/layouts/section-layout";
 import { useLanguageStore } from "@/stores/language-store";
 import type { Project } from "@/types/types";
 import { Loader2 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 // import projects from "@/assets/data/data.json";
+import { type Variants } from "framer-motion";
+import { RefObject } from "react";
+import LazyBackground from "./sub-components/lazy-bg-img-sanity";
 import {
   Carousel,
   CarouselContent,
   CarouselControls,
   CarouselItem,
 } from "./ui/carousel";
-import { RefObject, useEffect, useRef, useState } from "react";
-import { motion, type Variants } from "framer-motion";
-import { urlFor } from "@/lib/utils";
+import useNavLinks from "@/hooks/useNavLinks";
 
 const variants: Variants = {
   initial: () => ({
@@ -52,10 +52,18 @@ const variants: Variants = {
 
 function Projects() {
   const { data: navLinks } = useNavLinks();
+  // const {
+  //   state: { data: navLinks },
+  // } = useLocation();
+
+  // const location = useLocation();
+  // const navLinks = location?.state?.data;
+  const slug = navLinks?.links?.[2].slug || "works";
+
   const language = useLanguageStore((state) => state.language);
   const { projects, isLoading, error } = useProjects(language);
   // Find the slug for the "works" section, as the 3rd link
-  const slug = navLinks?.links?.[2].slug || "works";
+  // const plugin = useRef(Autoplay({ playOnInit: true, delay: 5000 }));
 
   if (isLoading)
     return (
@@ -77,28 +85,27 @@ function Projects() {
           align: "center",
         }}
         orientation="vertical"
-        //   plugins={[plugin.current]}
-        //   onMouseEnter={plugin.current.stop}
-        //   onMouseLeave={plugin.current.reset}
+        // plugins={[plugin.current]}
+        // onMouseEnter={plugin.current.stop}
+        // onMouseLeave={plugin.current.reset}
       >
         <CarouselContent className="w-full h-full">
           {projects.map((project: Project) => (
             <CarouselItem key={project._id} className="">
-              <div
+              {/* <div
                 className="bg-cover text-white bg-center bg-no-repeat shadow-[inset_0_0_0_0.2rem_var(--detail-medium-contrast)] text-[4rem] font-semibold flex items-center justify-center h-full select-none rounded-[1.8rem]"
                 style={{
                   backgroundImage: `url(${urlFor(project.image).url()})`,
                 }}
               >
                 {project.title}
-              </div>
+              </div> */}
+
+              <LazyBackground image={project.image} title={project.title} />
             </CarouselItem>
           ))}
         </CarouselContent>
-
-        {projects && projects.length > 1 ? (
-          <CarouselControls projects={projects} />
-        ) : null}
+        {projects.length ? <CarouselControls projects={projects} /> : null}
       </Carousel>
     </SectionLayout>
   );

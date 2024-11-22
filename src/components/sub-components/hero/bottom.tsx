@@ -1,27 +1,17 @@
 import { Hero } from "@/types/types";
-import { RefObject } from "react";
 import { motion } from "framer-motion";
 import { waterFall } from "@/lib/framer-variants";
 
-export default function Quotes({
-  heroData,
-  scrollRef,
-}: {
-  heroData: Hero;
-  scrollRef: RefObject<HTMLDivElement>;
-}) {
+export default function Quotes({ heroData }: { heroData: Hero }) {
   return (
-    <div
-      ref={scrollRef}
-      className="container flex justify-center w-full mt-[7rem] dark:text-white mb-4"
-    >
+    <div className="container flex justify-center w-full mt-[7rem] dark:text-white mb-4">
       {heroData?.quotes.map((_quote, idx) => (
         <motion.div
           className="px-2 w-[80%] max-w-full text-center flex flex-col"
           key={_quote._key}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, root: scrollRef }}
+          viewport={{ once: true }}
           variants={waterFall}
           custom={idx * 0.2 + 1.0} // Staggered delay for each quote
         >

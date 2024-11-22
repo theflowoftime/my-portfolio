@@ -4,14 +4,16 @@ import Footer from "./components/footer";
 import Header from "./components/header";
 import Hero from "./components/hero";
 import Projects from "./components/projects";
-import useScrollHash from "./hooks/useScrollHash";
+import useHashNavigation from "./hooks/useHashNavigation";
 
 function App() {
-  useScrollHash();
-
+  useHashNavigation();
   return (
-    <div id="top">
-      <div className="min-h-screen relative overflow-hidden z-10 bg-gradient bg-[length:200%_200%] animate-gradient bg-neutral-900 bg-clip-padding backdrop-filter bg-opacity-20">
+    <div className="relative overflow-hidden">
+      <div
+        id="top"
+        className="min-h-screen h-full z-10 bg-gradient bg-[length:200%_200%] animate-gradient bg-neutral-900 bg-clip-padding backdrop-filter bg-opacity-20"
+      >
         <Header />
         <Hero />
       </div>

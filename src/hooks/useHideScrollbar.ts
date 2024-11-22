@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 export const useHideScrollBar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  const toggleMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
+  const toggleMenu = () => setIsMobileMenuOpen((prev) => !prev);
 
   useEffect(() => {
     if (isMobileMenuOpen) {

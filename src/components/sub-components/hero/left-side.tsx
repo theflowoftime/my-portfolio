@@ -59,6 +59,7 @@ export function LeftSide({
           asChild
         >
           <Link
+            state={{}}
             className="text-lg"
             to={navLinks?.links?.[3].path || "#contact"}
           >

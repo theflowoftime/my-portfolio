@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import useHero from "@/hooks/useHero";
 import { Loader2 } from "lucide-react";
 import { type Hero } from "@/types/types";
@@ -19,12 +18,13 @@ function Rectangle() {
 function Hero() {
   const { data: heroData, isLoading } = useHero();
   const { navLinks } = useCachedNavLinks();
-  const scrollRef = useRef<HTMLDivElement>(null);
 
-  if (isLoading) return;
-  <div className="relative flex flex-col">
-    <Loader2 />
-  </div>;
+  if (isLoading)
+    return (
+      <div className="relative flex flex-col">
+        <Loader2 />
+      </div>
+    );
 
   return (
     <div className="relative flex flex-col">
@@ -33,7 +33,7 @@ function Hero() {
         <LeftSide heroData={heroData} navLinks={navLinks} />
         <RightSide heroData={heroData} />
       </div>
-      <Quotes heroData={heroData} scrollRef={scrollRef} />
+      <Quotes heroData={heroData} />
     </div>
   );
 }
