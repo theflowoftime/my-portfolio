@@ -2,13 +2,13 @@ import SectionLayout from "@/layouts/section-layout";
 import Decorations from "./sub-components/about-me/decorations";
 import AboutMeImg from "./sub-components/about-me/image";
 import Introduction from "./sub-components/about-me/Introdcution";
-import { useLocation } from "react-router-dom";
+import useNavLinks from "@/hooks/useNavLinks";
 
 function AboutMe() {
-  // const { data: navLinks } = useNavLinks();
-  const location = useLocation();
+  const { data: navLinks } = useNavLinks();
+  // const location = useLocation();
 
-  const slug = location?.state?.data.links?.[1].slug || "about-me";
+  const slug = navLinks?.links?.[1].slug || "about-me";
 
   return (
     <SectionLayout slug={slug}>

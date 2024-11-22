@@ -34,9 +34,9 @@ import { waterFall } from "@/lib/framer-variants";
 import { buildFormSchema } from "@/lib/zod-schemas";
 import type { Contact as TContact, FormSchemaType } from "@/types/types";
 import countryData from "@/assets/data/dial_codes.json";
-import { useLocation } from "react-router-dom";
 import { useLanguageStore } from "@/stores/language-store";
 import LazyBackground from "./sub-components/lazy-bg-img-sanity";
+import useNavLinks from "@/hooks/useNavLinks";
 
 const SendMessage = async (
   data: FormSchemaType & { recaptchaToken: string }
@@ -104,14 +104,16 @@ const useSendMessage = (
 function Contact() {
   const { data: contactData, isLoading } = useContact();
   // const { navLinks, language } = useCachedNavLinks();
+  const { data: navLinks } = useNavLinks();
+
   const language = useLanguageStore((state) => state.language);
   // const {
   //   state: { data: navLinks },
   // } = useLocation();
 
-  const location = useLocation();
+  // const location = useLocation();
 
-  const slug = location?.state?.data?.links?.[3].slug || "contact";
+  const slug = navLinks?.links?.[3].slug || "contact";
   const formSchema = buildFormSchema(contactData?.errorMessages);
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
