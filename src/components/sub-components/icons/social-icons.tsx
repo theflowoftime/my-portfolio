@@ -11,9 +11,18 @@ export default function SocialIcons({
   size,
 }: ComponentPropsWithoutRef<"div"> & SocialIconsProps) {
   const icons = [
-    { component: <Github />, mdClass: "w-[42px] h-[40px]" },
-    { component: <Dribble />, mdClass: "w-[46px] h-[46px]" },
-    { component: <Figma />, mdClass: "w-[28px] h-[40px]" },
+    {
+      component: <Github />,
+      mdClass: "w-[42px] h-[40px]",
+    },
+    {
+      component: <Figma />,
+      mdClass: "w-[28px] h-[40px] fill-purple-500",
+    },
+    {
+      component: <Dribble />,
+      mdClass: "w-[46px] h-[40px]",
+    },
   ];
 
   return (

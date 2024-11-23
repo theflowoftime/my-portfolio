@@ -170,7 +170,7 @@ function Contact() {
               {contactData.description.subtitle}
             </motion.p>
           </motion.div>
-          <div className="grid items-center py-8 shadow-md gap-x-16 lg:grid-cols-2 dark:shadow-black">
+          <div className="grid items-center py-8 shadow-md gap-x-4 lg:grid-cols-2 dark:shadow-black">
             <Form {...form}>
               <motion.form
                 custom={0.6}
@@ -286,7 +286,8 @@ function Contact() {
               </motion.form>
             </Form>
             <LazyBackground
-              className="bg-[40%_80%] rounded-none h-full"
+              size="md"
+              className="bg-[29.5%_80%] rounded-none h-full"
               image={contactData.contactImage}
             />
           </div>

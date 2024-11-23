@@ -333,9 +333,7 @@ const CarouselControls = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & { projects: Project[] }
 >(({ className, projects, ...props }, ref) => {
-  const { scrollSnaps, selectedIndex, scrollTo } = useCarousel();
-
-  console.log(scrollSnaps);
+  const { selectedIndex, scrollTo } = useCarousel();
 
   return (
     <div
@@ -354,8 +352,8 @@ const CarouselControls = React.forwardRef<
 
       {/* Dots */}
       <div className="flex flex-wrap justify-end items-center mr-[calc((2.6rem_-_1.4rem)_/_2_*_-1)]">
-        {scrollSnaps.map((_, index) => (
-          <HoverCard key={index}>
+        {projects.map((project, index) => (
+          <HoverCard key={project._id}>
             <HoverCardTrigger asChild>
               <DotButton
                 onClick={() => scrollTo(index)}
@@ -370,14 +368,12 @@ const CarouselControls = React.forwardRef<
             <HoverCardContent className="w-80">
               <div className="flex justify-between space-x-4">
                 <Avatar>
-                  <AvatarImage src={urlFor(projects[index].image).url()} />
+                  <AvatarImage src={urlFor(project.image).url()} />
                   <AvatarFallback>VC</AvatarFallback>
                 </Avatar>
                 <div className="space-y-1">
-                  <h4 className="text-sm font-semibold">
-                    {projects[index].title}
-                  </h4>
-                  <p className="text-sm">{projects[index].description}</p>
+                  <h4 className="text-sm font-semibold">{project.title}</h4>
+                  <p className="text-sm">{project.description}</p>
                   <div className="flex items-center pt-2">
                     <CalendarDays className="w-4 h-4 mr-2 opacity-70" />{" "}
                     <span className="text-xs text-muted-foreground">

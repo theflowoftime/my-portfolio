@@ -65,12 +65,12 @@ function Projects() {
   // Find the slug for the "works" section, as the 3rd link
   // const plugin = useRef(Autoplay({ playOnInit: true, delay: 5000 }));
 
-  if (isLoading)
-    return (
-      <SectionLayout slug={slug}>
-        <Loader2 />
-      </SectionLayout>
-    );
+  // if (isLoading)
+  //   return (
+  //     <SectionLayout slug={slug}>
+  //       <Loader2 />
+  //     </SectionLayout>
+  //   );
   if (error) return <p>Error fetching projects: {error.message}</p>;
 
   if (!navLinks) return <p>Loading navigation...</p>;
@@ -82,7 +82,7 @@ function Projects() {
       <Carousel
         opts={{
           loop: true,
-          align: "center",
+          align: "start",
         }}
         orientation="vertical"
         // plugins={[plugin.current]}
@@ -105,7 +105,7 @@ function Projects() {
             </CarouselItem>
           ))}
         </CarouselContent>
-        {projects.length ? <CarouselControls projects={projects} /> : null}
+        {projects.length > 1 ? <CarouselControls projects={projects} /> : null}
       </Carousel>
     </SectionLayout>
   );

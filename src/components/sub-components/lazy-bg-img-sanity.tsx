@@ -6,9 +6,11 @@ import { motion } from "framer-motion";
 const LazyBackground = ({
   className,
   image,
+  size = "lg",
   title,
 }: ComponentProps<"div"> & {
   image: SanityImageSource;
+  size?: "sm" | "md" | "lg";
   title?: string;
 }) => {
   const [loaded, setLoaded] = useState(false);
@@ -19,15 +21,13 @@ const LazyBackground = ({
     img.onload = () => setLoaded(true);
   }, [image]);
 
-  // Responsive image sizes using Tailwind breakpoints
-  const smallImage = urlFor(image).width(640).quality(80).format("webp").url();
-  const mediumImage = urlFor(image)
-    .width(1024)
-    .quality(80)
-    .format("webp")
-    .url();
-  const largeImage = urlFor(image).width(1920).quality(80).format("webp").url();
   const placeholderImage = urlFor(image).width(50).height(50).blur(20).url();
+
+  const images = {
+    sm: urlFor(image).width(640).quality(80).format("webp").url(),
+    md: urlFor(image).width(1024).quality(80).format("webp").url(),
+    lg: urlFor(image).width(1920).quality(80).format("webp").url(),
+  };
 
   return (
     <motion.div
@@ -40,7 +40,7 @@ const LazyBackground = ({
       )}
       style={{
         // --background-image: `var(--background-image)`,
-        backgroundImage: `url(${loaded ? largeImage : placeholderImage})`,
+        backgroundImage: `url(${loaded ? images[size] : placeholderImage})`,
       }}
     >
       {title ? (
