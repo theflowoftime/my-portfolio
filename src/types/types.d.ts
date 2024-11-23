@@ -107,7 +107,10 @@ type Contact = {
   _id: string;
   description: { title: string; subtitle: string };
   fields: Field;
-  button: { value: string };
+  button: {
+    Initialvalue: string;
+    submittingValue: string;
+  };
   errorMessages?: ErrorMessages;
   toast: Toast;
   contactImage: SanityImageSource;
