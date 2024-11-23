@@ -29,6 +29,12 @@ export type ActiveNavLinkProps = {
 
 export type Link = { slug: string; title: string; path: string };
 
+export type AboutMe = {
+  homeIntro: string[];
+  image: SanityImageSource;
+  button: Record<"value", string>;
+};
+
 export type Project = {
   _id: string;
   title: string;

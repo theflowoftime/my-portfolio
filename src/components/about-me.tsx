@@ -1,7 +1,7 @@
 import SectionLayout from "@/layouts/section-layout";
 import Decorations from "./sub-components/about-me/decorations";
 import AboutMeImg from "./sub-components/about-me/image";
-import Introduction from "./sub-components/about-me/Introdcution";
+import Introduction from "./sub-components/about-me/Introduction";
 import useNavLinks from "@/hooks/useNavLinks";
 
 function AboutMe() {

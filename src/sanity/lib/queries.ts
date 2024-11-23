@@ -2,6 +2,13 @@ export const navBar_QUERY = `*[_type == "navBar" && language == $language][0]{
     links[]{ title, slug, path }
   }`;
 
+export const aboutMe_Query = `*[_type == "aboutMe" && language == $language][0] {
+  homeIntro[],
+  image,
+  button
+  ,
+}`;
+
 export const projects_QUERY = `*[_type == "project" && language == $language] {
     _id,
     title,
