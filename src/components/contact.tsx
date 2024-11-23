@@ -276,11 +276,11 @@ function Contact() {
                   {status === "pending" ? (
                     <>
                       <Loader2 className="animate-spin" />
-                      {contactData.button.submittingValue}...
+                      {contactData.button.submittingText}...
                       {/* either remove or add in contact document (contactData?.button.loaderText)  */}
                     </>
                   ) : (
-                    contactData.button.Initialvalue
+                    contactData.button.initialText
                   )}
                 </Button>
               </motion.form>

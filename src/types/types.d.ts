@@ -108,8 +108,8 @@ type Contact = {
   description: { title: string; subtitle: string };
   fields: Field;
   button: {
-    Initialvalue: string;
-    submittingValue: string;
+    initialText: string;
+    submittingText: string;
   };
   errorMessages?: ErrorMessages;
   toast: Toast;

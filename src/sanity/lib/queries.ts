@@ -49,9 +49,7 @@ export const contact_QUERY = `*[_type == "contact" && language == $language][0]{
         options
       }
     },
-    button {
-      value
-    },
+    button,
     errorMessages {
       name {
         min,
