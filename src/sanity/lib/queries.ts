@@ -9,12 +9,14 @@ export const aboutMe_Query = `*[_type == "aboutMe" && language == $language][0] 
   ,
 }`;
 
-export const projects_QUERY = `*[_type == "project" && language == $language] {
+export const projects_QUERY = `*[_type == "project" && language == $language] | order(dateTime(delivered_at) - dateTime(started_at)) {
     _id,
     title,
     description,
     link,
-    image
+    image,
+    started_at,
+    delivered_at
   }`;
 
 export const hero_QUERY = `*[_type == "hero" && language == $language][0]{

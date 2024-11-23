@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "./hover-card";
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 import { Project } from "@/types/types";
+import LazyBackground from "../sub-components/lazy-bg-img-sanity";
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
@@ -311,14 +312,12 @@ CarouselNext.displayName = "CarouselNext";
 const DotButton = React.forwardRef<
   HTMLButtonElement,
   React.ComponentProps<typeof Button>
->((props, ref) => {
-  const { children, className, ...restProps } = props;
-
+>(({ children, className, ...props }, ref) => {
   return (
     <Button
       ref={ref}
       type="button"
-      {...restProps}
+      {...props}
       className={cn(
         "w-3 h-3 mx-1 rounded-full bg-gray-400 hover:bg-gray-600 focus:bg-gray-700 focus:ring focus:ring-offset-1 transition-all duration-200",
         className
@@ -329,12 +328,68 @@ const DotButton = React.forwardRef<
   );
 });
 
+const DotButtons = React.forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<"div"> & { projects: Project[] }
+>(({ projects, ...props }, ref) => {
+  const { selectedIndex, scrollTo } = useCarousel();
+
+  return (
+    <div
+      ref={ref}
+      className="flex flex-wrap justify-end items-center mr-[calc((2.6rem_-_1.4rem)_/_2_*_-1)]"
+      {...props}
+    >
+      {projects.map((project, index) => (
+        <HoverCard key={project._id}>
+          <HoverCardTrigger asChild>
+            <DotButton
+              onClick={() => scrollTo(index)}
+              className={cn(
+                "appearance-none bg-transparent touch-manipulation  no-underline cursor-pointer w-[2.6rem] h-[2.6rem] flex items-center justify-center m-0 p-0 rounded-[50%] border-0 after:shadow-[inset_0_0_0_0.2rem_var(--detail-medium-contrast)] after:w-[1.4rem] after:h-[1.4rem] after:flex after:items-center after:content-[''] after:rounded-[50%]",
+                index === selectedIndex
+                  ? "after:shadow-[inset_0_0_0_0.2rem_var(--text-body)]"
+                  : ""
+              )}
+            />
+          </HoverCardTrigger>
+          <HoverCardContent className="w-80">
+            <div className="flex justify-between space-x-4">
+              <Avatar>
+                <AvatarImage src={urlFor(project.image).url()} />
+                <AvatarFallback>VC</AvatarFallback>
+              </Avatar>
+              <div className="space-y-1">
+                <h4 className="text-sm font-semibold">{project.title}</h4>
+                <p className="text-xs">{project.description}</p>
+                <div className="flex items-center pt-2">
+                  <CalendarDays className="w-4 h-4 mr-2 opacity-70" />{" "}
+                  <span className="text-xs text-muted-foreground">
+                    Started:{" "}
+                    {new Intl.DateTimeFormat("en-US").format(
+                      new Date(project.started_at)
+                    )}
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    Delivered:{" "}
+                    {new Intl.DateTimeFormat("en-US").format(
+                      new Date(project.delivered_at)
+                    )}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </HoverCardContent>
+        </HoverCard>
+      ))}
+    </div>
+  );
+});
+
 const CarouselControls = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement> & { projects: Project[] }
 >(({ className, projects, ...props }, ref) => {
-  const { selectedIndex, scrollTo } = useCarousel();
-
   return (
     <div
       ref={ref}
@@ -351,41 +406,7 @@ const CarouselControls = React.forwardRef<
       </div>
 
       {/* Dots */}
-      <div className="flex flex-wrap justify-end items-center mr-[calc((2.6rem_-_1.4rem)_/_2_*_-1)]">
-        {projects.map((project, index) => (
-          <HoverCard key={project._id}>
-            <HoverCardTrigger asChild>
-              <DotButton
-                onClick={() => scrollTo(index)}
-                className={cn(
-                  "appearance-none bg-transparent touch-manipulation  no-underline cursor-pointer w-[2.6rem] h-[2.6rem] flex items-center justify-center m-0 p-0 rounded-[50%] border-0 after:shadow-[inset_0_0_0_0.2rem_var(--detail-medium-contrast)] after:w-[1.4rem] after:h-[1.4rem] after:flex after:items-center after:content-[''] after:rounded-[50%]",
-                  index === selectedIndex
-                    ? "after:shadow-[inset_0_0_0_0.2rem_var(--text-body)]"
-                    : ""
-                )}
-              />
-            </HoverCardTrigger>
-            <HoverCardContent className="w-80">
-              <div className="flex justify-between space-x-4">
-                <Avatar>
-                  <AvatarImage src={urlFor(project.image).url()} />
-                  <AvatarFallback>VC</AvatarFallback>
-                </Avatar>
-                <div className="space-y-1">
-                  <h4 className="text-sm font-semibold">{project.title}</h4>
-                  <p className="text-sm">{project.description}</p>
-                  <div className="flex items-center pt-2">
-                    <CalendarDays className="w-4 h-4 mr-2 opacity-70" />{" "}
-                    <span className="text-xs text-muted-foreground">
-                      Created December 2021
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </HoverCardContent>
-          </HoverCard>
-        ))}
-      </div>
+      <DotButtons projects={projects} />
     </div>
   );
 });

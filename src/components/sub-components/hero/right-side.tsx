@@ -25,13 +25,9 @@ export default function RightSide({ heroData }: { heroData: Hero }) {
       className="flex flex-col mt-[3.13rem]"
     >
       <motion.div className="relative" variants={item}>
-        <LogoHero className="absolute top-[25%] -z-10" />
+        <LogoHero className=" absolute top-[25%]" />
+        <img className="relative h-auto mx-auto" src={"/hero.png"} alt="hero" />
         <Matrix className="absolute bottom-12 right-10" rows={5} columns={5} />
-        <img
-          className="h-auto max-w-full mx-auto"
-          src={"/hero.png"}
-          alt="hero"
-        />
       </motion.div>
       <motion.div
         className="flex items-center gap-x-2 py-1 px-2 leading-[2rem] tracking-wider font-normal w-fit mx-auto

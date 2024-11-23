@@ -41,6 +41,8 @@ export type Project = {
   description: string;
   link: string;
   image: SanityImageSource;
+  started_at: Date;
+  delivered_at: Date;
 };
 
 export type Projects = Project[];
