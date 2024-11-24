@@ -35,6 +35,8 @@ export type AboutMe = {
   button: Record<"value", string>;
 };
 
+export type Orientation = "horizontal" | "vertical";
+
 export type Project = {
   _id: string;
   title: string;

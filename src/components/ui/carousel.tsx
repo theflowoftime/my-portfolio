@@ -8,15 +8,13 @@ import { cn, urlFor } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "./hover-card";
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
-import { Project } from "@/types/types";
+import { Orientation, Project } from "@/types/types";
 import LazyBackground from "../sub-components/lazy-bg-img-sanity";
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
 type CarouselOptions = UseCarouselParameters[0];
 type CarouselPlugin = UseCarouselParameters[1];
-
-type Orientation = "horizontal" | "vertical";
 
 type CarouselProps = {
   opts?: CarouselOptions;
@@ -203,15 +201,14 @@ const CarouselContent = React.forwardRef<
       ref={carouselRef}
       className={cn(
         "overflow-hidden flex h-[calc(var(--slide-spacing)_+_var(--slide-height))] ",
-        orientation === "vertical" &&
-          "flex-col mt-[calc(var(--slide-spacing)_*_-1)]"
+        orientation === "vertical" && "flex-col"
       )}
     >
       <div
         ref={ref}
         className={cn(
           "flex",
-          orientation === "horizontal" ? "-ml-4" : "-mt-4 flex-col",
+          orientation === "horizontal" ? "" : "flex-col",
           className
         )}
         {...props}
@@ -234,9 +231,9 @@ const CarouselItem = React.forwardRef<
       aria-roledescription="slide"
       className={cn(
         "min-h-0 flex-[0_0_var(--slide-size)]",
-        orientation === "horizontal"
-          ? "pl-[var(--slide-spacing)]"
-          : "pt-[var(--slide-spacing)]",
+        // orientation === "horizontal"
+        //   ? "pl-[var(--slide-spacing)]"
+        //   : "pt-[var(--slide-spacing)]",
         className
       )}
       {...props}
@@ -258,9 +255,7 @@ const CarouselPrevious = React.forwardRef<
       size={size}
       className={cn(
         "appearance-none bg-transparent touch-manipulation inline-flex no-underline cursor-pointer shadow-[inset_0_0_0_0.2rem_var(--detail-medium-contrast)] w-[3.6rem] h-[3.6rem] z-[1] text-[color:var(--text-body)] items-center justify-center m-0 p-0 rounded-[50%] border-0",
-        orientation === "horizontal"
-          ? "-left-4 top-1/2 transform -translate-y-1/2"
-          : "-top-4 left-1/2 transform -translate-x-1/2 rotate-90",
+        orientation === "horizontal" ? " " : "transform rotate-90",
         className
       )}
       onClick={() =>
@@ -290,9 +285,7 @@ const CarouselNext = React.forwardRef<
       size={size}
       className={cn(
         "appearance-none bg-transparent touch-manipulation no-underline cursor-pointer shadow-[inset_0_0_0_0.2rem_var(--detail-medium-contrast)] w-[3.6rem] h-[3.6rem] z-[1] text-[color:var(--text-body)] flex items-center justify-center m-0 p-0 rounded-[50%] border-0",
-        orientation === "horizontal"
-          ? "-right-12 top-1/2 -translate-y-1/2"
-          : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
+        orientation === "horizontal" ? "" : "rotate-90",
         className
       )}
       onClick={() =>
@@ -394,13 +387,13 @@ const CarouselControls = React.forwardRef<
     <div
       ref={ref}
       className={cn(
-        "grid grid-cols-[auto_1fr] justify-between gap-[1.2rem] mt-[1.8rem]",
+        "grid grid-cols-[auto_2fr]  justify-between gap-[1.2rem] mt-[1.8rem]",
         className
       )}
       {...props}
     >
       {/* Arrow Buttons */}
-      <div className="grid grid-cols-[repeat(2,1fr)] gap-[0.6rem] items-center">
+      <div className="grid grid-cols-[auto_2fr] gap-[0.6rem] items-center">
         <CarouselPrevious />
         <CarouselNext />
       </div>

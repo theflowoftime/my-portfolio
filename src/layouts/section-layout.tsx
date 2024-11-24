@@ -30,7 +30,7 @@ const SectionLayout = forwardRef<
     <div className={cn("relative overflow-hidden mt-16", className)} id={slug}>
       <div ref={ref} className="container min-h-screen">
         <SectionTitle title={slug} />
-        <div className="w-full h-full mt-16">{children}</div>
+        <div className="w-full h-full py-16">{children}</div>
       </div>
     </div>
   );
