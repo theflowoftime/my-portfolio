@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "./hover-card";
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
 import { Orientation, Project } from "@/types/types";
-import LazyBackground from "../sub-components/lazy-bg-img-sanity";
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
@@ -231,9 +230,9 @@ const CarouselItem = React.forwardRef<
       aria-roledescription="slide"
       className={cn(
         "min-h-0 flex-[0_0_var(--slide-size)]",
-        // orientation === "horizontal"
-        //   ? "pl-[var(--slide-spacing)]"
-        //   : "pt-[var(--slide-spacing)]",
+        orientation === "horizontal"
+          ? "px-[var(--slide-spacing)]"
+          : "py-[var(--slide-spacing)]",
         className
       )}
       {...props}

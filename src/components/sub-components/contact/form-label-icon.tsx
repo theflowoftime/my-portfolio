@@ -4,24 +4,14 @@ import { cloneElement, ReactElement } from "react";
 
 const LabelIcon = ({
   name,
+  className,
   ...props
 }: LucideProps & { name: keyof FormSchemaType }) => {
   const labelIcons: Record<string, ReactElement> = {
-    name: (
-      <Hand className="dark:stroke-purple-400 stroke-purple-700" size="20" />
-    ),
-    phoneNumber: (
-      <Phone className="dark:stroke-purple-400 stroke-purple-700" size="20" />
-    ),
-    email: (
-      <Mail className="dark:stroke-purple-400 stroke-purple-700" size="20" />
-    ),
-    reason: (
-      <UserSearch
-        className="dark:stroke-purple-400 stroke-purple-700"
-        size="20"
-      />
-    ),
+    name: <Hand className={className} size="20" />,
+    phoneNumber: <Phone className={className} size="20" />,
+    email: <Mail className={className} size="20" />,
+    reason: <UserSearch className={className} size="20" />,
   };
 
   if (!name || !labelIcons[name]) return null;

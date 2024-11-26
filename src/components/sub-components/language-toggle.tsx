@@ -21,7 +21,6 @@ export function LanguageToggle({ className }: { className?: string }) {
       <DropdownMenuTrigger asChild>
         <Button className={className} variant="ghost" size="icon">
           <span>{language}</span>
-          {/* Assuming you have a 'language' key for the toggle */}
           <span className="sr-only">Toggle language</span>
         </Button>
       </DropdownMenuTrigger>

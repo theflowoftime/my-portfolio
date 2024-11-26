@@ -68,7 +68,7 @@ const Matrix = ({
         <motion.div
           key={index}
           custom={index}
-          className="flex items-center justify-center w-1 h-1 text-opacity-50 rounded-full text-primary-foreground dark:text-white"
+          className="flex items-center justify-center w-1 h-1 text-opacity-50 rounded-full text-primary-foreground dark:text-white/40"
           style={{
             textShadow: "0px 0px 8px rgba(255,255,255,0.7)", // Glow effect for "light trail" look
             fontSize: "1.5rem", // Increase size slightly for visibility

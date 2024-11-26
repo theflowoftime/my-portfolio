@@ -1,3 +1,4 @@
+import { Copyright, Mail, Phone } from "lucide-react";
 import SocialIcons from "./sub-components/icons/social-icons";
 import { LogoWithName } from "./sub-components/navbar";
 
@@ -8,9 +9,18 @@ function Footer() {
         <div className="flex flex-wrap justify-between">
           <div className="space-y-2">
             <LogoWithName />
-            <span className="text-sm text-white/80 md:text-base">
-              flowoftime@gmail.com
-            </span>
+            <div className="space-x-2">
+              <Mail className="inline-block" size="16" />
+              <span className="text-sm font-medium text-white/80 md:text-base">
+                flowoftime@gmail.com
+              </span>
+            </div>
+            <div className="space-x-2 ">
+              <Phone className="inline-block" size="16" />
+              <span className="text-sm font-medium text-white/80 md:text-base">
+                +216-56-140-270
+              </span>
+            </div>
           </div>
 
           <div className="flex flex-col items-center">
@@ -19,8 +29,9 @@ function Footer() {
           </div>
         </div>
 
-        <div className="self-center text-sm md:text-lg">
-          Copyright {new Date().getFullYear()}. Made by Yacine
+        <div className="self-center text-xs text-white/80 md:text-sm">
+          Copyright <Copyright className="inline-block" size={20} />{" "}
+          {new Date().getFullYear()}. Made by Yacine
         </div>
       </div>
     </div>

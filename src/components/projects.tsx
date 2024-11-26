@@ -8,7 +8,7 @@ import { useLocation } from "react-router-dom";
 
 // import projects from "@/assets/data/data.json";
 import { type Variants } from "framer-motion";
-import { RefObject, useEffect, useRef, useState } from "react";
+import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 import LazyBackground from "./sub-components/lazy-bg-img-sanity";
 import {
   Carousel,
@@ -86,7 +86,7 @@ function Projects() {
   };
 
   return (
-    <SectionLayout slug={slug}>
+    <SectionLayout slug={slug} url="/projects.jpg">
       <Carousel
         opts={{
           loop: true,
@@ -99,16 +99,7 @@ function Projects() {
       >
         <CarouselContent className="w-full h-full">
           {projects.map((project: Project) => (
-            <CarouselItem key={project._id} className="">
-              {/* <div
-                className="bg-cover text-white bg-center bg-no-repeat shadow-[inset_0_0_0_0.2rem_var(--detail-medium-contrast)] text-[4rem] font-semibold flex items-center justify-center h-full select-none rounded-[1.8rem]"
-                style={{
-                  backgroundImage: `url(${urlFor(project.image).url()})`,
-                }}
-              >
-                {project.title}
-              </div> */}
-
+            <CarouselItem key={project._id} className="cursor-grab">
               <LazyBackground image={project.image} title={project.title} />
             </CarouselItem>
           ))}

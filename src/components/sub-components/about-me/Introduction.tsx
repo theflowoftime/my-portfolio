@@ -29,7 +29,7 @@ export default function Introduction() {
       viewport={{ once: true, amount: 0.2 }}
       variants={waterFall}
       custom={0.2} // Controls delay for paragraph fade-in
-      className="space-y-8 w-[32.19rem] leading-[1.8rem] text-[1rem] font-normal tracking-normal self-start"
+      className="space-y-8 w-[32.19rem] leading-[1.8rem] text-[1rem] font-normal tracking-normal"
     >
       {data.homeIntro.map((intro, index) => (
         <motion.p key={index} custom={(index + 1) * 0.2} variants={waterFall}>

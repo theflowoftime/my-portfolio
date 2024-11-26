@@ -9,10 +9,10 @@ import useHashNavigation from "./hooks/useHashNavigation";
 function App() {
   useHashNavigation();
   return (
-    <div className="relative overflow-x-hidden">
+    <div className="">
       <div
         id="top"
-        className="min-h-screen h-full bg-gradient bg-[length:200%_200%] animate-gradient bg-neutral-900 bg-clip-padding backdrop-filter bg-opacity-20"
+        className="h-full bg-gradient bg-[length:200%_200%] animate-gradient"
       >
         <Header />
         <Hero />

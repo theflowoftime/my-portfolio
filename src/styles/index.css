@@ -6,11 +6,15 @@
 
 @layer base {
   :root {
-    --background: 0 0% 87%;
+    --background: 0, 0%, 87%;
+
     --foreground: 224 71.4% 4.1%;
 
-    --font-sans: "Fira Code", sans-serif;
+    --font-fira: "Fira Code", sans-serif;
 
+    --font-unbounded: "Unbounded", sans-serif;
+
+    --font-instrument: "Instrument Serif", serif;
     --muted: 220 14.3% 95.9%;
     --muted-foreground: 220 8.9% 46.1%;
 
@@ -42,12 +46,26 @@
     --app-color-5: hsl(164 100% 26%);
     --app-color-6: hsl(160, 100%, 75%); */
 
-    --app-color-1: hsl(239, 94%, 19%);
+    /* --app-color-1: hsl(239, 94%, 19%);
     --app-color-2: hsl(214, 97%, 27%);
     --app-color-3: hsl(201, 100%, 36%);
     --app-color-4: hsl(195, 100%, 39%);
     --app-color-5: hsl(190, 100%, 42%);
-    --app-color-6: hsl(190, 74%, 59%);
+    --app-color-6: hsl(190, 74%, 59%); */
+
+    /* #FF2F2F
+    #000460
+    #FFFFFF
+    #020063
+    #1400FF 
+    #3A0000 
+    #FF003D
+    #B25BBA     
+    #1700A7
+    #0047FF
+    #FF0000
+    #B7D500
+    #2200AA */
 
     --slide-height: 30rem;
     --slide-spacing: 1rem;
@@ -71,7 +89,7 @@
   }
 
   .dark {
-    --background: 0 0% 3.9%;
+    --background: 0 0% 4%;
     --foreground: 219 13.5% 71%;
 
     --muted: 215 27.9% 16.9%;
@@ -118,32 +136,38 @@
 }
 
 @layer base {
-  .clip-wave-left {
-    clip-path: inset(0 0 0 10%) round 20% 0 20% 50%;
-  }
-
-  .text-effect {
-    -moz-text-fill-color: hsl(270, 95%, 75%);
-    -moz-text-stroke-width: 1px;
-    -moz-text-stroke-color: white;
-
-    -webkit-text-fill-color: hsl(270, 95%, 75%);
-    -webkit-text-stroke-width: 0.5px;
-    -webkit-text-stroke-color: white;
-  }
-
   * {
     @apply border-border;
   }
   body {
-    @apply font-sans bg-background text-foreground;
+    @apply font-fira bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+    background-blend-mode: overlay, color-burn, screen, overlay, difference,
+      difference, normal;
   }
 }
 
 @layer utilities {
   .dynamic-bg {
-    @apply bg-cover bg-center bg-no-repeat;
+    @apply bg-center bg-no-repeat bg-cover;
     background-image: var(--background-image, none);
+  }
+
+  .clip-wave-left {
+    clip-path: inset(0 0 0 10%) round 20% 0 20% 50%;
+  }
+
+  .text-effect {
+    -moz-text-fill-color: hsl(0, 0%, 100%);
+    -moz-text-stroke-width: 1px;
+    -moz-text-stroke-color: hsl(0, 0%, 0%);
+
+    -webkit-text-fill-color: hsl(0, 0%, 100%);
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: hsl(0, 0%, 0%);
+  }
+
+  .strk-white:has(~ input:focus, ~ select:focus) {
+    stroke: white;
   }
 }

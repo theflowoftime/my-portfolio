@@ -44,7 +44,7 @@ const LazyBackground = ({
       }}
     >
       {title ? (
-        <span className="text-center text-white text-[4rem] font-semibold">
+        <span className="text-center text-white/80 text-effect text-[4rem] font-semibold">
           {title}
         </span>
       ) : null}

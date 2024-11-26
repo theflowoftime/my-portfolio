@@ -1,6 +1,7 @@
 import { forwardRef, HTMLProps } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import LazyBackground from "@/components/sub-components/lazy-bg-img-sanity";
 
 export const SectionTitle = ({ title }: { title: string }) => {
   return (
@@ -24,12 +25,18 @@ export const SectionTitle = ({ title }: { title: string }) => {
 
 const SectionLayout = forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement> & { slug: string }
->(({ className, slug, children }, ref) => {
+  React.HTMLAttributes<HTMLDivElement> & { slug: string; url?: string }
+>(({ className, slug, url, children }, ref) => {
   return (
-    <div className={cn("relative overflow-hidden mt-16", className)} id={slug}>
-      <div ref={ref} className="container min-h-screen">
-        <SectionTitle title={slug} />
+    <div className={cn("relative overflow-hidden mb-16", className)}>
+      {url ? (
+        <div
+          className="bg-cover bg-center h-[18.75rem] w-full bg-fixed"
+          style={{ backgroundImage: `url(${url})` }}
+        />
+      ) : null}
+      <div ref={ref} className="container" id={slug}>
+        {/* <SectionTitle title={slug} /> */}
         <div className="w-full h-full py-16">{children}</div>
       </div>
     </div>

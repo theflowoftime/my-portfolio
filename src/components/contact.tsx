@@ -65,7 +65,7 @@ function ContactForm() {
       <motion.form
         custom={0.6}
         variants={waterFall}
-        className="px-8 space-y-8 rounded-md"
+        className="px-8 py-4 space-y-16"
         onSubmit={form.handleSubmit(onSubmit, onError)}
       >
         {contact?.fields.inputs.map((input) => (
@@ -74,18 +74,25 @@ function ContactForm() {
             control={form.control}
             name={input.name}
             render={({ field }) => (
-              <FormItem className="space-y-8">
-                <FormLabel className="flex items-center gap-x-4">
-                  <LabelIcon name={input.name} />
-                  {input.label}
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    placeholder={input.placeholder}
-                    className="border-t-0 border-l-0 border-r-0 rounded-none placeholder:text-center dark:placeholder:text-primary border-b-primary-foreground/20 focus-within:border-b-primary-foreground bg-inherit focus-visible:ring-0"
-                    {...field}
-                  />
-                </FormControl>
+              <FormItem>
+                <div className="space-y-8">
+                  <div className="relative">
+                    <FormLabel>
+                      <LabelIcon
+                        className="absolute -translate-y-1/2 top-1/2 dark:stroke-purple-400 stroke-purple-700 strk-white"
+                        name={input.name}
+                        size={16}
+                      />
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder={input.placeholder}
+                        className="text-center border-t-0 border-l-0 border-r-0 rounded-none placeholder:text-xs placeholder:text-center dark:placeholder:text-primary border-b-primary-foreground/20 focus-within:border-b-primary-foreground bg-inherit focus-visible:ring-0"
+                        {...field}
+                      />
+                    </FormControl>
+                  </div>
+                </div>
                 <FormMessage className="text-xs" />
               </FormItem>
             )}
@@ -99,28 +106,36 @@ function ContactForm() {
             control={form.control}
             name={select.name}
             render={({ field }) => (
-              <FormItem className="space-y-8">
-                <FormLabel className="flex items-center gap-x-4">
-                  <LabelIcon name={select.name} />
-                  {select.label}
-                </FormLabel>
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
-                  <FormControl>
-                    <SelectTrigger className="border-t-0 border-l-0 border-r-0 rounded-none w-full dark:data-[placeholder]:text-primary  [&>span]:w-full  [&>span]:text-center data-[placeholder]:text-center border-b-primary-foreground/20 bg-inherit focus:ring-0 focus-within:border-b-primary">
-                      <SelectValue placeholder={select.placeholder} />
-                    </SelectTrigger>
-                  </FormControl>
-                  <SelectContent className="border-none focus:ring-0">
-                    {select.options.map((option) => (
-                      <SelectItem key={option} value={option}>
-                        {option}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+              <FormItem>
+                <div className="space-y-4">
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <div className="relative">
+                      <FormLabel>
+                        <LabelIcon
+                          className="absolute -translate-y-1/2 top-1/2 dark:stroke-purple-400 stroke-purple-700 strk-white"
+                          name={select.name}
+                          size={16}
+                        />
+                      </FormLabel>
+                      <FormControl>
+                        <SelectTrigger className="h-8 border-t-0 border-l-0 border-r-0 rounded-none w-full dark:data-[placeholder]:text-primary  [&>span]:w-full  [&>span]:text-center data-[placeholder]:text-center border-b-primary-foreground/20 bg-inherit focus:ring-0 focus-within:border-b-primary">
+                          <SelectValue placeholder={select.placeholder} />
+                        </SelectTrigger>
+                      </FormControl>
+                    </div>
+                    <SelectContent className="border-none focus:ring-0">
+                      {select.options.map((option) => (
+                        <SelectItem key={option} value={option}>
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
                 <FormMessage className="text-xs" />
               </FormItem>
             )}
@@ -138,8 +153,8 @@ function ContactForm() {
         <Button
           disabled={status === "pending" || form.formState.isSubmitting}
           variant="outline"
-          className="w-full py-6 px-4 bg-inherit font-medium tracking-widest dark:text-white border-[1px] border-primary-foreground/20 rounded-sm 
-      hover:bg-purple-500/20 hover:transition-all hover:duration-250 shadow-sm shadow-black hover:bg-opacity-20"
+          className="w-full h-4 py-6 px-4 bg-inherit tracking-wide dark:text-white border-[1px] border-primary-foreground/20 rounded-sm 
+      hover:bg-purple-500/20 hover:transition-all hover:duration-250 shadow-sm dark:shadow-black hover:bg-opacity-20"
           type="submit"
         >
           {status === "pending" ? (
@@ -179,17 +194,19 @@ function Contact() {
 
   return (
     <>
-      <SectionLayout slug={slug}>
-        <div className="flex flex-col h-full gap-y-4">
-          <ContactHeader description={contactData.description} />
+      <SectionLayout slug={slug} url="/mail.jpg">
+        <div className="flex flex-col justify-center h-full">
+          {/* <ContactHeader description={contactData.description} /> */}
           {/* form container */}
-          <div className="grid items-center py-8 shadow-md gap-x-4 lg:grid-cols-2 dark:shadow-black">
-            <ContactForm />
-            <LazyBackground
-              size="md"
-              className="bg-[27%_100%] rounded-none"
-              image={contactData.contactImage}
-            />
+          <div className="grid items-center justify-center gap-y-8 gap-x-8 lg:grid-cols-2 grid-re">
+            <div className="p-4 rounded-lg shadow-sm h-fit dark:shadow-black">
+              <ContactForm />
+            </div>
+
+            <h5 className="text-[9.75rem] font-unbounded leading-[0.7em] row-start-1">
+              <p className="">Let's</p>
+              <p className="text-purple-500">Talk!</p>
+            </h5>
           </div>
         </div>
         <Toaster />
