@@ -1,6 +1,6 @@
 import { Copyright, Mail, Phone } from "lucide-react";
 import SocialIcons from "./sub-components/icons/social-icons";
-import { LogoWithName } from "./sub-components/navbar";
+import LogoWithName from "./sub-components/site-logo";
 
 function Footer() {
   return (

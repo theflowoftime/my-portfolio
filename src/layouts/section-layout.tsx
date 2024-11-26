@@ -28,18 +28,20 @@ const SectionLayout = forwardRef<
   React.HTMLAttributes<HTMLDivElement> & { slug: string; url?: string }
 >(({ className, slug, url, children }, ref) => {
   return (
-    <div className={cn("relative overflow-hidden mb-16", className)}>
+    <>
       {url ? (
         <div
           className="bg-cover bg-center h-[18.75rem] w-full bg-fixed"
           style={{ backgroundImage: `url(${url})` }}
         />
       ) : null}
-      <div ref={ref} className="container" id={slug}>
-        {/* <SectionTitle title={slug} /> */}
-        <div className="w-full h-full py-16">{children}</div>
+      <div className={cn("relative overflow-hidden mb-16", className)}>
+        <div ref={ref} className="container" id={slug}>
+          {/* <SectionTitle title={slug} /> */}
+          <div className="w-full h-full py-16">{children}</div>
+        </div>
       </div>
-    </div>
+    </>
   );
 });
 

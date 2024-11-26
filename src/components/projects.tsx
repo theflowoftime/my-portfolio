@@ -7,7 +7,7 @@ import { Loader2, MoveHorizontal, MoveVertical } from "lucide-react";
 import { useLocation } from "react-router-dom";
 
 // import projects from "@/assets/data/data.json";
-import { type Variants } from "framer-motion";
+import { type Variants, motion } from "framer-motion";
 import { RefObject, useCallback, useEffect, useRef, useState } from "react";
 import LazyBackground from "./sub-components/lazy-bg-img-sanity";
 import {
@@ -19,6 +19,7 @@ import {
 import useNavLinks from "@/hooks/useNavLinks";
 import Autoplay from "embla-carousel-autoplay";
 import { Button } from "./ui/button";
+import { waterFall } from "@/lib/framer-variants";
 
 const variants: Variants = {
   initial: () => ({
@@ -67,7 +68,14 @@ function Projects() {
 
   const [orientation, setOrientation] = useState<Orientation>("vertical");
   // Find the slug for the "works" section, as the 3rd link
-  const plugin = useRef(Autoplay({ playOnInit: true, delay: 5000 }));
+  const plugin = useRef(
+    Autoplay({
+      playOnInit: true,
+      delay: 5000,
+      stopOnMouseEnter: true,
+      stopOnFocusIn: true,
+    })
+  );
 
   // if (isLoading)
   //   return (
@@ -97,33 +105,48 @@ function Projects() {
         // onMouseEnter={plugin.current.stop}
         // onMouseLeave={plugin.current.reset}
       >
-        <CarouselContent className="w-full h-full">
-          {projects.map((project: Project) => (
-            <CarouselItem key={project._id} className="cursor-grab">
-              <LazyBackground image={project.image} title={project.title} />
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        {projects.length > 1 ? (
-          <>
-            <CarouselControls projects={projects} />
-            <div className="flex justify-center">
-              <Button
-                title={`flip the projects slider ${
-                  orientation === "vertical" ? "horizontal" : "vertical"
-                }ly`} //localization needed
-                className="appearance-none bg-transparent touch-manipulation inline-flex no-underline cursor-pointer shadow-[inset_0_0_0_0.2rem_var(--detail-medium-contrast)] w-[3rem] h-[3rem] z-[1] text-[color:var(--text-body)] items-center justify-center m-0 p-0 rounded-[50%] border-0"
-                onClick={handleClick}
-              >
-                {orientation === "horizontal" ? (
-                  <MoveVertical />
-                ) : (
-                  <MoveHorizontal />
-                )}
-              </Button>
-            </div>
-          </>
-        ) : null}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.8 }}
+        >
+          <motion.div
+            variants={waterFall} // Define stagger children in the parent
+          >
+            <CarouselContent className="w-full h-full">
+              {projects.map((project: Project) => (
+                <CarouselItem key={project._id} className="cursor-grab">
+                  <LazyBackground image={project.image} title={project.title} />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+          </motion.div>
+
+          <motion.div
+            variants={waterFall} // Define stagger children in the parent
+          >
+            {projects.length > 1 ? (
+              <>
+                <CarouselControls projects={projects} />
+                <div className="flex justify-center">
+                  <Button
+                    title={`flip the projects slider ${
+                      orientation === "vertical" ? "horizontal" : "vertical"
+                    }ly`} //localization needed
+                    className="appearance-none bg-transparent touch-manipulation inline-flex no-underline cursor-pointer shadow-[inset_0_0_0_0.2rem_var(--detail-medium-contrast)] w-[3rem] h-[3rem] z-[1] text-[color:var(--text-body)] items-center justify-center m-0 p-0 rounded-[50%] border-0"
+                    onClick={handleClick}
+                  >
+                    {orientation === "horizontal" ? (
+                      <MoveVertical />
+                    ) : (
+                      <MoveHorizontal />
+                    )}
+                  </Button>
+                </div>
+              </>
+            ) : null}
+          </motion.div>
+        </motion.div>
       </Carousel>
     </SectionLayout>
   );

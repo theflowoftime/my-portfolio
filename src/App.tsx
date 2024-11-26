@@ -9,10 +9,13 @@ import useHashNavigation from "./hooks/useHashNavigation";
 function App() {
   useHashNavigation();
   return (
-    <div className="">
+    <div className="relative">
+      <div className="absolute inset-0 z-0 min-h-screen opacity-10">
+        <div className="absolute inset-0 bg-repeat bg-[length:150px_auto] bg-left-top bg-[url('/noise.png')]" />
+      </div>
       <div
         id="top"
-        className="h-full bg-gradient bg-[length:200%_200%] animate-gradient"
+        className="h-full bg-gradient bg-[length:200%_200%] animate-gradient relative"
       >
         <Header />
         <Hero />

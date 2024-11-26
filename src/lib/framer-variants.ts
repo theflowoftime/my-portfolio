@@ -2,11 +2,48 @@ import { Variants } from "framer-motion";
 
 export const waterFall: Variants = {
   hidden: { opacity: 0, y: 50 },
-  visible: (delay: number) => ({
+  visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, delay },
-  }),
+    transition: {
+      staggerChildren: 0.4, // Controls delay between children
+      duration: 2,
+      delayChildren: 0.2,
+      type: "spring",
+    },
+  },
+};
+
+export const ReversewaterFallContactForm: Variants = {
+  hidden: { opacity: 0, y: -100 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      staggerChildren: 0.6, // Controls delay between children
+      duration: 1,
+      // delayChildren: 0.2,
+      type: "spring",
+    },
+  },
+};
+
+export const contactTitleBackFlip: Variants = {
+  hidden: { opacity: 0, y: -50, rotate: "45deg" },
+  visible: {
+    rotate: 0, //
+    opacity: 1,
+    y: 0,
+    transition: {
+      staggerChildren: 0.6, // Controls delay between children
+      rotate: {
+        type: "spring",
+        stiffness: 50,
+        damping: 1,
+        duration: 1, // Duration for the rocking motion
+      }, // Use spring for natural motion
+    },
+  },
 };
 
 export const strokeStyleR = {

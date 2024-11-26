@@ -15,7 +15,7 @@ const useHashNavigation = () => {
       const element = document.getElementById(id);
 
       if (element) {
-        element.scrollIntoView({ behavior: "smooth", block: "start" });
+        element.scrollIntoView({ behavior: "smooth", block: "nearest" });
       }
     }
   }, [hash, state]);
