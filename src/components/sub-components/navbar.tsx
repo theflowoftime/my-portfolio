@@ -21,7 +21,7 @@ import { Button } from "../ui/button";
 
 const NavBar = ({ className }: ComponentProps<"div">) => {
   const { data: navLinks, isLoading } = useNavLinks();
-  const isScrolled = useScrollY();
+  const scrollYProgress = useScrollY();
 
   if (isLoading)
     return (
@@ -36,7 +36,7 @@ const NavBar = ({ className }: ComponentProps<"div">) => {
       <motion.div
         initial={{ y: 0 }}
         animate={
-          isScrolled
+          scrollYProgress > 0
             ? {
                 y: 10,
                 borderRadius: "calc(var(--radius) - 2px)",
@@ -47,7 +47,7 @@ const NavBar = ({ className }: ComponentProps<"div">) => {
         }
         className={cn(
           "container fixed top-0 left-0 right-0 z-20 flex items-center justify-between w-full py-2 flex-nowrap max-h-fit",
-          isScrolled &&
+          scrollYProgress > 0 &&
             "bg-black backdrop-blur-2xl backdrop-filter bg-opacity-5 transition-colors duration-1000 ease-in"
         )}
       >
@@ -55,33 +55,34 @@ const NavBar = ({ className }: ComponentProps<"div">) => {
         <motion.div
           className=""
           animate={{
-            x: isScrolled ? 20 : 0, // Move left when scrolled
+            x: scrollYProgress > 0 && scrollYProgress < 0.9 ? 20 : 0, // Move left when scrolled
           }}
           transition={{ type: "spring", stiffness: 200 }}
         >
           <LogoWithName />
         </motion.div>
-
         {/* Navigation Menu and Toggles */}
+
         <motion.div
           className="flex flex-row items-center gap-x-2 md:gap-x-4"
           animate={{
-            x: isScrolled ? 20 : 0, // Move right when scrolled
+            x: scrollYProgress > 0 && scrollYProgress < 0.9 ? 20 : 0, // Move right when scrolled
           }}
           transition={{ type: "spring", stiffness: 200 }}
+          exit={{ x: 0 }}
         >
           <NavigationMenu orientation="vertical" className="bg-transparent">
             <NavigationMenuList>
               <NavigationMenuItem>
-                <NavigationMenuTrigger className="p-2 text-white bg-inherit focus:bg-transparent">
-                  <MenuIcon className="stroke-white" />
+                <NavigationMenuTrigger className="p-2 dark:text-white bg-inherit focus:bg-transparent">
+                  <MenuIcon className="dark:stroke-white stroke-black" />
                 </NavigationMenuTrigger>
                 <NavigationMenuContent className="flex flex-col p-4 text-base gap-y-4 ">
                   {navLinks?.links?.map((link: LinkType) => (
                     <NavigationMenuLink key={link.slug} asChild>
                       <Link
                         state={{ data: navLinks }}
-                        className="text-base whitespace-nowrap dark:text-white hover:text-popover-foreground/40"
+                        className="text-base whitespace-nowrap dark:text-white hover:opacity-40"
                         to={link.path || `#${link.slug}`}
                       >
                         <span className="text-primary-foreground">#</span>
@@ -98,7 +99,8 @@ const NavBar = ({ className }: ComponentProps<"div">) => {
           <Toggles />
 
           {/* Button with glowy effect */}
-          {isScrolled ? (
+
+          {scrollYProgress > 0 && scrollYProgress < 0.9 ? (
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
@@ -111,9 +113,11 @@ const NavBar = ({ className }: ComponentProps<"div">) => {
                 state={{ data: navLinks }}
                 className="relative"
               >
-                <Button className="relative text-white transition-transform duration-300 rounded-full shadow-lg md:px-6 md:py-3 font-unbounded bg-gradient-to-r from-purple-400 to-pink-500 hover:from-pink-500 hover:to-purple-400 hover:scale-105">
-                  <span className="absolute inset-0 rounded-full blur-lg opacity-60 bg-gradient-to-r from-purple-400 to-pink-500"></span>
-                  <span className="hidden md:inline">contact me</span>
+                <Button className="relative transition-transform duration-300 rounded-full shadow-lg dark:text-white md:px-6 md:py-3 font-unbounded hover:bg-gradient-to-r hover:from-pink-500 hover:to-purple-400 hover:scale-105">
+                  <span className="absolute inset-0 rounded-full blur-lg mix-blend-lighten bg-gradient-to-r from-purple-400 to-pink-500" />
+                  <span className="hidden text-white md:inline">
+                    work together
+                  </span>
                   <MessageCircle className="inline-block md:hidden" />
                 </Button>
               </Link>

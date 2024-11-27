@@ -6,6 +6,40 @@ import Hero from "./components/hero";
 import Projects from "./components/projects";
 import useHashNavigation from "./hooks/useHashNavigation";
 
+const Rays = () => {
+  return (
+    <div
+      className="f-1fpxu4o"
+      style={{
+        opacity: 1,
+        willChange: "transform",
+        transform: "none",
+      }}
+    >
+      <div
+        className="f-1yp8dcl f-rZlwZ"
+        style={{ transform: "skewX(45deg)" }}
+      ></div>
+      <div
+        className="f-1tkmzk9 f-rZlwZ"
+        style={{ transform: "skewX(45deg)" }}
+      ></div>
+      <div
+        className="f-if0sjr f-rZlwZ"
+        style={{ transform: "skewX(45deg)" }}
+      ></div>
+      <div
+        className="f-1xgonwz f-rZlwZ"
+        style={{ transform: "skewX(45deg)" }}
+      ></div>
+      <div
+        className="f-1lv1w0o f-rZlwZ"
+        style={{ transform: "skewX(45deg)" }}
+      ></div>
+    </div>
+  );
+};
+
 function App() {
   useHashNavigation();
   return (
@@ -13,10 +47,9 @@ function App() {
       <div className="absolute inset-0 z-0 min-h-screen opacity-10">
         <div className="absolute inset-0 bg-repeat bg-[length:150px_auto] bg-left-top bg-[url('/noise.png')]" />
       </div>
-      <div
-        id="top"
-        className="h-full bg-gradient bg-[length:200%_200%] animate-gradient relative"
-      >
+
+      <div id="top" className="relative h-full">
+        <Rays />
         <Header />
         <Hero />
       </div>

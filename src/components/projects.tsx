@@ -77,17 +77,13 @@ function Projects() {
     })
   );
 
-  // if (isLoading)
-  //   return (
-  //     <SectionLayout slug={slug}>
-  //       <Loader2 />
-  //     </SectionLayout>
-  //   );
+  if (isLoading || !projects)
+    return <SectionLayout slug={slug}>{/* <Loader2 /> */}</SectionLayout>;
   if (error) return <p>Error fetching projects: {error.message}</p>;
 
-  if (!navLinks) return <p>Loading navigation...</p>;
+  // if (!navLinks) return <p>Loading navigation...</p>;
 
-  if (!projects) return <p>Loading projects...</p>;
+  // if (!projects) return <p>Loading projects...</p>;
 
   const handleClick = () => {
     setOrientation((prev) => (prev === "vertical" ? "horizontal" : "vertical"));

@@ -163,15 +163,15 @@ function AboutMe() {
           whileInView="visible"
           viewport={{ once: true, amount: 0.5 }}
           variants={waterFall} // Define stagger children in the parent
-          className="w-full space-y-16"
+          className="flex flex-col items-center w-full space-y-16 text-center"
         >
           <h3
-            className="text-2xl font-instrument before:content[''] mx-auto before:w-16 before:h-[0.05rem] dark:before:bg-white/40 before:bg-black/80 text-purple-400 before:absolute before:top-1/2 before:left-[140%] 
+            className="text-2xl font-instrument before:content[''] before:w-16 before:h-[0.05rem] dark:before:bg-white/40 before:bg-black/80 text-purple-400 before:absolute before:top-1/2 before:left-[140%] 
             after:content[''] after:w-16 after:h-[0.05rem] dark:after:bg-white/40 after:bg-black after:absolute after:top-1/2 after:right-[140%] relative w-fit"
           >
             Experience
           </h3>
-          <motion.div className="flex flex-col gap-y-32 font-unbounded">
+          <motion.div className="flex flex-col w-full gap-y-32 font-unbounded">
             {experiences.map(({ role, company, start, end, _id }) => (
               <div key={_id}>
                 <motion.div

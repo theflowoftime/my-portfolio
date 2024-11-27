@@ -1,35 +1,74 @@
 import { Copyright, Mail, Phone } from "lucide-react";
-import SocialIcons from "./sub-components/icons/social-icons";
 import LogoWithName from "./sub-components/site-logo";
+
+const SocialIcons = () => {
+  return (
+    <div className="flex flex-col gap-2 sm:flex-row">
+      <svg
+        role="img"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+        width={22}
+        height={22}
+        className="dark:fill-white"
+      >
+        <title>GitHub</title>
+        <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+      </svg>
+      <svg
+        role="img"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+        width={22}
+        height={22}
+        className="dark:fill-white"
+      >
+        <title>Dribbble</title>
+        <path d="M12 24C5.385 24 0 18.615 0 12S5.385 0 12 0s12 5.385 12 12-5.385 12-12 12zm10.12-10.358c-.35-.11-3.17-.953-6.384-.438 1.34 3.684 1.887 6.684 1.992 7.308 2.3-1.555 3.936-4.02 4.395-6.87zm-6.115 7.808c-.153-.9-.75-4.032-2.19-7.77l-.066.02c-5.79 2.015-7.86 6.025-8.04 6.4 1.73 1.358 3.92 2.166 6.29 2.166 1.42 0 2.77-.29 4-.814zm-11.62-2.58c.232-.4 3.045-5.055 8.332-6.765.135-.045.27-.084.405-.12-.26-.585-.54-1.167-.832-1.74C7.17 11.775 2.206 11.71 1.756 11.7l-.004.312c0 2.633.998 5.037 2.634 6.855zm-2.42-8.955c.46.008 4.683.026 9.477-1.248-1.698-3.018-3.53-5.558-3.8-5.928-2.868 1.35-5.01 3.99-5.676 7.17zM9.6 2.052c.282.38 2.145 2.914 3.822 6 3.645-1.365 5.19-3.44 5.373-3.702-1.81-1.61-4.19-2.586-6.795-2.586-.825 0-1.63.1-2.4.285zm10.335 3.483c-.218.29-1.935 2.493-5.724 4.04.24.49.47.985.68 1.486.08.18.15.36.22.53 3.41-.43 6.8.26 7.14.33-.02-2.42-.88-4.64-2.31-6.38z" />
+      </svg>
+      <svg
+        role="img"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
+        width={22}
+        height={22}
+        className="dark:fill-white"
+      >
+        <title>Figma</title>
+        <path d="M15.852 8.981h-4.588V0h4.588c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.491-4.49 4.491zM12.735 7.51h3.117c1.665 0 3.019-1.355 3.019-3.019s-1.355-3.019-3.019-3.019h-3.117V7.51zm0 1.471H8.148c-2.476 0-4.49-2.014-4.49-4.49S5.672 0 8.148 0h4.588v8.981zm-4.587-7.51c-1.665 0-3.019 1.355-3.019 3.019s1.354 3.02 3.019 3.02h3.117V1.471H8.148zm4.587 15.019H8.148c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49h4.588v8.98zM8.148 8.981c-1.665 0-3.019 1.355-3.019 3.019s1.355 3.019 3.019 3.019h3.117V8.981H8.148zM8.172 24c-2.489 0-4.515-2.014-4.515-4.49s2.014-4.49 4.49-4.49h4.588v4.441c0 2.503-2.047 4.539-4.563 4.539zm-.024-7.51a3.023 3.023 0 0 0-3.019 3.019c0 1.665 1.365 3.019 3.044 3.019 1.705 0 3.093-1.376 3.093-3.068v-2.97H8.148zm7.704 0h-.098c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49h.098c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.49-4.49 4.49zm-.097-7.509c-1.665 0-3.019 1.355-3.019 3.019s1.355 3.019 3.019 3.019h.098c1.665 0 3.019-1.355 3.019-3.019s-1.355-3.019-3.019-3.019h-.098z" />
+      </svg>
+    </div>
+  );
+};
 
 function Footer() {
   return (
-    <div className="bg-gradient bg-[length:400%_400%] opacity-90 animate-gradient h-[13rem] mt-16 bg-neutral-900 bg-clip-padding backdrop-filter bg-opacity-20">
-      <div className="container flex flex-col justify-between min-h-full py-4 text-white">
+    <div className="opacity-90  h-[13rem] mt-16">
+      <div className="container flex flex-col justify-between min-h-full py-4 dark:text-white">
         <div className="flex flex-wrap justify-between">
           <div className="space-y-2">
             <LogoWithName />
             <div className="space-x-2">
               <Mail className="inline-block" size="16" />
-              <span className="text-sm font-medium text-white/80 md:text-base">
+              <span className="text-sm font-medium dark:text-white opacity-80 md:text-base">
                 flowoftime@gmail.com
               </span>
             </div>
             <div className="space-x-2 ">
               <Phone className="inline-block" size="16" />
-              <span className="text-sm font-medium text-white/80 md:text-base">
+              <span className="text-sm font-medium dark:text-white opacity-80 md:text-base">
                 +216-56-140-270
               </span>
             </div>
           </div>
 
           <div className="flex flex-col items-center">
-            <h3 className="text-sm md:text-lg">Media</h3>
-            <SocialIcons className="flex gap-x-2" size="lg" />
+            <h3 className="hidden text-sm md:text-lg sm:block">Media</h3>
+            <SocialIcons />
           </div>
         </div>
 
-        <div className="self-center text-xs text-white/80 md:text-sm">
+        <div className="self-center text-xs dark:text-white opacity-80 md:text-sm">
           Copyright <Copyright className="inline-block" size={20} />{" "}
           {new Date().getFullYear()}. Made by Yacine
         </div>
