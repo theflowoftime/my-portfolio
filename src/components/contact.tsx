@@ -207,6 +207,18 @@ function Contact() {
         <motion.div
           initial="hidden"
           whileInView="visible"
+          variants={{
+            initial: { y: "-100%" },
+            visible: {
+              y: 0,
+              transition: {
+                type: "spring",
+                stiffness: 10,
+                staggerChildren: 0.2,
+                delayChildren: 0.2,
+              },
+            },
+          }}
           viewport={{ once: true, amount: 0.6 }}
           className="flex flex-col justify-center h-full"
         >
