@@ -46,14 +46,14 @@ const NavBar = ({ className }: ComponentProps<"div">) => {
             : "initial"
         }
         className={cn(
-          "container fixed top-0 left-0 right-0 z-20 flex items-center justify-end sm:justify-between w-full py-2 flex-nowrap max-h-fit",
+          "container fixed top-0 left-0 right-0 z-20 flex items-center justify-between w-full py-2 flex-nowrap max-h-fit",
           isScrolled &&
             "bg-black backdrop-blur-2xl backdrop-filter bg-opacity-5 transition-colors duration-1000 ease-in"
         )}
       >
         {/* Logo with motion */}
         <motion.div
-          className="hidden sm:block"
+          className=""
           animate={{
             x: isScrolled ? 20 : 0, // Move left when scrolled
           }}

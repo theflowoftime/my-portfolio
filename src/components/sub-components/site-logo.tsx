@@ -5,7 +5,7 @@ const LogoWithName = (props: ComponentProps<"div">) => {
   return (
     <div className="flex items-center select-none gap-x-2" {...props}>
       <Logo className="w-4 h-4 fill-white" />
-      <span className="self-center text-base font-bold text-white">
+      <span className="self-center hidden text-base font-bold text-white sm:inline">
         Yacine;
       </span>
     </div>
