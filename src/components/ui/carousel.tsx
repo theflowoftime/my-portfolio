@@ -76,6 +76,10 @@ const Carousel = React.forwardRef<
       if (!api) return;
       setScrollSnaps(api.scrollSnapList());
       setSelectedIndex(api.selectedScrollSnap());
+
+      console.log(api.selectedScrollSnap());
+      console.log("--------");
+      console.log(api.slideNodes);
     }, []);
 
     const onSelect = React.useCallback((api: CarouselApi) => {
@@ -149,16 +153,22 @@ const Carousel = React.forwardRef<
     React.useEffect(() => {
       if (!api) return;
 
+      // First, initialize state.
+      onInit(api);
+      onSelect(api);
+
+      // Then, register event listeners.
       api.on("init", onInit);
       api.on("reInit", onInit);
       api.on("select", onSelect);
 
       return () => {
+        // Cleanup on unmount or dependency changes.
         api.off("init", onInit);
         api.off("reInit", onInit);
         api.off("select", onSelect);
       };
-    }, [api]);
+    }, [api, onInit, onSelect]);
 
     return (
       <CarouselContext.Provider
