@@ -3,13 +3,19 @@ import { useProjects } from "@/hooks/useProjects";
 import SectionLayout from "@/layouts/section-layout";
 import { useLanguageStore } from "@/stores/language-store";
 import type { Orientation, Project } from "@/types/types";
-import { MoveHorizontal, MoveVertical } from "lucide-react";
+import {
+  ExternalLink,
+  GalleryHorizontal,
+  GalleryVertical,
+  LinkIcon,
+  LucideIcon,
+} from "lucide-react";
 
 // import projects from "@/assets/data/data.json";
 import useNavLinks from "@/hooks/useNavLinks";
 import { waterFall } from "@/lib/framer-variants";
 import Autoplay from "embla-carousel-autoplay";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useRef, useState } from "react";
 import LazyBackground from "./sub-components/lazy-bg-img-sanity";
 import { Button } from "./ui/button";
@@ -19,6 +25,32 @@ import {
   CarouselControls,
   CarouselItem,
 } from "./ui/carousel";
+import { Link } from "react-router-dom";
+
+function CarouselLinkButton({
+  to,
+  label,
+  Icon,
+}: {
+  to: string;
+  label: string;
+  Icon: LucideIcon;
+}) {
+  return (
+    <Link
+      to={to}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex items-center gap-1 group"
+      aria-label={label}
+    >
+      <span className="px-4 py-2 text-white transition-all duration-300 ease-in translate-x-full bg-black rounded-full opacity-0 bg-opacity-5 backdrop-blur-md backdrop-filter group-hover:translate-x-0 group-hover:opacity-100">
+        {label}
+      </span>
+      <Icon className="stroke-white group-hover:stroke-purple-500 " size={28} />
+    </Link>
+  );
+}
 
 function Projects() {
   const { data: navLinks } = useNavLinks();
@@ -68,8 +100,54 @@ function Projects() {
           >
             <CarouselContent className="w-full h-full">
               {projects.map((project: Project) => (
-                <CarouselItem key={project._id} className="cursor-grab">
+                <CarouselItem
+                  key={project._id}
+                  className="relative cursor-grab"
+                >
                   <LazyBackground image={project.image} title={project.title} />
+                  <div className="absolute top-0 right-0 flex flex-col items-end gap-2 p-2">
+                    <CarouselLinkButton
+                      to={project.link}
+                      label="Live Website"
+                      Icon={ExternalLink}
+                    />
+                    <CarouselLinkButton
+                      to={project.link}
+                      label="Project Page"
+                      Icon={LinkIcon}
+                    />
+
+                    {/* <Link
+                      to={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1 group"
+                      aria-label="Visit Live Website"
+                    >
+                      <span className="transition-all duration-300 ease-in translate-x-full opacity-0 group-hover:translate-x-0 group-hover:opacity-100">
+                        Live Website
+                      </span>
+                      <ExternalLink
+                        className="stroke-white group-hover:stroke-purple-500 "
+                        size={28}
+                      />
+                    </Link> */}
+                    {/* <Link
+                      to={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1 group"
+                      aria-label="Visit Project Page"
+                    >
+                      <span className="transition-all duration-300 ease-in translate-x-full opacity-0 group-hover:translate-x-0 group-hover:opacity-100">
+                        Project Page
+                      </span>
+                      <LinkIcon
+                        className="stroke-white group-hover:stroke-purple-500"
+                        size={28}
+                      />
+                    </Link> */}
+                  </div>
                 </CarouselItem>
               ))}
             </CarouselContent>
@@ -86,13 +164,13 @@ function Projects() {
                     title={`flip the projects slider ${
                       orientation === "vertical" ? "horizontal" : "vertical"
                     }ly`} //localization needed
-                    className="appearance-none bg-transparent touch-manipulation inline-flex no-underline cursor-pointer shadow-[inset_0_0_0_0.2rem_var(--detail-medium-contrast)] w-[3rem] h-[3rem] z-[1] text-[color:var(--text-body)] items-center justify-center m-0 p-0 rounded-[50%] border-0"
+                    className="appearance-none bg-transparent hover:text-white dark:hover:text-popover-foreground touch-manipulation inline-flex no-underline cursor-pointer shadow-[inset_0_0_0_0.2rem_var(--detail-medium-contrast)] w-[3rem] h-[3rem] z-[1] text-[color:var(--text-body)] items-center justify-center m-0 p-0 border-0"
                     onClick={handleClick}
                   >
                     {orientation === "horizontal" ? (
-                      <MoveVertical />
+                      <GalleryHorizontal />
                     ) : (
-                      <MoveHorizontal />
+                      <GalleryVertical />
                     )}
                   </Button>
                 </div>

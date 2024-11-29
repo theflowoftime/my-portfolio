@@ -76,10 +76,6 @@ const Carousel = React.forwardRef<
       if (!api) return;
       setScrollSnaps(api.scrollSnapList());
       setSelectedIndex(api.selectedScrollSnap());
-
-      console.log(api.selectedScrollSnap());
-      console.log("--------");
-      console.log(api.slideNodes);
     }, []);
 
     const onSelect = React.useCallback((api: CarouselApi) => {
@@ -348,7 +344,7 @@ const DotButtons = React.forwardRef<
             <DotButton
               onClick={() => scrollTo(index)}
               className={cn(
-                "appearance-none bg-transparent touch-manipulation  no-underline cursor-pointer w-[2.6rem] h-[2.6rem] flex items-center justify-center m-0 p-0 rounded-[50%] border-0 after:shadow-[inset_0_0_0_0.2rem_var(--detail-medium-contrast)] after:w-[1.4rem] after:h-[1.4rem] after:flex after:items-center after:content-[''] after:rounded-[50%]",
+                "appearance-none bg-transparent touch-manipulation no-underline cursor-pointer w-[2.6rem] h-[2.6rem] flex items-center justify-center m-0 p-0 rounded-[50%] border-0 after:shadow-[inset_0_0_0_0.2rem_var(--detail-medium-contrast)] after:w-[1.4rem] after:h-[1.4rem] after:flex after:items-center after:content-[''] after:rounded-[50%]",
                 index === selectedIndex
                   ? "after:shadow-[inset_0_0_0_0.2rem_var(--text-body)]"
                   : ""

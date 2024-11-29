@@ -5,7 +5,12 @@ import Decorations from "./sub-components/about-me/decorations";
 import useNavLinks from "@/hooks/useNavLinks";
 import { Badge } from "./ui/badge";
 import { Separator } from "./ui/separator";
-import { MoveRight } from "lucide-react";
+import {
+  BriefcaseBusiness,
+  Building2,
+  CalendarFold,
+  MoveRight,
+} from "lucide-react";
 import { waterFall } from "@/lib/framer-variants";
 
 const experiences = [
@@ -94,8 +99,9 @@ function AboutMe() {
             <div className="flex flex-col items-center space-y-4 text-center font-instrument">
               <h3
                 ref={containerRef}
-                className="text-2xl before:content['']  before:w-16 before:h-[0.05rem] dark:before:bg-white/40 before:bg-black/80 text-purple-400 before:absolute before:top-1/2 before:left-[140%] 
-            after:content[''] after:w-16 after:h-[0.05rem] dark:after:bg-white/40 after:bg-black after:absolute after:top-1/2 after:right-[140%] relative w-fit"
+                className="text-2xl font-instrument before:content[''] before:w-16 before:h-[0.062rem] dark:before:bg-white/10 
+            before:bg-purple-700/30 text-purple-400 before:absolute before:-translate-y-1/2 after:-translate-y-1/2 before:top-1/2 before:left-[36%] 
+            after:content[''] after:w-16 after:h-[0.062rem]  dark:after:bg-white/10  after:bg-purple-700/30 after:absolute after:top-1/2 after:right-[36%] relative w-full"
               >
                 Hello!
               </h3>
@@ -167,8 +173,9 @@ function AboutMe() {
           className="flex flex-col items-center w-full space-y-16 text-center"
         >
           <h3
-            className="text-2xl font-instrument before:content[''] before:w-16 before:h-[0.05rem] dark:before:bg-white/40 before:bg-black/80 text-purple-400 before:absolute before:top-1/2 before:left-[140%] 
-            after:content[''] after:w-16 after:h-[0.05rem] dark:after:bg-white/40 after:bg-black after:absolute after:top-1/2 after:right-[140%] relative w-fit"
+            className="text-2xl font-instrument before:content[''] before:w-16 before:h-[0.062rem] dark:before:bg-white/10 
+            before:bg-purple-700/30 text-purple-400 before:absolute before:-translate-y-1/2 after:-translate-y-1/2 before:top-1/2 before:left-[36%] 
+            after:content[''] after:w-16 after:h-[0.062rem] dark:after:bg-white/10 dark:after:bg-white/10 after:bg-purple-700/30 after:absolute after:top-1/2 after:right-[36%] relative w-full"
           >
             Experience
           </h3>
@@ -179,14 +186,22 @@ function AboutMe() {
                   variants={waterFall}
                   className="grid justify-between grid-cols-3 justify-items-center"
                 >
-                  <span>{role}</span>
-                  <span>{company}</span>
-                  <span>
-                    {start} <MoveRight className="inline-block" /> {end}
-                  </span>
+                  <p>
+                    <BriefcaseBusiness className="w-full text-center" />
+                    {role}
+                  </p>
+                  <p className="text-2xl text-effect">
+                    <Building2 className="w-full text-center" />
+                    {company}
+                  </p>
+                  <p className="opacity-60">
+                    <CalendarFold className="w-full text-center" />
+                    {start} <MoveRight size={16} className="inline-block" />{" "}
+                    {end}
+                  </p>
                 </motion.div>
                 <motion.div variants={waterFall}>
-                  <Separator className="min-w-full bg-white/40" />
+                  <Separator className="min-w-full dark:bg-white/10 dark:opacity-100 opacity-40 " />
                 </motion.div>
               </div>
             ))}

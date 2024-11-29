@@ -37,6 +37,12 @@ import LabelIcon from "./sub-components/contact/form-label-icon";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Toaster } from "./ui/toaster";
+import { cn } from "@/lib/utils";
+
+const contactFormHeaderText = [
+  { word: "Let's", highlighted: false },
+  { word: "talk!", highlighted: true },
+];
 
 function ContactForm() {
   const language = useLanguageStore((state) => state.language);
@@ -187,14 +193,7 @@ function Contact() {
   // } = useLocation();
 
   // const location = useLocation();
-  if (isLoading)
-    return (
-      <SectionLayout slug={slug}>
-        <Loader2 />
-      </SectionLayout>
-    );
-
-  if (!contactData) return <p>Loading contact form...</p>;
+  if (isLoading || !contactData) return <SectionLayout slug={slug} />;
 
   return (
     <>
@@ -223,16 +222,16 @@ function Contact() {
               <ContactForm />
             </motion.div>
             {/* Localization needed */}
+
             <motion.h5 className="text-[9.75rem] font-unbounded leading-[0.7em] row-start-1">
-              <motion.p variants={contactTitleBackFlip} className="">
-                Let's
-              </motion.p>
-              <motion.p
-                variants={contactTitleBackFlip}
-                className="text-purple-500"
-              >
-                Talk!
-              </motion.p>
+              {contactFormHeaderText.map((wordInfo) => (
+                <motion.p
+                  className={cn(wordInfo.highlighted && "text-purple-500")}
+                  variants={contactTitleBackFlip}
+                >
+                  {wordInfo.word}
+                </motion.p>
+              ))}
             </motion.h5>
           </div>
         </motion.div>
