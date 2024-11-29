@@ -93,7 +93,6 @@ function Hero() {
               <motion.p
                 key={index}
                 variants={waterFall}
-                custom={index * 0.2}
                 className="flex items-center justify-center gap-x-4 whitespace-nowrap"
               >
                 {sentenceWithImage}
@@ -104,14 +103,13 @@ function Hero() {
         {/** Description Section */}
         <motion.p
           variants={waterFall}
-          custom={1}
           className="tracking-tight text-balance dark:text-white/60"
         >
           {heroSubText}
         </motion.p>
       </motion.div>
       {/** Call-to-action Section */}
-      <motion.div variants={waterFall} custom={1.2}>
+      <motion.div variants={waterFall}>
         <Link
           state={{ data: navLinks }}
           to={`${navLinks?.links?.[2]?.path || "#works"}`}

@@ -1,11 +1,9 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { motion, useScroll, useTime, useTransform } from "framer-motion";
+import { useRef } from "react";
 import SectionLayout from "@/layouts/section-layout";
 import Decorations from "./sub-components/about-me/decorations";
 import useNavLinks from "@/hooks/useNavLinks";
 import { Badge } from "./ui/badge";
-
-import { useDragControls } from "framer-motion";
 import { Separator } from "./ui/separator";
 import { MoveRight } from "lucide-react";
 import { waterFall } from "@/lib/framer-variants";
@@ -53,8 +51,10 @@ function AboutMe() {
   const { data: navLinks } = useNavLinks();
   const slug = navLinks?.links?.[1].slug || "about-me";
 
-  const controls = useDragControls();
   const constraintsRef = useRef(null);
+
+  const time = useTime();
+  const y = useTransform(() => Math.sin(time.get() / 1000) * 10);
 
   const whatIdo =
     "I help startups and enterprise to establish an emotional connection between their products and happy engaged customers";
@@ -121,6 +121,7 @@ function AboutMe() {
               "User Reasearch",
             ]).map((keyword, index) => (
               <motion.div
+                style={{ y }}
                 key={keyword}
                 drag
                 dragConstraints={constraintsRef}

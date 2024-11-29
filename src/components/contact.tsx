@@ -19,27 +19,24 @@ import useSendMessage from "@/hooks/useSendMessage";
 import SectionLayout from "@/layouts/section-layout";
 import { defaultValues } from "@/lib/constants";
 
-import { buildFormSchema } from "@/lib/zod-schemas";
-import { useLanguageStore } from "@/stores/language-store";
-import type { FormSchemaType } from "@/types/types";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { motion, Variants } from "framer-motion";
-import { Loader2, Send } from "lucide-react";
-import { useEffect, useState } from "react";
-import ReCAPTCHA from "react-google-recaptcha";
-import { useForm } from "react-hook-form";
-import LabelIcon from "./sub-components/contact/form-label-icon";
-import LazyBackground from "./sub-components/lazy-bg-img-sanity";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Toaster } from "./ui/toaster";
-import ContactHeader from "./sub-components/contact/form-header";
-import type { Contact as TContact } from "@/types/types";
-import { queryClient } from "@/main";
 import {
   contactTitleBackFlip,
   ReversewaterFallContactForm,
 } from "@/lib/framer-variants";
+import { buildFormSchema } from "@/lib/zod-schemas";
+import { queryClient } from "@/main";
+import { useLanguageStore } from "@/stores/language-store";
+import type { FormSchemaType, Contact as TContact } from "@/types/types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { motion } from "framer-motion";
+import { Loader2, Send } from "lucide-react";
+import { useEffect } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
+import { useForm } from "react-hook-form";
+import LabelIcon from "./sub-components/contact/form-label-icon";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { Toaster } from "./ui/toaster";
 
 function ContactForm() {
   const language = useLanguageStore((state) => state.language);
@@ -166,7 +163,6 @@ function ContactForm() {
               <>
                 <Loader2 className="animate-spin" />
                 {contact?.button.submittingText}...
-                {/* either remove or add in contact document (contact?.button.loaderText)  */}
               </>
             ) : (
               <div className="flex items-center justify-center gap-x-2">
@@ -182,7 +178,6 @@ function ContactForm() {
 }
 
 function Contact() {
-  // const { navLinks, language } = useCachedNavLinks();
   const { data: contactData, isLoading } = useContact();
   const { data: navLinks } = useNavLinks();
   const slug = navLinks?.links?.[3].slug || "contact";
@@ -222,13 +217,12 @@ function Contact() {
           viewport={{ once: true, amount: 0.6 }}
           className="flex flex-col justify-center h-full"
         >
-          {/* <ContactHeader description={contactData.description} /> */}
           {/* form container */}
           <div className="grid items-center justify-center gap-y-8 gap-x-8 lg:grid-cols-2 grid-re">
             <motion.div className="p-4 rounded-lg shadow-sm h-fit dark:shadow-black">
               <ContactForm />
             </motion.div>
-
+            {/* Localization needed */}
             <motion.h5 className="text-[9.75rem] font-unbounded leading-[0.7em] row-start-1">
               <motion.p variants={contactTitleBackFlip} className="">
                 Let's

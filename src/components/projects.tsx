@@ -3,71 +3,32 @@ import { useProjects } from "@/hooks/useProjects";
 import SectionLayout from "@/layouts/section-layout";
 import { useLanguageStore } from "@/stores/language-store";
 import type { Orientation, Project } from "@/types/types";
-import { Loader2, MoveHorizontal, MoveVertical } from "lucide-react";
-import { useLocation } from "react-router-dom";
+import { MoveHorizontal, MoveVertical } from "lucide-react";
 
 // import projects from "@/assets/data/data.json";
-import { type Variants, motion } from "framer-motion";
-import { RefObject, useCallback, useEffect, useRef, useState } from "react";
+import useNavLinks from "@/hooks/useNavLinks";
+import { waterFall } from "@/lib/framer-variants";
+import Autoplay from "embla-carousel-autoplay";
+import { motion } from "framer-motion";
+import { useRef, useState } from "react";
 import LazyBackground from "./sub-components/lazy-bg-img-sanity";
+import { Button } from "./ui/button";
 import {
   Carousel,
   CarouselContent,
   CarouselControls,
   CarouselItem,
 } from "./ui/carousel";
-import useNavLinks from "@/hooks/useNavLinks";
-import Autoplay from "embla-carousel-autoplay";
-import { Button } from "./ui/button";
-import { waterFall } from "@/lib/framer-variants";
-
-const variants: Variants = {
-  initial: () => ({
-    x: 0,
-    y: 0,
-    width: 250, // Initial card size
-    height: 250,
-  }),
-  select: ({
-    ref,
-    cardRef,
-  }: {
-    ref: RefObject<HTMLDivElement>;
-    cardRef: RefObject<HTMLDivElement>;
-  }) => {
-    const containerRect = ref.current?.getBoundingClientRect();
-    const cardRect = cardRef.current?.getBoundingClientRect();
-
-    if (!containerRect || !cardRect) return {};
-
-    return {
-      x: containerRect.left - cardRect.left,
-      y: containerRect.top - cardRect.top,
-      width: containerRect.width,
-      height: containerRect.height,
-      transition: {
-        duration: 1.5,
-        ease: "easeInOut",
-      },
-    };
-  },
-};
 
 function Projects() {
   const { data: navLinks } = useNavLinks();
-  // const {
-  //   state: { data: navLinks },
-  // } = useLocation();
 
-  // const location = useLocation();
-  // const navLinks = location?.state?.data;
   const slug = navLinks?.links?.[2].slug || "works";
 
   const language = useLanguageStore((state) => state.language);
   const { projects, isLoading, error } = useProjects(language);
 
   const [orientation, setOrientation] = useState<Orientation>("vertical");
-  // Find the slug for the "works" section, as the 3rd link
   const plugin = useRef(
     Autoplay({
       playOnInit: true,
@@ -78,12 +39,8 @@ function Projects() {
   );
 
   if (isLoading || !projects)
-    return <SectionLayout slug={slug}>{/* <Loader2 /> */}</SectionLayout>;
+    return <SectionLayout slug={slug}></SectionLayout>;
   if (error) return <p>Error fetching projects: {error.message}</p>;
-
-  // if (!navLinks) return <p>Loading navigation...</p>;
-
-  // if (!projects) return <p>Loading projects...</p>;
 
   const handleClick = () => {
     setOrientation((prev) => (prev === "vertical" ? "horizontal" : "vertical"));
@@ -98,8 +55,8 @@ function Projects() {
         }}
         orientation={orientation}
         plugins={[plugin.current]}
-        // onMouseEnter={plugin.current.stop}
-        // onMouseLeave={plugin.current.reset}
+        onMouseEnter={plugin.current.stop}
+        onMouseLeave={plugin.current.reset}
       >
         <motion.div
           initial="hidden"

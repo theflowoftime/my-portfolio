@@ -4,17 +4,17 @@ import { useScroll } from "framer-motion";
 const useScrollY = () => {
   const { scrollYProgress } = useScroll();
   // const isScrolled = useMotionValue(0);
-  const [scrollYprogression, setScrollYprogression] = useState(0);
+  const [state, setState] = useState(0);
 
   useEffect(() => {
     scrollYProgress.on("change", (latest) => {
-      setScrollYprogression(latest);
+      setState(latest);
     });
 
     return () => scrollYProgress.stop();
   }, [scrollYProgress]);
 
-  return scrollYprogression;
+  return state;
 };
 
 export default useScrollY;
