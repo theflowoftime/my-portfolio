@@ -81,9 +81,12 @@ function Projects() {
   return (
     <SectionLayout slug={slug} url="/projects.jpg">
       <Carousel
+        // className={`flex m${
+        //   orientation === "horizontal" ? "l" : "t"
+        // }-[calc(var(--slide-spacing) * -1)]`}
         opts={{
           loop: true,
-          align: "start",
+          align: "center",
         }}
         orientation={orientation}
         plugins={[plugin.current]}
@@ -98,7 +101,7 @@ function Projects() {
           <motion.div
             variants={waterFall} // Define stagger children in the parent
           >
-            <CarouselContent className="w-full h-full">
+            <CarouselContent className="flex w-full h-full">
               {projects.map((project: Project) => (
                 <CarouselItem
                   key={project._id}

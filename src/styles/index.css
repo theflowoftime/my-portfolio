@@ -50,9 +50,9 @@
     --color-transparent: rgba(0, 0, 0, 0);
     --color-faint-white: rgba(255, 255, 255, 0);
 
-    --slide-height: 30rem;
+    --slide-height: 40rem;
     --slide-spacing: 1rem;
-    --slide-size: 100%;
+    --slide-size: 80%;
     --text-body: rgb(54, 49, 61);
     --detail-medium-contrast: rgb(240, 240, 242);
 

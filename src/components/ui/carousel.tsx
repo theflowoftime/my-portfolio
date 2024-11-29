@@ -270,7 +270,7 @@ const CarouselPrevious = React.forwardRef<
       }
       {...props}
     >
-      <ArrowLeft className=" w-[35%] h-[35%]" />
+      <ArrowLeft className="w-[35%] h-[35%]" />
       <span className="sr-only">Previous slide</span>
     </Button>
   );

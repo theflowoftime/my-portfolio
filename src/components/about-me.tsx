@@ -82,9 +82,10 @@ function AboutMe() {
     const end = ((index + 1) / totalWords) * 0.9;
 
     const opacity = useTransform(scrollYProgress, [start, end], [0.2, 1]);
+    const blur = useTransform(scrollYProgress, [0, 1], ["0px", "10px"]);
 
     return (
-      <motion.span key={index} style={{ opacity }}>
+      <motion.span key={index} style={{ opacity, filter: `blur(${blur})` }}>
         {word}{" "}
       </motion.span>
     );

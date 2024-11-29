@@ -226,6 +226,7 @@ function Contact() {
             <motion.h5 className="text-[9.75rem] font-unbounded leading-[0.7em] row-start-1">
               {contactFormHeaderText.map((wordInfo) => (
                 <motion.p
+                  key={wordInfo.word}
                   className={cn(wordInfo.highlighted && "text-purple-500")}
                   variants={contactTitleBackFlip}
                 >

@@ -18,6 +18,9 @@ import { Separator } from "../ui/separator";
 import Toggles from "./hero/preferences-toggle";
 import LogoWithName from "./site-logo";
 import { Button } from "../ui/button";
+import { waterFall } from "@/lib/framer-variants";
+
+const yScrollYProgressionRange = [0.01, 0.88];
 
 const NavBar = ({ className }: ComponentProps<"div">) => {
   const { data: navLinks, isLoading } = useNavLinks();
@@ -37,7 +40,7 @@ const NavBar = ({ className }: ComponentProps<"div">) => {
         <motion.div
           initial={{ y: 0 }}
           animate={
-            scrollYProgress > 0
+            scrollYProgress > yScrollYProgressionRange[0]
               ? {
                   y: 10,
                   borderRadius: "calc(var(--radius) - 2px)",
@@ -48,16 +51,20 @@ const NavBar = ({ className }: ComponentProps<"div">) => {
           }
           className={cn(
             "container fixed top-0 left-0 right-0 z-20 flex items-center justify-between w-full py-2 flex-nowrap max-h-fit",
-            scrollYProgress > 0 &&
+            scrollYProgress > yScrollYProgressionRange[0] &&
               "bg-black backdrop-blur-2xl backdrop-filter bg-opacity-5 transition-colors duration-1000 ease-in"
           )}
         >
           {/* Logo with motion */}
           <motion.div
             animate={{
-              x: scrollYProgress > 0 && scrollYProgress < 0.9 ? 20 : 0, // Move left when scrolled
+              x:
+                scrollYProgress > yScrollYProgressionRange[0] &&
+                scrollYProgress < yScrollYProgressionRange[1]
+                  ? 20
+                  : 0, // Move left when scrolled
             }}
-            transition={{ type: "spring", stiffness: 200 }}
+            // transition={{ type: "spring", stiffness: 100 }}
             layout
           >
             <LogoWithName />
@@ -67,20 +74,25 @@ const NavBar = ({ className }: ComponentProps<"div">) => {
           <motion.div
             className="flex flex-row items-center gap-x-2 md:gap-x-4"
             animate={{
-              x: scrollYProgress > 0 && scrollYProgress < 0.9 ? 20 : 0, // Move right when scrolled
+              x:
+                scrollYProgress > yScrollYProgressionRange[0] &&
+                scrollYProgress < yScrollYProgressionRange[1]
+                  ? 20
+                  : 0, // Move right when scrolled
             }}
-            transition={{ type: "spring", stiffness: 200 }}
-            layout
+            // transition={{ type: "spring", stiffness: 100 }}
+            // layout
           >
-            <NavigationMenu orientation="vertical" className="bg-transparent">
+            <NavigationMenu orientation="vertical">
               <NavigationMenuList>
                 <NavigationMenuItem>
                   <NavigationMenuTrigger className="p-2 dark:text-white bg-inherit focus:bg-transparent">
                     <MenuIcon className="dark:stroke-white stroke-black" />
                   </NavigationMenuTrigger>
-                  <NavigationMenuContent className="flex flex-col p-4 text-base gap-y-4 ">
+
+                  <NavigationMenuContent className="flex flex-col p-4 text-base gap-y-4">
                     {navLinks?.links?.map((link: LinkType) => (
-                      <NavigationMenuLink key={link.slug} asChild>
+                      <NavigationMenuLink key={link.title} asChild>
                         <Link
                           state={{ data: navLinks }}
                           className="text-base whitespace-nowrap dark:text-white hover:opacity-40"
@@ -100,13 +112,12 @@ const NavBar = ({ className }: ComponentProps<"div">) => {
             <Toggles />
 
             {/* Button with glowy effect */}
-
-            {scrollYProgress > 0 && scrollYProgress < 0.9 ? (
+            {scrollYProgress > yScrollYProgressionRange[0] &&
+            scrollYProgress < yScrollYProgressionRange[1] ? (
               <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                exit={{ scale: 0 }}
-                transition={{ type: "spring", stiffness: 300, delay: 0.2 }}
+                initial={{ scale: 0, opacity: 0.8 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: "spring", stiffness: 200, damping: 5 }}
               >
                 <Link
                   to={
