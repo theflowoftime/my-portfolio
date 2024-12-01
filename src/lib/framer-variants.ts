@@ -48,13 +48,13 @@ export const contactTitleBackFlip: Variants = {
 
 export const strokeStyleR = {
   stroke: "#C778DD", // Base color for the stroke
-  strokeWidth: 3, // Adjust stroke width as needed
+  strokeWidth: 2, // Adjust stroke width as needed
   fill: "none", // Ensure no fill for the path
 };
 
 export const strokeStyleL = {
   stroke: "#fff", // Base color for the stroke
-  strokeWidth: 3, // Adjust stroke width as needed
+  strokeWidth: 2, // Adjust stroke width as needed
   fill: "none", // Ensure no fill for the path
 };
 

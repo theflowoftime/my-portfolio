@@ -18,7 +18,8 @@ import { Separator } from "../ui/separator";
 import Toggles from "./hero/preferences-toggle";
 import LogoWithName from "./site-logo";
 import { Button } from "../ui/button";
-import { waterFall } from "@/lib/framer-variants";
+
+const buttonText = "Let's Talk!";
 
 const yScrollYProgressionRange = [0.01, 0.88];
 
@@ -95,7 +96,7 @@ const NavBar = ({ className }: ComponentProps<"div">) => {
                       <NavigationMenuLink key={link.title} asChild>
                         <Link
                           state={{ data: navLinks }}
-                          className="text-base whitespace-nowrap dark:text-white hover:opacity-40"
+                          className="text-base whitespace-nowrap dark:text-white hover:opacity-40 font-unbounded"
                           to={link.path || `#${link.slug}`}
                         >
                           <span className="text-primary-foreground">#</span>
@@ -129,7 +130,7 @@ const NavBar = ({ className }: ComponentProps<"div">) => {
                   <Button className="relative transition-transform duration-300 rounded-full shadow-lg dark:text-white md:px-6 md:py-3 font-unbounded hover:bg-gradient-to-r hover:from-pink-500 hover:to-purple-400 hover:scale-105">
                     <span className="absolute inset-0 rounded-full blur-lg mix-blend-lighten bg-gradient-to-r from-purple-400 to-pink-500" />
                     <span className="hidden text-white md:inline">
-                      Let's Talk!
+                      {buttonText}
                     </span>
                     <MessageCircle className="inline-block md:hidden" />
                   </Button>

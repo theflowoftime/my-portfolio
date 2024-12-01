@@ -1,17 +1,15 @@
 import { cn, urlFor } from "@/lib/utils";
 import { SanityImageSource } from "@sanity/image-url/lib/types/types";
-import { ComponentProps, useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { ComponentProps, useEffect, useState } from "react";
 
 const LazyBackground = ({
   className,
   image,
   size = "lg",
-  title,
 }: ComponentProps<"div"> & {
   image: SanityImageSource;
   size?: "sm" | "md" | "lg";
-  title?: string;
 }) => {
   const [loaded, setLoaded] = useState(false);
 
@@ -35,20 +33,14 @@ const LazyBackground = ({
       animate={{ opacity: loaded ? 1 : 0.5, scale: loaded ? 1 : 1.05 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
       className={cn(
-        "bg-cover bg-center bg-no-repeat dark:shadow-[inset_0_0_0_0.2rem_var(--detail-medium-contrast)] flex items-center justify-center h-full select-none rounded-[1.8rem]",
+        "bg-cover bg-center bg-no-repeat h-full dark:shadow-[inset_0_0_0_0.2rem_var(--detail-medium-contrast)]  select-none",
         className
       )}
       style={{
         // --background-image: `var(--background-image)`,
         backgroundImage: `url(${loaded ? images[size] : placeholderImage})`,
       }}
-    >
-      {title ? (
-        <span className="text-center text-white/80 text-effect text-[4rem] font-semibold">
-          {title}
-        </span>
-      ) : null}
-    </motion.div>
+    />
   );
 };
 

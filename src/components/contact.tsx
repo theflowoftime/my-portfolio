@@ -213,7 +213,7 @@ function Contact() {
               },
             },
           }}
-          viewport={{ once: true, amount: 0.6 }}
+          viewport={{ once: true, amount: 0.5 }}
           className="flex flex-col justify-center h-full"
         >
           {/* form container */}

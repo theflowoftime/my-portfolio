@@ -261,6 +261,7 @@ const CarouselPrevious = React.forwardRef<
       className={cn(
         "appearance-none bg-transparent touch-manipulation inline-flex no-underline cursor-pointer shadow-[inset_0_0_0_0.2rem_var(--detail-medium-contrast)] w-[3.6rem] h-[3.6rem] z-[1] text-[color:var(--text-body)] items-center justify-center m-0 p-0 rounded-[50%] border-0",
         orientation === "horizontal" ? " " : "transform rotate-90",
+
         className
       )}
       onClick={() =>

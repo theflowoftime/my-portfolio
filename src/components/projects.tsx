@@ -15,8 +15,9 @@ import {
 import useNavLinks from "@/hooks/useNavLinks";
 import { waterFall } from "@/lib/framer-variants";
 import Autoplay from "embla-carousel-autoplay";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import LazyBackground from "./sub-components/lazy-bg-img-sanity";
 import { Button } from "./ui/button";
 import {
@@ -25,9 +26,8 @@ import {
   CarouselControls,
   CarouselItem,
 } from "./ui/carousel";
-import { Link } from "react-router-dom";
 
-function CarouselLinkButton({
+export function CarouselLinkButton({
   to,
   label,
   Icon,
@@ -41,13 +41,13 @@ function CarouselLinkButton({
       to={to}
       target="_blank"
       rel="noopener noreferrer"
-      className="flex items-center gap-1 group"
+      className="flex items-center gap-x-2"
       aria-label={label}
     >
-      <span className="px-4 py-2 text-white transition-all duration-300 ease-in translate-x-full bg-black rounded-full opacity-0 bg-opacity-5 backdrop-blur-md backdrop-filter group-hover:translate-x-0 group-hover:opacity-100">
+      <Icon className="text-white peer hover:stroke-purple-400" size={20} />
+      <span className="hidden text-xs font-unbounded text-purple-400/80 peer-hover:inline">
         {label}
       </span>
-      <Icon className="stroke-white group-hover:stroke-purple-500 " size={28} />
     </Link>
   );
 }
@@ -60,7 +60,7 @@ function Projects() {
   const language = useLanguageStore((state) => state.language);
   const { projects, isLoading, error } = useProjects(language);
 
-  const [orientation, setOrientation] = useState<Orientation>("vertical");
+  const [orientation, setOrientation] = useState<Orientation>("horizontal");
   const plugin = useRef(
     Autoplay({
       playOnInit: true,
@@ -84,19 +84,19 @@ function Projects() {
         // className={`flex m${
         //   orientation === "horizontal" ? "l" : "t"
         // }-[calc(var(--slide-spacing) * -1)]`}
+        plugins={[plugin.current]}
+        onMouseEnter={plugin.current.stop}
+        onMouseLeave={plugin.current.reset}
         opts={{
           loop: true,
           align: "center",
         }}
         orientation={orientation}
-        plugins={[plugin.current]}
-        onMouseEnter={plugin.current.stop}
-        onMouseLeave={plugin.current.reset}
       >
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.8 }}
+          viewport={{ once: true, amount: 0.5 }}
         >
           <motion.div
             variants={waterFall} // Define stagger children in the parent
@@ -107,49 +107,28 @@ function Projects() {
                   key={project._id}
                   className="relative cursor-grab"
                 >
-                  <LazyBackground image={project.image} title={project.title} />
-                  <div className="absolute top-0 right-0 flex flex-col items-end gap-2 p-2">
-                    <CarouselLinkButton
-                      to={project.link}
-                      label="Live Website"
-                      Icon={ExternalLink}
-                    />
-                    <CarouselLinkButton
-                      to={project.link}
-                      label="Project Page"
-                      Icon={LinkIcon}
-                    />
+                  <LazyBackground image={project.image} />
+                  <div className="absolute bottom-0 w-full">
+                    <div className="flex items-center w-full px-4 py-1 bg-black cursor-default gap-x-4 bg-opacity-40 backdrop-blur-md backdrop-filter">
+                      <span className=" text-white/80 text-effect font-bold text-[3rem]">
+                        {project.title}
+                      </span>
+                      <div className="flex flex-col gap-2 p-0">
+                        {project.link ? (
+                          <CarouselLinkButton
+                            to={project.link}
+                            label="visit live website"
+                            Icon={ExternalLink}
+                          />
+                        ) : null}
 
-                    {/* <Link
-                      to={project.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1 group"
-                      aria-label="Visit Live Website"
-                    >
-                      <span className="transition-all duration-300 ease-in translate-x-full opacity-0 group-hover:translate-x-0 group-hover:opacity-100">
-                        Live Website
-                      </span>
-                      <ExternalLink
-                        className="stroke-white group-hover:stroke-purple-500 "
-                        size={28}
-                      />
-                    </Link> */}
-                    {/* <Link
-                      to={project.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1 group"
-                      aria-label="Visit Project Page"
-                    >
-                      <span className="transition-all duration-300 ease-in translate-x-full opacity-0 group-hover:translate-x-0 group-hover:opacity-100">
-                        Project Page
-                      </span>
-                      <LinkIcon
-                        className="stroke-white group-hover:stroke-purple-500"
-                        size={28}
-                      />
-                    </Link> */}
+                        <CarouselLinkButton
+                          to={`projects/${project._id}`}
+                          label="learn more details"
+                          Icon={LinkIcon}
+                        />
+                      </div>
+                    </div>
                   </div>
                 </CarouselItem>
               ))}

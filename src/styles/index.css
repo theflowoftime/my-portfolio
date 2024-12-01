@@ -51,7 +51,7 @@
     --color-faint-white: rgba(255, 255, 255, 0);
 
     --slide-height: 40rem;
-    --slide-spacing: 1rem;
+    --slide-spacing: 1.25rem;
     --slide-size: 80%;
     --text-body: rgb(54, 49, 61);
     --detail-medium-contrast: rgb(240, 240, 242);
@@ -170,14 +170,25 @@
 @layer components {
   .f-1fpxu4o {
     --ray-bg: var(--color-light-gray);
+
+    height: 150vh;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    overflow: hidden;
+    pointer-events: none;
+    flex: none;
+    z-index: 0;
+    opacity: 1;
+    will-change: transform;
+    transform: none;
+
     background: radial-gradient(
       100% 100% at 0% 0%,
       var(--color-white) 0%,
       var(--ray-bg, var(--color-mid-gray)) 100%
     );
-    flex: none;
-    height: 150vh;
-    left: 0;
     mask: radial-gradient(
         125% 100% at 0% 0%,
         var(--color-black) 0%,
@@ -192,20 +203,6 @@
         var(--color-transparent) 100%
       )
       add;
-    overflow: hidden;
-    pointer-events: none;
-    position: absolute;
-    right: 0;
-    top: 0;
-    z-index: 0;
-  }
-
-  .f-rZlwZ {
-    max-width: 960px;
-    overflow: hidden;
-    position: absolute;
-    height: 1269px;
-    flex: none;
   }
 
   .f-1yp8dcl,
@@ -213,6 +210,11 @@
   .f-if0sjr,
   .f-1xgonwz,
   .f-1lv1w0o {
+    max-width: 960px;
+    overflow: hidden;
+    position: absolute;
+    height: 1269px;
+    flex: none;
     background: linear-gradient(
       180deg,
       var(--color-white) 0%,
@@ -220,6 +222,7 @@
       var(--color-faint-white) 100%
     );
     top: -209px;
+    transform: skewX(45deg);
   }
 
   .f-1yp8dcl {

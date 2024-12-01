@@ -5,29 +5,28 @@ import { Link } from "react-router-dom";
 import { ChevronsDown } from "lucide-react";
 import useNavLinks from "@/hooks/useNavLinks";
 import useHero from "@/hooks/useHero";
-import React, { useCallback } from "react";
 import { cn } from "@/lib/utils";
+import React from "react";
 
-// Data for hero text
-const heroTexts = [
-  {
-    line: { sentence: "I'm Yacine", highlight: [1] },
-    img: { position: 2, image: "/me.png", altText: "me" },
-  },
-  {
-    line: { sentence: "Product Developer", highlight: [1] },
-    img: { position: 1, image: "/product.jpg", altText: "Product icon" },
-  },
-  {
-    line: { sentence: "based in Tunis", highlight: null },
-    img: { position: 3, image: "/tunis.jpg", altText: "Tunis landscape" },
-  },
-];
-
-const heroSubText =
-  "I have 5 years of experience working on useful and mindful\nproducts together with startups and established brands";
-
-const exploreText = "Explore";
+const heroDatax = {
+  MainTexLines: [
+    {
+      line: { sentence: "I'm Yacine", highlight: [1] },
+      img: { position: 2, image: "/me.png", altText: "me" },
+    },
+    {
+      line: { sentence: "Product Developer", highlight: [1] },
+      img: { position: 1, image: "/product.jpg", altText: "Product icon" },
+    },
+    {
+      line: { sentence: "based in Tunis", highlight: null },
+      img: { position: 3, image: "/tunis.jpg", altText: "Tunis landscape" },
+    },
+  ],
+  secondaryText:
+    "I have 5 years of experience working on useful and mindful\nproducts together with startups and established brands",
+  buttonText: "Explore",
+};
 
 const avatarSizeRem = { w: 5, h: 4.62 };
 const { w, h } = avatarSizeRem;
@@ -49,7 +48,7 @@ function Hero() {
     isImage: boolean = false,
     lineIndex: number
   ) => {
-    const numWords = heroTexts.length;
+    const numWords = heroDatax.MainTexLines.length;
 
     // Image width in pixels (5rem = 80px), using the 5rem as base image size
     const imageWidthPx = avatarSizeRem.w * PX_REM_ratio;
@@ -65,7 +64,7 @@ function Hero() {
     const opacity = Math.max(baseOpacity * lineDimming, 0.2); // Ensure opacity never goes below 0.2 for readability
 
     // Generate the radial gradient with the adjusted opacity
-    return `radial-gradient(150% 150% at ${offset}% 100%, rgba(0, 0, 0, ${opacity}) 0%, rgba(0, 0, 0, 1) 100%)`;
+    return `radial-gradient(150% 150% at ${offset}% 100%, rgba(0, 0, 0, ${opacity}) 0%, rgba(0, 0, 0, 1) 100%) add`;
   };
 
   return (
@@ -79,7 +78,7 @@ function Hero() {
       <motion.div className="container h-full space-y-4 text-center dark:text-white">
         {/* Title Section */}
         <motion.div className="leading-[6.33rem] font-instrument text-[4rem] lg:text-[5.11rem] -tracking-[0.17rem]">
-          {heroTexts.map((item, lineIndex) => {
+          {heroDatax.MainTexLines.map((item, lineIndex) => {
             const words = item.line.sentence.split(" ");
             const sentenceWithImage = words.map((word, wordIndex) => (
               <React.Fragment key={wordIndex}>
@@ -158,7 +157,7 @@ function Hero() {
           variants={waterFall}
           className="tracking-tight text-balance dark:text-white/60"
         >
-          {heroSubText}
+          {heroDatax.secondaryText}
         </motion.p>
       </motion.div>
 
@@ -175,7 +174,7 @@ function Hero() {
               strokeWidth={1}
             />
             <span className="text-xs dark:text-white animate-pulse opacity-20 font-unbounded">
-              {exploreText}
+              {heroDatax.buttonText}
             </span>
           </div>
         </Link>

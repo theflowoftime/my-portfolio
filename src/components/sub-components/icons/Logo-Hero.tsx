@@ -14,8 +14,9 @@ const LogoHero = ({ className }: SVGProps<SVGSVGElement>) => {
       height="156"
       viewBox="0 0 156 156"
       initial="hidden"
-      animate="visible"
+      whileInView="visible"
       className={className}
+      style={{ rotate: -45 }}
     >
       {/* Left C */}
       <motion.path

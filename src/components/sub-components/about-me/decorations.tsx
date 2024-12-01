@@ -1,11 +1,7 @@
-import Matrix from "../matrix-shape-generator";
+import LogoHero from "../icons/Logo-Hero";
 
 export default function Decorations() {
   return (
-    <Matrix
-      className="absolute right-0 hidden md:grid top-1/2"
-      rows={5}
-      columns={5}
-    />
+    <LogoHero className="absolute -translate-x-1/2 -right-10 top-20 opacity-20 " />
   );
 }
