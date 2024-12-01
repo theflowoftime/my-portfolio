@@ -8,14 +8,14 @@ const useHashNavigation = () => {
     if (state) {
       let id = hash.slice(1);
 
-      if (!id || !id.length) {
+      if (!id) {
         id = "top";
       }
 
       const element = document.getElementById(id);
 
       if (element) {
-        element.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
       }
     }
   }, [hash, state]);
