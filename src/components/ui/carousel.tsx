@@ -4,7 +4,7 @@ import useEmblaCarousel, {
 } from "embla-carousel-react";
 import { ArrowLeft, ArrowRight, CalendarDays } from "lucide-react";
 
-import { cn, urlFor } from "@/lib/utils";
+import { cn, formatDate, urlFor } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "./hover-card";
 import { Avatar, AvatarFallback, AvatarImage } from "./avatar";
@@ -364,16 +364,10 @@ const DotButtons = React.forwardRef<
                 <div className="flex items-center pt-2">
                   <CalendarDays className="w-4 h-4 mr-2 opacity-70" />{" "}
                   <span className="text-xs text-muted-foreground">
-                    Started:{" "}
-                    {new Intl.DateTimeFormat("en-US").format(
-                      new Date(project.started_at)
-                    )}
+                    Started: {formatDate(project.started_at)}
                   </span>
                   <span className="text-xs text-muted-foreground">
-                    Delivered:{" "}
-                    {new Intl.DateTimeFormat("en-US").format(
-                      new Date(project.delivered_at)
-                    )}
+                    Delivered: {formatDate(project.delivered_at)}
                   </span>
                 </div>
               </div>

@@ -33,37 +33,47 @@ const aboutMeData = {
         _id: 1,
         role: "Freelance Practice",
         company: "Yacine Co.",
-        start: "2017",
-        end: "Now",
+        timeframe: {
+          start: "2017",
+          end: "Now",
+        },
       },
-
       {
         _id: 2,
         role: "Frontend Developer",
-        company: "Pi-2r",
-        start: "2022",
-        end: "2022",
+        company: "r2-ip",
+
+        timeframe: {
+          start: "2022",
+          end: "2022",
+        },
       },
       {
         _id: 3,
         role: "Fullstack Developer",
-        company: "Pi-2r",
-        start: "2022",
-        end: "2024",
+        company: "r2-ip",
+        timeframe: {
+          start: "2022",
+          end: "2024",
+        },
       },
       {
         _id: 4,
         role: "Junior Developer",
-        company: "Poulina Group",
-        start: "2018",
-        end: "2019",
+        company: "Aniloup Group",
+        timeframe: {
+          start: "2018",
+          end: "2019",
+        },
       },
       {
         _id: 5,
         role: "Senior Developer",
-        company: "Poulina Group",
-        start: "2019",
-        end: "2020",
+        company: "Aniloup Group",
+        timeframe: {
+          start: "2019",
+          end: "2020",
+        },
       },
     ],
   },
@@ -189,7 +199,7 @@ function AboutMe() {
           </h3>
           <motion.div className="flex flex-col w-full gap-y-32 font-unbounded">
             {aboutMeData.career.experiences.map(
-              ({ role, company, start, end, _id }) => (
+              ({ role, company, timeframe: { start, end }, _id }) => (
                 <div key={_id}>
                   <motion.div
                     variants={waterFall}

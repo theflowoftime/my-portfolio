@@ -26,6 +26,7 @@ import {
   CarouselControls,
   CarouselItem,
 } from "./ui/carousel";
+import { cn } from "@/lib/utils";
 
 export function CarouselLinkButton({
   to,
@@ -51,6 +52,19 @@ export function CarouselLinkButton({
     </Link>
   );
 }
+
+// export type Project = {
+//   _id: string;
+//   title: string;
+//   isPublic: boolean;
+//   summary: string;
+//   links: { repo: string; live: string };
+//   images: SanityImageSource[];
+//   status: "planned" | "on-going"|"delivered"
+//   timeframe: {
+//   started_at: Date;
+//   delivered_at: Date;}
+// };
 
 function Projects() {
   const { data: navLinks } = useNavLinks();
@@ -105,10 +119,17 @@ function Projects() {
               {projects.map((project: Project) => (
                 <CarouselItem
                   key={project._id}
-                  className="relative cursor-grab"
+                  className="relative flex justify-center w-full overflow-hidden cursor-grab"
                 >
-                  <LazyBackground image={project.image} />
-                  <div className="absolute bottom-0 w-full">
+                  <LazyBackground size="lg" image={project.image} />
+                  <div
+                    className={cn(
+                      "absolute bottom-0 w-full",
+                      orientation === "horizontal"
+                        ? "px-[var(--slide-spacing)]"
+                        : "py-[var(--slide-spacing)]"
+                    )}
+                  >
                     <div className="flex items-center w-full px-4 py-1 bg-black cursor-default gap-x-4 bg-opacity-40 backdrop-blur-md backdrop-filter">
                       <span className=" text-white/80 text-effect font-bold text-[3rem]">
                         {project.title}

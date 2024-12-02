@@ -49,12 +49,6 @@ export type Project = {
 
 export type Projects = Project[];
 
-type Quote = {
-  author: string;
-  quote: string;
-  _key: string;
-};
-
 type Hero =
   | {
       intro: string;
@@ -119,3 +113,78 @@ type Contact = {
   toast: Toast;
   contactImage: SanityImageSource;
 };
+
+// to do types (updated)
+
+export type Navbar = {
+  Links: Link[];
+  button: {
+    text: string;
+    // the button is visible in this scrollY progress interval (0 to 1)
+    visibilityIntervalScrollY: readonly [start: number, end: number];
+  };
+};
+
+export type Hero = {
+  MainTexLines: (
+    | {
+        line: {
+          text: string;
+          // highlighted word in the line to be styled differently
+          highlight: number[];
+        };
+        img: {
+          position: number;
+          image: string;
+          altText: string;
+        };
+      }
+    | {
+        line: {
+          text: string;
+          highlight: null;
+        };
+        img: {
+          // begin at 0: where to insert the image in the related line
+          position: number;
+          image: string;
+          altText: string;
+        };
+      }
+  )[];
+  secondaryText: string;
+  buttonText: string;
+};
+
+// export type About = {
+//   introduction: {
+//       title: string;
+//       whatIdo: string;
+//       keywords: string[];
+//   };
+//   career: {
+//       title: string;
+//       experiences: {
+//           _id: number;
+//           role: string;
+//           company: string;
+//           timeframe: {
+//               start: string;
+//               end: string;
+//           };
+//       }[];
+//   };
+// }
+
+// export type Project = {
+//   _id: string;
+//   title: string;
+//   isPublic: boolean;
+//   summary: string;
+//   links: { repo: string; live: string };
+//   images: SanityImageSource[];
+//   status: "planned" | "on-going"|"delivered"
+//   timeframe: {
+//   started_at: Date;
+//   delivered_at: Date;}
+// };

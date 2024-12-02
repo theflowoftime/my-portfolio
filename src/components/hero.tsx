@@ -1,25 +1,25 @@
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { motion } from "framer-motion";
-import { waterFall } from "@/lib/framer-variants";
-import { Link } from "react-router-dom";
-import { ChevronsDown } from "lucide-react";
-import useNavLinks from "@/hooks/useNavLinks";
 import useHero from "@/hooks/useHero";
+import useNavLinks from "@/hooks/useNavLinks";
+import { waterFall } from "@/lib/framer-variants";
 import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
+import { ChevronsDown } from "lucide-react";
 import React from "react";
+import { Link } from "react-router-dom";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 
 const heroDatax = {
   MainTexLines: [
     {
-      line: { sentence: "I'm Yacine", highlight: [1] },
+      line: { text: "I'm Yacine", highlight: [1] },
       img: { position: 2, image: "/me.png", altText: "me" },
     },
     {
-      line: { sentence: "Product Developer", highlight: [1] },
+      line: { text: "Product Developer", highlight: [1] },
       img: { position: 1, image: "/product.jpg", altText: "Product icon" },
     },
     {
-      line: { sentence: "based in Tunis", highlight: null },
+      line: { text: "based in Tunis", highlight: null },
       img: { position: 3, image: "/tunis.jpg", altText: "Tunis landscape" },
     },
   ],
@@ -79,8 +79,8 @@ function Hero() {
         {/* Title Section */}
         <motion.div className="leading-[6.33rem] font-instrument text-[4rem] lg:text-[5.11rem] -tracking-[0.17rem]">
           {heroDatax.MainTexLines.map((item, lineIndex) => {
-            const words = item.line.sentence.split(" ");
-            const sentenceWithImage = words.map((word, wordIndex) => (
+            const words = item.line.text.split(" ");
+            const textWithImage = words.map((word, wordIndex) => (
               <React.Fragment key={wordIndex}>
                 {wordIndex === item.img.position && (
                   <Avatar
@@ -116,9 +116,9 @@ function Hero() {
               </React.Fragment>
             ));
 
-            // Check if image is at the end of the sentence (position > number of words)
+            // Check if image is at the end of the text (position > number of words)
             if (item.img.position >= words.length) {
-              sentenceWithImage.push(
+              textWithImage.push(
                 <Avatar
                   key="end-image"
                   className={cn(
@@ -146,7 +146,7 @@ function Hero() {
                 variants={waterFall}
                 className="flex items-center justify-center gap-x-4 whitespace-nowrap"
               >
-                {sentenceWithImage}
+                {textWithImage}
               </motion.p>
             );
           })}

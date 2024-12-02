@@ -7,7 +7,7 @@ export const languages = ["EN", "FR", "AR"] as const;
 
 // Function to detect and match the browser's language
 function getDefaultLanguage(): LanguageStore["language"] {
-  const browserLang = navigator.language.slice(0, 2).toUpperCase();
+  const browserLang = navigator.language.split("-")[0].toUpperCase();
 
   return languages.includes(browserLang as (typeof languages)[number])
     ? (browserLang as LanguageStore["language"])

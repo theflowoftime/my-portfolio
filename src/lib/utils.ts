@@ -1,8 +1,10 @@
-import { clsx, type ClassValue } from "clsx";
-import { twMerge } from "tailwind-merge";
 import client from "@/sanity/lib/client";
+import { useLanguageStore } from "@/stores/language-store";
 import imageUrlBuilder from "@sanity/image-url";
 import { type SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+import { LOCALES } from "./constants";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -30,4 +32,31 @@ const builder = imageUrlBuilder(client);
 // parameters:
 export function urlFor(source: SanityImageSource) {
   return builder.image(source);
+}
+
+// Helper function to clean and validate locales using Intl.getCanonicalLocales
+function getCanonicalLocale(locale: string): string | undefined {
+  const [canonicalLocale] = Intl.getCanonicalLocales(locale);
+  return canonicalLocale;
+}
+
+const findLocale = (): string => {
+  const language = useLanguageStore((state) => state.language);
+
+  // Find matching browser language from user's preferences
+  const matchedBrowserLocale = navigator.languages.find((ln) => {
+    const canonicalBrowserLocale = getCanonicalLocale(ln);
+    return canonicalBrowserLocale?.startsWith(language.toLowerCase());
+  });
+
+  // Return matched locale, fallback to mapped locale, or default to "en-US"
+  return (
+    matchedBrowserLocale || getCanonicalLocale(LOCALES[language]) || "en-US"
+  );
+};
+
+export function formatDate(dateToFormat: Date): string {
+  const locale = findLocale();
+
+  return new Intl.DateTimeFormat(locale).format(new Date(dateToFormat));
 }

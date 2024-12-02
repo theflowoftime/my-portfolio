@@ -39,50 +39,41 @@ const NavBar = ({ className }: ComponentProps<"div">) => {
     <AnimatePresence mode="popLayout">
       <div id="navbar" className={cn("z-10 bg-inherit h-[4.56rem]", className)}>
         <motion.div
-          initial={{ y: 0 }}
           animate={
             scrollYProgress > yScrollYProgressionRange[0]
               ? {
-                  y: 10,
-                  borderRadius: "calc(var(--radius) - 2px)",
-                  shadow:
-                    "rgba(0, 0, 0, 0.008) 0px 0.71133px 0.71133px -0.25px, rgba(0, 0, 0, 0.009) 0px 1.93715px 1.93715px -0.5px, rgba(0, 0, 0, 0.01) 0px 4.25329px 4.25329px -0.75px, rgba(0, 0, 0, 0.01) 0px 9.44132px 9.44132px -1px, rgba(0, 0, 0, 0.023) 0px 24px 24px -1.25px",
+                  justifyContent: "end",
                 }
-              : "initial"
+              : ""
           }
-          className={cn(
-            "container fixed top-0 left-0 right-0 z-20 flex items-center justify-between w-full py-2 flex-nowrap max-h-fit",
-            scrollYProgress > yScrollYProgressionRange[0] &&
-              "bg-black backdrop-blur-2xl backdrop-filter bg-opacity-5 transition-colors duration-1000 ease-in"
-          )}
+          className={
+            "container fixed top-0 left-0 right-0 z-20 flex items-center justify-between w-full py-2 flex-nowrap"
+          }
+          layout
         >
           {/* Logo with motion */}
-          <motion.div
-            animate={{
-              x:
-                scrollYProgress > yScrollYProgressionRange[0] &&
-                scrollYProgress < yScrollYProgressionRange[1]
-                  ? 20
-                  : 0, // Move left when scrolled
-            }}
-            // transition={{ type: "spring", stiffness: 100 }}
-            layout
-          >
-            <LogoWithName />
-          </motion.div>
+          {scrollYProgress <= yScrollYProgressionRange[0] ? (
+            <motion.div
+              initial={{ opacity: 1, scale: 1 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.8 }}
+              transition={{ duration: 0.4 }}
+            >
+              <LogoWithName />
+            </motion.div>
+          ) : null}
           {/* Navigation Menu and Toggles */}
-
           <motion.div
-            className="flex flex-row items-center gap-x-2 md:gap-x-4"
-            animate={{
-              x:
-                scrollYProgress > yScrollYProgressionRange[0] &&
-                scrollYProgress < yScrollYProgressionRange[1]
-                  ? 20
-                  : 0, // Move right when scrolled
+            className={cn(
+              "flex flex-row items-center g}ap-x-2 md:gap-x-4",
+              scrollYProgress > yScrollYProgressionRange[0] &&
+                "bg-black backdrop-blur-2xl backdrop-filter bg-opacity-5 transition-colors duration-1000 ease-in py-2 px-4"
+            )}
+            style={{
+              borderRadius: "calc(var(--radius) - 2px)",
+              shadow:
+                "rgba(0, 0, 0, 0.008) 0px 0.71133px 0.71133px -0.25px, rgba(0, 0, 0, 0.009) 0px 1.93715px 1.93715px -0.5px, rgba(0, 0, 0, 0.01) 0px 4.25329px 4.25329px -0.75px, rgba(0, 0, 0, 0.01) 0px 9.44132px 9.44132px -1px, rgba(0, 0, 0, 0.023) 0px 24px 24px -1.25px",
             }}
-            // transition={{ type: "spring", stiffness: 100 }}
-            // layout
           >
             <NavigationMenu orientation="vertical">
               <NavigationMenuList>

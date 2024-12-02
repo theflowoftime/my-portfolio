@@ -33,7 +33,7 @@ const LazyBackground = ({
       animate={{ opacity: loaded ? 1 : 0.5, scale: loaded ? 1 : 1.05 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
       className={cn(
-        "bg-cover bg-center bg-no-repeat h-full dark:shadow-[inset_0_0_0_0.2rem_var(--detail-medium-contrast)]  select-none",
+        "bg-cover bg-center bg-no-repeat h-full dark:shadow-[inset_0_0_0_0.2rem_var(--detail-medium-contrast)] w-full select-none",
         className
       )}
       style={{
