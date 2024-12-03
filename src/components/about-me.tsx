@@ -14,8 +14,7 @@ function AboutMe() {
 
   const words = aboutMeData?.introduction?.whatIdo?.split(" ") || [];
 
-  if (isLoading || !words)
-    return <SectionLayout slug={slug} url="/about-me.jpg" />;
+  if (isLoading) return <SectionLayout slug={slug} url="/about-me.jpg" />;
 
   return (
     <SectionLayout slug={slug} url="/about-me.jpg">
@@ -28,12 +27,12 @@ function AboutMe() {
           before:bg-purple-700/30 text-purple-400 before:absolute before:-translate-y-1/2 after:-translate-y-1/2 before:top-1/2 before:left-[36%] 
           after:content[''] after:w-16 after:h-[0.062rem]  dark:after:bg-white/10  after:bg-purple-700/30 after:absolute after:top-1/2 after:right-[36%] relative w-full"
               >
-                {aboutMeData?.introduction.title}
+                {aboutMeData?.introduction?.title}
               </h3>
               <Introduction words={words} />
             </div>
           </div>
-          <Keywords keywords={aboutMeData?.introduction.keywords} />
+          <Keywords keywords={aboutMeData?.introduction?.keywords} />
         </div>
         <motion.div
           initial="hidden"
@@ -49,7 +48,7 @@ function AboutMe() {
           >
             {aboutMeData?.career.title}
           </h3>
-          <Experiences experiences={aboutMeData?.career.experiences} />
+          <Experiences experiences={aboutMeData?.career?.experiences} />
         </motion.div>
       </div>
     </SectionLayout>
