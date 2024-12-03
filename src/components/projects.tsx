@@ -86,8 +86,7 @@ function Projects() {
     })
   );
 
-  if (isLoading || !projects)
-    return <SectionLayout slug={slug}></SectionLayout>;
+  if (isLoading || !projects) return <SectionLayout slug={slug} />;
   if (error) return <p>Error fetching projects: {error.message}</p>;
 
   const handleClick = () => {
@@ -95,7 +94,7 @@ function Projects() {
   };
 
   return (
-    <SectionLayout slug={slug} url="/projects.jpg">
+    <SectionLayout slug={slug}>
       <Carousel
         // className={`flex m${
         //   orientation === "horizontal" ? "l" : "t"

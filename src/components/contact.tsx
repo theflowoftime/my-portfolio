@@ -197,7 +197,7 @@ function Contact() {
 
   return (
     <>
-      <SectionLayout slug={slug} url="/mail.jpg">
+      <SectionLayout slug={slug}>
         <motion.div
           initial="hidden"
           whileInView="visible"

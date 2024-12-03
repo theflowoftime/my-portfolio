@@ -14,10 +14,10 @@ function AboutMe() {
 
   const words = aboutMeData?.introduction?.whatIdo?.split(" ") || [];
 
-  if (isLoading) return <SectionLayout slug={slug} url="/about-me.jpg" />;
+  if (isLoading) return <SectionLayout slug={slug} />;
 
   return (
-    <SectionLayout slug={slug} url="/about-me.jpg">
+    <SectionLayout slug={slug}>
       <div className="flex flex-col items-center justify-center gap-y-16">
         <div className="relative flex flex-col items-center justify-center gap-y-8">
           <div className="flex flex-col flex-wrap items-center gap-y-4">
