@@ -217,7 +217,7 @@ function Contact() {
           className="flex flex-col justify-center h-full"
         >
           {/* form container */}
-          <div className="grid items-center justify-center gap-y-8 gap-x-8 lg:grid-cols-2 grid-re">
+          <div className="grid items-center justify-center gap-y-8 gap-x-8 lg:grid-cols-2">
             <motion.div className="p-4 rounded-lg shadow-sm h-fit dark:shadow-black">
               <ContactForm />
             </motion.div>
