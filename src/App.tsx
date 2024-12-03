@@ -19,6 +19,7 @@ function App() {
       <main>
         <AboutMe />
         <Projects />
+
         <Contact />
       </main>
       <Footer />

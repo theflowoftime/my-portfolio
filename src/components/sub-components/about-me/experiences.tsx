@@ -2,12 +2,7 @@ import { Separator } from "@/components/ui/separator";
 import { waterFall } from "@/lib/framer-variants";
 import { AboutMe } from "@/types/types";
 import { motion } from "framer-motion";
-import {
-  BriefcaseBusiness,
-  Building2,
-  CalendarFold,
-  MoveRight,
-} from "lucide-react";
+import { BriefcaseBusiness, Building2, CalendarFold } from "lucide-react";
 
 export default function Experiences({
   experiences,
@@ -21,20 +16,28 @@ export default function Experiences({
           <div key={index}>
             <motion.div
               variants={waterFall}
-              className="grid justify-between grid-cols-3 justify-items-center"
+              className="grid items-center justify-between grid-cols-3 "
             >
-              <p>
-                <BriefcaseBusiness className="w-full text-center" />
+              <p className="text-xs">
+                <BriefcaseBusiness
+                  size={22}
+                  className="w-full text-center stroke-purple-500"
+                />
                 {role}
               </p>
-              <p className="text-2xl text-effect">
-                <Building2 className="w-full text-center" />
+              <p className="text-sm">
+                <Building2
+                  size={22}
+                  className="w-full text-center stroke-purple-500"
+                />
                 {company}
               </p>
-              <p className="opacity-60">
-                <CalendarFold className="w-full text-center" />
+              <p className="text-xs">
                 {new Date(start).getFullYear()}{" "}
-                <MoveRight size={16} className="inline-block" />{" "}
+                <CalendarFold
+                  size={22}
+                  className="w-full text-center stroke-purple-500"
+                />
                 {end ? new Date(end).getFullYear() : "-"}
               </p>
             </motion.div>
