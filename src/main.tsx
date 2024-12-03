@@ -8,6 +8,7 @@ import { createRoot } from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./routes/router";
 
+// Create a reactquery client
 export const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(

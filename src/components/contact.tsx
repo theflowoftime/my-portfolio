@@ -201,27 +201,24 @@ function Contact() {
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{
-            delayChildren: 0.2,
-            staggerChildren: 0.2,
+          variants={{
+            initial: { y: "-100%" },
+            visible: {
+              y: 0,
+              transition: {
+                type: "spring",
+                stiffness: 10,
+                staggerChildren: 0.2,
+                delayChildren: 0.2,
+              },
+            },
           }}
+          viewport={{ once: true, amount: 0.5 }}
           className="flex flex-col justify-center h-full"
         >
           {/* form container */}
-          <div className="grid items-center justify-center gap-y-8 gap-x-8 lg:grid-cols-2">
-            <motion.div
-              initial={{ y: 100, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true, amount: 0.5 }}
-              transition={{
-                type: "spring",
-                stiffness: 200,
-                delayChildren: 0.2,
-                staggerChildren: 0.6,
-              }}
-              className="p-4 rounded-lg shadow-sm border-spacing-4 h-fit dark:shadow-black"
-            >
+          <div className="grid items-center justify-center gap-y-8 gap-x-8 lg:grid-cols-2 grid-re">
+            <motion.div className="p-4 rounded-lg shadow-sm h-fit dark:shadow-black">
               <ContactForm />
             </motion.div>
             {/* Localization needed */}
