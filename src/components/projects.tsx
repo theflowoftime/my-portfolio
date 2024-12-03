@@ -32,15 +32,17 @@ export function CarouselLinkButton({
   to,
   label,
   Icon,
+  external = false,
 }: {
   to: string;
   label: string;
   Icon: LucideIcon;
+  external?: boolean;
 }) {
   return (
     <Link
       to={to}
-      target="_blank"
+      target={external ? "_blank" : "_self"}
       rel="noopener noreferrer"
       className="flex items-center gap-x-2"
       aria-label={label}
@@ -140,6 +142,7 @@ function Projects() {
                             to={project.link}
                             label="visit live website"
                             Icon={ExternalLink}
+                            external
                           />
                         ) : null}
 

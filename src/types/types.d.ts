@@ -29,10 +29,51 @@ export type ActiveNavLinkProps = {
 
 export type Link = { slug: string; title: string; path: string };
 
+export type Navbar = {
+  links: Link[];
+  button: {
+    text: string;
+    // the button is visible in this scrollY progress interval (0 to 1)
+    visibilityIntervalScrollY: readonly [start: number, end: number];
+  };
+};
+
+export type Hero = {
+  mainTextLines: {
+    line: {
+      text: string;
+      // highlighted word in the line to be styled differently
+      highlight: number[];
+      img: {
+        position: number;
+        image: SanityImageSource;
+        altText: string;
+      };
+    };
+  }[];
+  secondaryText: string;
+  buttonText: string;
+  containerSizes: [number, number];
+};
+
 export type AboutMe = {
-  homeIntro: string[];
-  image: SanityImageSource;
-  button: Record<"value", string>;
+  introduction: {
+    title: string; // brief
+    whatIdo: string; // small paragraph
+    keywords: string[]; // the length of each keyword shouldn't be too large
+  };
+  career: {
+    title: string;
+    experiences: {
+      _key: string;
+      role: string;
+      company: string;
+      timeframe: {
+        start: Date;
+        end: Date;
+      };
+    }[];
+  };
 };
 
 export type Orientation = "horizontal" | "vertical";
@@ -48,20 +89,6 @@ export type Project = {
 };
 
 export type Projects = Project[];
-
-type Hero =
-  | {
-      intro: string;
-      separator: string;
-      jobs: string[];
-      bio: string;
-      currentProject?: string;
-      quotes: Quote[];
-      profileImage?: SanityImageSource;
-      imageSubtitle?: string;
-      buttonContent: string;
-    }
-  | undefined;
 
 export type FormSchemaType = z.infer<ReturnType<typeof buildFormSchema>>;
 
@@ -103,7 +130,12 @@ export type Toast = {
 
 type Contact = {
   _id: string;
+  // to be removed
   description: { title: string; subtitle: string };
+  HeaderTexts: {
+    word: string;
+    isHighlighted: boolean;
+  }[];
   fields: Field;
   button: {
     initialText: string;
@@ -115,66 +147,6 @@ type Contact = {
 };
 
 // to do types (updated)
-
-export type Navbar = {
-  Links: Link[];
-  button: {
-    text: string;
-    // the button is visible in this scrollY progress interval (0 to 1)
-    visibilityIntervalScrollY: readonly [start: number, end: number];
-  };
-};
-
-export type Hero = {
-  MainTexLines: (
-    | {
-        line: {
-          text: string;
-          // highlighted word in the line to be styled differently
-          highlight: number[];
-        };
-        img: {
-          position: number;
-          image: string;
-          altText: string;
-        };
-      }
-    | {
-        line: {
-          text: string;
-          highlight: null;
-        };
-        img: {
-          // begin at 0: where to insert the image in the related line
-          position: number;
-          image: string;
-          altText: string;
-        };
-      }
-  )[];
-  secondaryText: string;
-  buttonText: string;
-};
-
-// export type About = {
-//   introduction: {
-//       title: string;
-//       whatIdo: string;
-//       keywords: string[];
-//   };
-//   career: {
-//       title: string;
-//       experiences: {
-//           _id: number;
-//           role: string;
-//           company: string;
-//           timeframe: {
-//               start: string;
-//               end: string;
-//           };
-//       }[];
-//   };
-// }
 
 // export type Project = {
 //   _id: string;

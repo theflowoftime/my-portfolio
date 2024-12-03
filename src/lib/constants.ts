@@ -11,6 +11,10 @@ export const defaultValues: FormSchemaType = {
 // Ensure Locales keys are strictly tied to the Language type
 export const LOCALES: Record<Language, string> = {
   EN: "en_US",
-  FR: "fr_FR",
+  FR: "fr",
   AR: "ar",
 };
+
+// This is for consistency in image size
+export const PX_REM_ratio = 16;
+export const HERO_AVATAR_SIZES = [80, 73.92];

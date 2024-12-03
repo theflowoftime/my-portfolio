@@ -1,46 +1,25 @@
 import useHero from "@/hooks/useHero";
 import useNavLinks from "@/hooks/useNavLinks";
 import { waterFall } from "@/lib/framer-variants";
-import { cn } from "@/lib/utils";
+import { cn, urlFor } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { ChevronsDown } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-
-const heroDatax = {
-  MainTexLines: [
-    {
-      line: { text: "I'm Yacine", highlight: [1] },
-      img: { position: 2, image: "/me.png", altText: "me" },
-    },
-    {
-      line: { text: "Product Developer", highlight: [1] },
-      img: { position: 1, image: "/product.jpg", altText: "Product icon" },
-    },
-    {
-      line: { text: "based in Tunis", highlight: null },
-      img: { position: 3, image: "/tunis.jpg", altText: "Tunis landscape" },
-    },
-  ],
-  secondaryText:
-    "I have 5 years of experience working on useful and mindful\nproducts together with startups and established brands",
-  buttonText: "Explore",
-};
-
-const avatarSizeRem = { w: 5, h: 4.62 };
-const { w, h } = avatarSizeRem;
-const twImgSize = `w-[${w}rem] h-[${h}rem]`; // This is for consistency in image size
-const PX_REM_ratio = 16;
+import { HERO_AVATAR_SIZES, PX_REM_ratio } from "@/lib/constants";
 
 function Hero() {
   const { data: heroData, isLoading } = useHero();
   const { data: navLinks } = useNavLinks();
 
-  if (isLoading)
+  if (isLoading || !heroData)
     return (
       <div className="relative flex flex-col items-center justify-around h-full min-h-[calc(100vh-4.56rem)] dark:mix-blend-lighten mix-blend-darken" />
     );
+
+  const [w, h] = heroData.containerSizes || HERO_AVATAR_SIZES;
+  const twImgSize = `w-[${w / PX_REM_ratio}rem] h-[${h / PX_REM_ratio}rem]`;
 
   // Function to create dynamic mask based on index and image width
   const generateMask = (
@@ -48,10 +27,10 @@ function Hero() {
     isImage: boolean = false,
     lineIndex: number
   ) => {
-    const numWords = heroDatax.MainTexLines.length;
+    const numWords = heroData.mainTextLines.length;
 
-    // Image width in pixels (5rem = 80px), using the 5rem as base image size
-    const imageWidthPx = avatarSizeRem.w * PX_REM_ratio;
+    // Image width in pixels
+    const imageWidthPx = w;
 
     // If it's an image, we adjust the offset by image width in pixels
     const offset = (wordIndex / numWords) * 100 + (isImage ? imageWidthPx : 0);
@@ -73,16 +52,16 @@ function Hero() {
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
       variants={waterFall}
-      className="relative flex flex-col items-center justify-around h-full min-h-[calc(100vh-4.56rem)] dark:mix-blend-lighten mix-blend-darken"
+      className="relative flex flex-col overflow-hidden items-center justify-around h-full min-h-[calc(100vh-4.56rem)] dark:mix-blend-lighten mix-blend-darken"
     >
       <motion.div className="container h-full space-y-4 text-center dark:text-white">
         {/* Title Section */}
-        <motion.div className="leading-[6.33rem] font-instrument text-[4rem] lg:text-[5.11rem] -tracking-[0.17rem]">
-          {heroDatax.MainTexLines.map((item, lineIndex) => {
+        <motion.div className="leading-[6.33rem] font-instrument text-[4rem] lg:text-[5.11rem] -tracking-[0.01rem]">
+          {heroData.mainTextLines.map((item, lineIndex) => {
             const words = item.line.text.split(" ");
             const textWithImage = words.map((word, wordIndex) => (
               <React.Fragment key={wordIndex}>
-                {wordIndex === item.img.position && (
+                {wordIndex === item.line.img.position && (
                   <Avatar
                     className={cn(
                       "border-4 dark:border-white border-black hidden sm:inline-block min-w-min min-h-min w-[5rem] h-[4.62rem] shadow-md bg-black",
@@ -95,8 +74,12 @@ function Hero() {
                   >
                     <AvatarImage
                       className="object-cover"
-                      src={item.img.image}
-                      alt={item.img.altText}
+                      src={urlFor(item.line.img.image)
+                        .width(w)
+                        .quality(80)
+                        .format("webp")
+                        .url()}
+                      alt={item.line.img.altText}
                     />
                     <AvatarFallback></AvatarFallback>
                   </Avatar>
@@ -117,7 +100,7 @@ function Hero() {
             ));
 
             // Check if image is at the end of the text (position > number of words)
-            if (item.img.position >= words.length) {
+            if (item.line.img.position >= words.length) {
               textWithImage.push(
                 <Avatar
                   key="end-image"
@@ -132,8 +115,12 @@ function Hero() {
                 >
                   <AvatarImage
                     className="object-cover"
-                    src={item.img.image}
-                    alt={item.img.altText}
+                    src={urlFor(item.line.img.image)
+                      .width(w)
+                      .quality(80)
+                      .format("webp")
+                      .url()}
+                    alt={item.line.img.altText}
                   />
                   <AvatarFallback></AvatarFallback>
                 </Avatar>
@@ -155,9 +142,9 @@ function Hero() {
         {/* Description Section */}
         <motion.p
           variants={waterFall}
-          className="tracking-tight text-balance dark:text-white/60"
+          className="leading-relaxed tracking-widest text-balance dark:text-white/60"
         >
-          {heroDatax.secondaryText}
+          {heroData.secondaryText}
         </motion.p>
       </motion.div>
 
@@ -174,7 +161,7 @@ function Hero() {
               strokeWidth={1}
             />
             <span className="text-xs dark:text-white animate-pulse opacity-20 font-unbounded">
-              {heroDatax.buttonText}
+              {heroData.buttonText}
             </span>
           </div>
         </Link>

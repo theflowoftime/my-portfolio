@@ -1,12 +1,11 @@
 export const navBar_QUERY = `*[_type == "navBar" && language == $language][0]{
-    links[]{ title, slug, path }
+    links[],
+    button
   }`;
 
 export const aboutMe_Query = `*[_type == "aboutMe" && language == $language][0] {
-  homeIntro[],
-  image,
-  button
-  ,
+  introduction,
+  career
 }`;
 
 export const projects_QUERY = `*[_type == "project" && language == $language] | order(dateTime(delivered_at) - dateTime(started_at)) {
@@ -20,16 +19,10 @@ export const projects_QUERY = `*[_type == "project" && language == $language] | 
   }`;
 
 export const hero_QUERY = `*[_type == "hero" && language == $language][0]{
-    _id,
-    intro,
-    separator,
-    jobs[],
-    bio,
-    currentProject,
-    quotes[],
-    profileImage,
-    imageSubtitle,
-    buttonContent
+    mainTextLines[],
+    secondaryText,
+    buttonText,
+    containerSizes[]
   }`;
 
 export const contact_QUERY = `*[_type == "contact" && language == $language][0]{

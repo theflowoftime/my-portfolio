@@ -19,15 +19,11 @@ import Toggles from "./hero/preferences-toggle";
 import LogoWithName from "./site-logo";
 import { Button } from "../ui/button";
 
-const buttonText = "Let's Talk!";
-
-const yScrollYProgressionRange = [0.01, 0.88];
-
 const NavBar = ({ className }: ComponentProps<"div">) => {
-  const { data: navLinks, isLoading } = useNavLinks();
+  const { data: navbarData, isLoading } = useNavLinks();
   const scrollYProgress = useScrollY();
 
-  if (isLoading)
+  if (isLoading || !navbarData)
     return (
       <div
         id="navbar"
@@ -35,24 +31,24 @@ const NavBar = ({ className }: ComponentProps<"div">) => {
       />
     );
 
+  const {
+    links,
+    button: { text, visibilityIntervalScrollY: interval },
+  } = navbarData;
+
   return (
-    <AnimatePresence mode="popLayout">
+    <AnimatePresence>
       <div id="navbar" className={cn("z-10 bg-inherit h-[4.56rem]", className)}>
         <motion.div
           animate={
-            scrollYProgress > yScrollYProgressionRange[0]
-              ? {
-                  justifyContent: "end",
-                }
-              : ""
+            scrollYProgress > interval[0] ? { justifyContent: "end" } : ""
           }
           className={
-            "container fixed top-0 left-0 right-0 z-20 flex items-center justify-between w-full py-2 flex-nowrap"
+            "container fixed top-0 left-0 right-0 z-20 flex items-center justify-between w-full py-2 flex-nowrap h-fit"
           }
-          layout
         >
           {/* Logo with motion */}
-          {scrollYProgress <= yScrollYProgressionRange[0] ? (
+          {scrollYProgress <= interval[0] ? (
             <motion.div
               initial={{ opacity: 1, scale: 1 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -65,9 +61,9 @@ const NavBar = ({ className }: ComponentProps<"div">) => {
           {/* Navigation Menu and Toggles */}
           <motion.div
             className={cn(
-              "flex flex-row items-center g}ap-x-2 md:gap-x-4",
-              scrollYProgress > yScrollYProgressionRange[0] &&
-                "bg-black backdrop-blur-2xl backdrop-filter bg-opacity-5 transition-colors duration-1000 ease-in py-2 px-4"
+              "flex flex-row gap-x-2 md:gap-x-4",
+              scrollYProgress > interval[0] &&
+                "bg-black backdrop-blur-2xl backdrop-filter bg-opacity-5 transition-colors duration-1000 ease-in py-2 px-4 h-fit"
             )}
             style={{
               borderRadius: "calc(var(--radius) - 2px)",
@@ -83,10 +79,10 @@ const NavBar = ({ className }: ComponentProps<"div">) => {
                   </NavigationMenuTrigger>
 
                   <NavigationMenuContent className="flex flex-col p-4 text-base gap-y-4">
-                    {navLinks?.links?.map((link: LinkType) => (
+                    {links?.map((link: LinkType) => (
                       <NavigationMenuLink key={link.title} asChild>
                         <Link
-                          state={{ data: navLinks }}
+                          state={{ data: links }}
                           className="text-base whitespace-nowrap dark:text-white hover:opacity-40 font-unbounded"
                           to={link.path || `#${link.slug}`}
                         >
@@ -104,25 +100,28 @@ const NavBar = ({ className }: ComponentProps<"div">) => {
             <Toggles />
 
             {/* Button with glowy effect */}
-            {scrollYProgress > yScrollYProgressionRange[0] &&
-            scrollYProgress < yScrollYProgressionRange[1] ? (
+            {scrollYProgress > interval[0] && scrollYProgress < interval[1] ? (
               <motion.div
                 initial={{ scale: 0, opacity: 0.8 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ type: "spring", stiffness: 200, damping: 5 }}
+                animate={{
+                  scale: 1,
+                  opacity: 1,
+                  transition: {
+                    duration: 0.4,
+                    type: "spring",
+                    stiffness: 200,
+                    damping: 5,
+                  },
+                }}
               >
                 <Link
-                  to={
-                    navLinks?.links?.[3].path || `#${navLinks?.links?.[3].slug}`
-                  }
-                  state={{ data: navLinks }}
+                  to={links[3].path || `#${links[3].slug}`}
+                  state={{ data: links }}
                   className="relative"
                 >
                   <Button className="relative transition-transform duration-300 rounded-full shadow-lg dark:text-white md:px-6 md:py-3 font-unbounded hover:bg-gradient-to-r hover:from-pink-500 hover:to-purple-400 hover:scale-105">
-                    <span className="absolute inset-0 rounded-full blur-lg mix-blend-lighten bg-gradient-to-r from-purple-400 to-pink-500" />
-                    <span className="hidden text-white md:inline">
-                      {buttonText}
-                    </span>
+                    <span className="absolute inset-0 rounded-full blur-md mix-blend-lighten bg-gradient-to-r from-purple-400 to-pink-500" />
+                    <span className="hidden text-white md:inline">{text}</span>
                     <MessageCircle className="inline-block md:hidden" />
                   </Button>
                 </Link>

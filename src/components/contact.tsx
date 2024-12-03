@@ -40,8 +40,8 @@ import { Toaster } from "./ui/toaster";
 import { cn } from "@/lib/utils";
 
 const contactFormHeaderText = [
-  { word: "Let's", highlighted: false },
-  { word: "talk!", highlighted: true },
+  { word: "Let's", isHighlighted: false },
+  { word: "talk!", isHighlighted: true },
 ];
 
 function ContactForm() {
@@ -227,7 +227,7 @@ function Contact() {
               {contactFormHeaderText.map((wordInfo) => (
                 <motion.p
                   key={wordInfo.word}
-                  className={cn(wordInfo.highlighted && "text-purple-500")}
+                  className={cn(wordInfo.isHighlighted && "text-purple-500")}
                   variants={contactTitleBackFlip}
                 >
                   {wordInfo.word}

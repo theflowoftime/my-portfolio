@@ -1,5 +1,5 @@
 import { navBar_QUERY as query } from "@/sanity/lib/queries";
-import type { Language } from "@/types/types";
+import type { Language, Navbar } from "@/types/types";
 import client from "@/sanity/lib/client";
 import { useLanguageStore } from "@/stores/language-store";
 import { useQuery } from "@tanstack/react-query";
@@ -12,7 +12,7 @@ export const fetchNavLinks = async (language: Language) => {
 
 const useNavLinks = () => {
   const language = useLanguageStore((state) => state.language);
-  return useQuery({
+  return useQuery<Navbar>({
     queryKey: ["navLinks", language],
     queryFn: () => fetchNavLinks(language),
   });
