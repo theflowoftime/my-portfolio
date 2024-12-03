@@ -46,7 +46,7 @@ function AboutMe() {
             before:bg-purple-700/30 text-purple-400 before:absolute before:-translate-y-1/2 after:-translate-y-1/2 before:top-1/2 before:left-[36%] 
             after:content[''] after:w-16 after:h-[0.062rem] dark:after:bg-white/10 after:bg-purple-700/30 after:absolute after:top-1/2 after:right-[36%] relative w-full"
           >
-            {aboutMeData?.career.title}
+            {aboutMeData?.career?.title}
           </h3>
           <Experiences experiences={aboutMeData?.career?.experiences} />
         </motion.div>
