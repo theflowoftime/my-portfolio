@@ -7,12 +7,12 @@ const SectionLayout = forwardRef<
 >(({ className, slug, url, children }, ref) => {
   return (
     <>
-      {url ? (
+      {/* {url ? (
         <div
           className="bg-cover bg-center h-[18.75rem] w-full bg-fixed"
           style={{ backgroundImage: `url(${url})` }}
         />
-      ) : null}
+      ) : null} */}
       <div className={cn("relative overflow-hidden mb-16", className)}>
         <div ref={ref} className="container" id={slug}>
           <div className="w-full h-full py-16">{children}</div>
