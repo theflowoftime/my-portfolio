@@ -5,7 +5,7 @@ import { waterFall } from "@/lib/framer-variants";
 import { motion } from "framer-motion";
 import Keywords from "./sub-components/about-me/keywords";
 import Experiences from "./sub-components/about-me/experiences";
-import Introduction from "./sub-components/about-me/Introduction";
+import Introduction from "./sub-components/about-me/introduction";
 
 function AboutMe() {
   const { data: navLinks } = useNavLinks();
