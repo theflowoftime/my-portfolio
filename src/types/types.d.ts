@@ -133,7 +133,6 @@ export type Toast = {
 type Contact = {
   _id: string;
   // to be removed
-  description: { title: string; subtitle: string };
   HeaderWords: {
     word: string;
     isHighlighted: boolean;
@@ -145,7 +144,6 @@ type Contact = {
   };
   errorMessages?: ErrorMessages;
   toast: Toast;
-  contactImage: SanityImageSource;
 };
 
 // to do types (updated)

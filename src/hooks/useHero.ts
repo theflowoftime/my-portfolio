@@ -4,11 +4,8 @@ import client from "@/sanity/lib/client";
 import { useLanguageStore } from "@/stores/language-store";
 import { useQuery } from "@tanstack/react-query";
 
-export const fetchHero = async (language: Language) => {
-  const params = { language };
-  const data = await client.fetch(query, params);
-  return data;
-};
+export const fetchHero = async (language: Language) =>
+  await client.fetch(query, { language });
 
 const useHero = () => {
   const language = useLanguageStore((state) => state.language);
@@ -16,6 +13,7 @@ const useHero = () => {
   return useQuery<Hero>({
     queryKey: ["hero", language],
     queryFn: () => fetchHero(language),
+    staleTime: 1000 * 60 * 15, // // Cache for 15 minutes
   });
 };
 

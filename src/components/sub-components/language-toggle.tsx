@@ -8,19 +8,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 import type { Language } from "@/types/types";
 import { languages, useLanguageStore } from "@/stores/language-store";
-import useNavLinks from "@/hooks/useNavLinks";
+import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
 
 export function LanguageToggle({ className }: { className?: string }) {
   const { setLanguage, language } = useLanguageStore(); // Get language and setLanguage from Zustand store
-  const { data: navbarData, isLoading } = useNavLinks();
+  const { navLinks: navbarData } = useCachedNavLinks();
 
   const changeLanguage = (lng: Language) => {
     setLanguage(lng); // Update the Zustand store with the selected language
   };
-
-  if (isLoading) {
-    return <DropdownMenu />;
-  }
 
   return (
     <DropdownMenu>

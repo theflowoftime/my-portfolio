@@ -12,7 +12,6 @@ import {
 } from "lucide-react";
 
 // import projects from "@/assets/data/data.json";
-import useNavLinks from "@/hooks/useNavLinks";
 import { waterFall } from "@/lib/framer-variants";
 import Autoplay from "embla-carousel-autoplay";
 import { motion } from "framer-motion";
@@ -27,6 +26,7 @@ import {
   CarouselItem,
 } from "./ui/carousel";
 import { cn } from "@/lib/utils";
+import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
 
 export function CarouselLinkButton({
   to,
@@ -69,7 +69,7 @@ export function CarouselLinkButton({
 // };
 
 function Projects() {
-  const { data: navLinks } = useNavLinks();
+  const { navLinks } = useCachedNavLinks();
 
   const slug = navLinks?.links?.[2].slug || "works";
 

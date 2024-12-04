@@ -1,14 +1,15 @@
 import { useAboutMe } from "@/hooks/useAboutMe";
-import useNavLinks from "@/hooks/useNavLinks";
 import SectionLayout from "@/layouts/section-layout";
 import { waterFall } from "@/lib/framer-variants";
 import { motion } from "framer-motion";
 import Keywords from "./sub-components/about-me/keywords";
 import Experiences from "./sub-components/about-me/experiences";
 import Introduction from "./sub-components/about-me/introduction";
+import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
 
 function AboutMe() {
-  const { data: navLinks } = useNavLinks();
+  const { navLinks } = useCachedNavLinks();
+
   const { isLoading, data: aboutMeData } = useAboutMe();
   const slug = navLinks?.links?.[1].slug || "about-me";
 

@@ -1,5 +1,4 @@
 import useHero from "@/hooks/useHero";
-import useNavLinks from "@/hooks/useNavLinks";
 import { waterFall } from "@/lib/framer-variants";
 import { cn, urlFor } from "@/lib/utils";
 import { motion } from "framer-motion";
@@ -8,10 +7,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { HERO_AVATAR_SIZES, PX_REM_ratio } from "@/lib/constants";
+import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
 
 function Hero() {
   const { data: heroData, isLoading } = useHero();
-  const { data: navLinks } = useNavLinks();
+  const { navLinks } = useCachedNavLinks();
 
   if (isLoading || !heroData)
     return (

@@ -14,17 +14,14 @@ import {
   SelectValue,
 } from "@/components/ui/select"; // Adjust this import based on your setup
 import useContact from "@/hooks/useContact";
-import useNavLinks from "@/hooks/useNavLinks";
 import useSendMessage from "@/hooks/useSendMessage";
 import SectionLayout from "@/layouts/section-layout";
 import { defaultValues } from "@/lib/constants";
 
-import {
-  contactTitleBackFlip,
-  ReversewaterFallContactForm,
-} from "@/lib/framer-variants";
+import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
+import { contactTitleBackFlip } from "@/lib/framer-variants";
+import { cn } from "@/lib/utils";
 import { buildFormSchema } from "@/lib/zod-schemas";
-import { queryClient } from "@/main";
 import { useLanguageStore } from "@/stores/language-store";
 import type { FormSchemaType, Contact as TContact } from "@/types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -37,12 +34,14 @@ import LabelIcon from "./sub-components/contact/form-label-icon";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Toaster } from "./ui/toaster";
-import { cn } from "@/lib/utils";
+import { queryClient } from "@/main";
 
-function ContactForm() {
+function ContactForm({ contactData }: { contactData: TContact }) {
   const language = useLanguageStore((state) => state.language);
-  const contact = queryClient.getQueryData<TContact>(["contact", language]);
-  const formSchema = buildFormSchema(contact?.errorMessages);
+  const contact =
+    contactData || queryClient.getQueryData<TContact>(["contact", language]);
+
+  const formSchema = buildFormSchema(contactData?.errorMessages);
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues,
@@ -64,12 +63,12 @@ function ContactForm() {
 
   return (
     <Form {...form}>
-      <motion.form
+      <form
         className="px-8 py-4 space-y-16"
         onSubmit={form.handleSubmit(onSubmit, onError)}
       >
-        {contact?.fields.inputs.map((input) => (
-          <motion.div key={input.label} variants={ReversewaterFallContactForm}>
+        {contact.fields.inputs.map((input) => (
+          <div key={input.label}>
             <FormField
               control={form.control}
               name={input.name}
@@ -97,12 +96,12 @@ function ContactForm() {
                 </FormItem>
               )}
             />
-          </motion.div>
+          </div>
         ))}
 
         {/* Reason Field */}
-        {contact?.fields.selects.map((select) => (
-          <motion.div variants={ReversewaterFallContactForm} key={select.label}>
+        {contact.fields.selects.map((select) => (
+          <div key={select.label}>
             <FormField
               control={form.control}
               name={select.name}
@@ -141,7 +140,7 @@ function ContactForm() {
                 </FormItem>
               )}
             />
-          </motion.div>
+          </div>
         ))}
 
         <ReCAPTCHA
@@ -152,7 +151,7 @@ function ContactForm() {
         />
 
         {/* Submit Button */}
-        <motion.div variants={ReversewaterFallContactForm}>
+        <motion.div>
           <Button
             disabled={status === "pending" || form.formState.isSubmitting}
             variant="outline"
@@ -163,60 +162,39 @@ function ContactForm() {
             {status === "pending" ? (
               <>
                 <Loader2 className="animate-spin" />
-                {contact?.button.submittingText}...
+                {contact.button.submittingText}...
               </>
             ) : (
               <div className="flex items-center justify-center gap-x-2">
-                {contact?.button.initialText}
+                {contact.button.initialText}
                 <Send className="stroke-purple-400" />
               </div>
             )}
           </Button>
         </motion.div>
-      </motion.form>
+      </form>
     </Form>
   );
 }
 
 function Contact() {
-  const { data: contactData, isLoading } = useContact();
-  const { data: navLinks } = useNavLinks();
+  const { data: contactData, isLoading, isError } = useContact();
+  const { navLinks } = useCachedNavLinks();
+
   const slug = navLinks?.links?.[3].slug || "contact";
 
-  // const {
-  //   state: { data: navLinks },
-  // } = useLocation();
-
-  // const location = useLocation();
   if (isLoading || !contactData) return <SectionLayout slug={slug} />;
+  if (isError) return <SectionLayout slug={slug}>Oops error..</SectionLayout>;
 
   return (
     <>
       <SectionLayout slug={slug}>
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          variants={{
-            initial: { y: "-100%" },
-            visible: {
-              y: 0,
-              transition: {
-                type: "spring",
-                stiffness: 10,
-                staggerChildren: 0.2,
-                delayChildren: 0.2,
-              },
-            },
-          }}
-          viewport={{ once: true, amount: 0.5 }}
-          className="flex flex-col justify-center h-full"
-        >
+        <div className="flex flex-col justify-center h-full">
           {/* form container */}
           <div className="grid items-center justify-center gap-y-8 gap-x-8 lg:grid-cols-2">
-            <motion.div className="p-4 rounded-lg shadow-sm h-fit dark:shadow-black">
-              <ContactForm />
-            </motion.div>
-            {/* Localization needed */}
+            <div className="p-4 rounded-lg shadow-sm h-fit dark:shadow-black">
+              <ContactForm contactData={contactData} />
+            </div>
 
             <motion.h5 className="text-[9.75rem] text-center font-unbounded leading-[0.7em]">
               {contactData?.HeaderWords?.map(({ word, isHighlighted }) => (
@@ -230,7 +208,7 @@ function Contact() {
               ))}
             </motion.h5>
           </div>
-        </motion.div>
+        </div>
         <Toaster />
       </SectionLayout>
     </>

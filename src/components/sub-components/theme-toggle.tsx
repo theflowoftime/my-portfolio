@@ -8,11 +8,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import useThemeStore, { themes } from "@/stores/theme-store";
-import useNavLinks from "@/hooks/useNavLinks";
+import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
 
 export function ThemeToggle({ className }: { className?: string }) {
   const { theme, setTheme } = useThemeStore();
-  const { data: navbarData, isLoading } = useNavLinks();
+  const { navLinks: navbarData } = useCachedNavLinks();
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -28,10 +28,6 @@ export function ThemeToggle({ className }: { className?: string }) {
     }
     root.classList.add(theme);
   }, [theme]);
-
-  if (isLoading) {
-    return <DropdownMenu />;
-  }
 
   return (
     <DropdownMenu>
