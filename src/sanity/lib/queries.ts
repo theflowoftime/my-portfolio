@@ -1,6 +1,8 @@
 export const navBar_QUERY = `*[_type == "navBar" && language == $language][0]{
     links[],
-    button
+    button,
+    languages[],
+    themes[]
   }`;
 
 export const aboutMe_Query = `*[_type == "aboutMe" && language == $language][0] {

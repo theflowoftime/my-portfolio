@@ -36,6 +36,8 @@ export type Navbar = {
     // the button is visible in this scrollY progress interval (0 to 1)
     visibilityIntervalScrollY: readonly [start: number, end: number];
   };
+  languages: string[];
+  themes: string[];
 };
 
 export type Hero = {

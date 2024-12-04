@@ -8,11 +8,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import useThemeStore, { themes } from "@/stores/theme-store";
-import { motion } from "framer-motion";
-import { DropdownMenuArrow } from "@radix-ui/react-dropdown-menu";
+import useNavLinks from "@/hooks/useNavLinks";
 
 export function ThemeToggle({ className }: { className?: string }) {
   const { theme, setTheme } = useThemeStore();
+  const { data: navbarData, isLoading } = useNavLinks();
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -29,6 +29,10 @@ export function ThemeToggle({ className }: { className?: string }) {
     root.classList.add(theme);
   }, [theme]);
 
+  if (isLoading) {
+    return <DropdownMenu />;
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -43,10 +47,10 @@ export function ThemeToggle({ className }: { className?: string }) {
         className="border-none animate-accordion-down min-w-min"
       >
         {themes.map(
-          (thm) =>
+          (thm, index) =>
             theme !== thm && (
               <DropdownMenuItem key={thm} onClick={() => setTheme(thm)}>
-                {thm}
+                {navbarData?.themes?.[index]}
               </DropdownMenuItem>
             )
         )}
