@@ -12,7 +12,7 @@ export default function Cursor() {
   return (
     <AnimatePresence>
       <motion.div
-        className="absolute z-50 w-12 h-12 pointer-events-none"
+        className="fixed z-50 w-12 h-12 pointer-events-none"
         variants={cursorVariants}
         animate={animateCursorVariant} // Animated cursor variant
         exit="cursorLeave"
