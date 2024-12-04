@@ -132,7 +132,7 @@ type Contact = {
   _id: string;
   // to be removed
   description: { title: string; subtitle: string };
-  HeaderTexts: {
+  HeaderWords: {
     word: string;
     isHighlighted: boolean;
   }[];

@@ -27,10 +27,6 @@ export const hero_QUERY = `*[_type == "hero" && language == $language][0]{
 
 export const contact_QUERY = `*[_type == "contact" && language == $language][0]{
     _id,
-    description {
-      title,
-      subtitle
-    },
     fields {
       inputs[] {
         label,
@@ -61,7 +57,7 @@ export const contact_QUERY = `*[_type == "contact" && language == $language][0]{
       }
     },
     toast,
-    contactImage
+    HeaderWords[]
   }`;
 
 export const contact_email_exists_QUERY = `*[_type == "message" && language == $language && email == $email] {

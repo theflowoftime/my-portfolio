@@ -39,11 +39,6 @@ import { Input } from "./ui/input";
 import { Toaster } from "./ui/toaster";
 import { cn } from "@/lib/utils";
 
-const contactFormHeaderText = [
-  { word: "Let's", isHighlighted: false },
-  { word: "talk!", isHighlighted: true },
-];
-
 function ContactForm() {
   const language = useLanguageStore((state) => state.language);
   const contact = queryClient.getQueryData<TContact>(["contact", language]);
@@ -223,14 +218,14 @@ function Contact() {
             </motion.div>
             {/* Localization needed */}
 
-            <motion.h5 className="text-[9.75rem] font-unbounded leading-[0.7em] row-start-1">
-              {contactFormHeaderText.map((wordInfo) => (
+            <motion.h5 className="text-[9.75rem] text-center font-unbounded leading-[0.7em]">
+              {contactData?.HeaderWords?.map(({ word, isHighlighted }) => (
                 <motion.p
-                  key={wordInfo.word}
-                  className={cn(wordInfo.isHighlighted && "text-purple-500")}
+                  key={word}
+                  className={cn(isHighlighted && "text-purple-500")}
                   variants={contactTitleBackFlip}
                 >
-                  {wordInfo.word}
+                  {word}
                 </motion.p>
               ))}
             </motion.h5>
