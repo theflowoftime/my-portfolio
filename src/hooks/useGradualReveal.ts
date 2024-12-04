@@ -17,10 +17,14 @@ export const useGradualReveal = ({
   });
 
   useEffect(() => {
+    let id: number;
     scrollYProgress.on("change", (progress) => {
-      requestAnimationFrame(() => setProgression(progress));
+      id = requestAnimationFrame(() => setProgression(progress));
     });
 
-    return () => scrollYProgress.destroy();
+    return () => {
+      scrollYProgress.destroy();
+      cancelAnimationFrame(id);
+    };
   }, [scrollYProgress]);
 };

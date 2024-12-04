@@ -1,8 +1,15 @@
 import { Separator } from "@/components/ui/separator";
 import { waterFall } from "@/lib/framer-variants";
+import { formatDate } from "@/lib/utils";
 import { AboutMe } from "@/types/types";
 import { motion } from "framer-motion";
-import { BriefcaseBusiness, Building2, CalendarFold } from "lucide-react";
+import {
+  Activity,
+  BriefcaseBusiness,
+  Building2,
+  CalendarFold,
+  MoveDown,
+} from "lucide-react";
 
 export default function Experiences({
   experiences,
@@ -16,29 +23,31 @@ export default function Experiences({
           <div key={index}>
             <motion.div
               variants={waterFall}
-              className="grid items-center justify-between grid-cols-3 "
+              className="grid items-center justify-center grid-cols-2 grid-rows-2 text-xs sm:gap-y-0 gap-y-6 sm:justify-between sm:grid-cols-3 sm:grid-rows-1"
             >
-              <p className="text-xs">
+              <p className="col-span-2 sm:col-span-1">
                 <BriefcaseBusiness
                   size={22}
                   className="w-full text-center stroke-purple-500"
                 />
                 {role}
               </p>
-              <p className="text-sm">
+              <p>
                 <Building2
                   size={22}
                   className="w-full text-center stroke-purple-500"
                 />
                 {company}
               </p>
-              <p className="text-xs">
-                {new Date(start).getFullYear()}{" "}
-                <CalendarFold
-                  size={22}
+              <p>
+                <span className="opacity-60"> {formatDate(start)} </span>
+                <MoveDown
+                  size={16}
                   className="w-full text-center stroke-purple-500"
                 />
-                {end ? new Date(end).getFullYear() : "-"}
+                <span className="opacity-80">
+                  {end ? formatDate(end) : "-"}
+                </span>
               </p>
             </motion.div>
             <motion.div variants={waterFall}>

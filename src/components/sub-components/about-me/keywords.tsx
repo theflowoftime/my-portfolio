@@ -4,7 +4,8 @@ import { useRef } from "react";
 
 const Keywords = ({ keywords }: { keywords?: string[] }) => {
   const time = useTime();
-  const y = useTransform(() => Math.sin(time.get() / 1000) * 10);
+  const z = useTransform(() => Math.sin(time.get() / 1000) * -50);
+
   const constraintRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -17,38 +18,40 @@ const Keywords = ({ keywords }: { keywords?: string[] }) => {
     >
       {keywords?.map((keyword, index) => (
         <motion.div
-          style={{ y }}
+          style={{ z }}
           key={keyword}
           drag
           dragConstraints={constraintRef}
           initial={{
             opacity: 0,
-            x: 50 * ((index + 1) % 2 ? 1 : -1),
-            rotateY: `${60 * ((index + 1) % 2 ? 1 : -1)}deg`,
+            x: 60 * ((index + 1) % 2 ? 1 : -1),
+            rotateY: `${45 * ((index + 1) % 2 ? 1 : -1)}deg`,
+            zIndex: 0,
           }}
           whileInView={{
             opacity: 1,
             x: 0,
-            transition: {
-              type: "spring",
-              stiffness: 10,
-            },
+            transition: { type: "spring", stiffness: 10 },
           }}
           viewport={{ once: true }}
           whileDrag={{
+            opacity: 1,
+            z: 0,
             rotateY: 0,
+            zIndex: 10,
             transition: {
               type: "spring",
-              stiffness: 10,
+              damping: 5,
+              stiffness: 200,
             },
           }}
           className="cursor-grab w-fit h-fit"
         >
           <Badge
-            className="px-6 py-3 italic shadow-md select-none font-unbounded dark:shadow-white shadow-black"
+            className="px-6 py-3 bg-black shadow-sm select-none font-unbounded dark:shadow-white shadow-black backdrop-blur-sm backdrop-filter dark:bg-opacity-5 dark:bg-white bg-opacity-5"
             variant="outline"
           >
-            {keyword}
+            <span className="text-xs font-light">{keyword}</span>
           </Badge>
         </motion.div>
       ))}

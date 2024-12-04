@@ -6,8 +6,8 @@ const Words = memo(
     return useMemo(
       () =>
         words?.map((word, index) => {
-          const visibilityThreshold = progression * words.length * 1.2;
-          const fadeMargin = 4; // Adjust for smoother transitions
+          const visibilityThreshold = progression * words.length * 1.2; // increased a bit
+          const fadeMargin = 4; // can adjust for smoother transitions
           const opacity =
             index < visibilityThreshold
               ? 1
@@ -26,11 +26,13 @@ const Words = memo(
 
           return (
             <motion.span
+              initial={{ z: -100 }}
               key={index}
               style={{
                 opacity,
                 filter: `blur(${blur}px)`, // Add blur dynamically
                 transition: "opacity 0.6s ease-in-out, filter 0.6s ease-in-out",
+                z: 0,
               }}
             >
               {word}{" "}
