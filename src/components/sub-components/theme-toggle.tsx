@@ -9,10 +9,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import useThemeStore, { themes } from "@/stores/theme-store";
 import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
+import { useCursorStore } from "@/stores/cursor-store";
 
 export function ThemeToggle({ className }: { className?: string }) {
   const { theme, setTheme } = useThemeStore();
   const { navLinks: navbarData } = useCachedNavLinks();
+  const animateCursor = useCursorStore((state) => state.animateCursor);
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -32,7 +34,13 @@ export function ThemeToggle({ className }: { className?: string }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button className={className} variant="ghost" size="icon">
+        <Button
+          onMouseEnter={() => animateCursor("buttonHover")}
+          onMouseLeave={() => animateCursor("cursorEnter")}
+          className={className}
+          variant="ghost"
+          size="icon"
+        >
           <Sun className="absolute !h-[1rem] !w-[1rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
           <Moon className="absolute !h-[1rem] !w-[1rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
           <span className="sr-only">Toggle theme</span>

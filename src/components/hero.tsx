@@ -8,10 +8,12 @@ import { Link } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { HERO_AVATAR_SIZES, PX_REM_ratio } from "@/lib/constants";
 import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
+import { useCursorStore } from "@/stores/cursor-store";
 
 function Hero() {
   const { data: heroData, isLoading } = useHero();
   const { navLinks } = useCachedNavLinks();
+  const animateCursor = useCursorStore((state) => state.animateCursor);
 
   if (isLoading || !heroData)
     return (
@@ -154,7 +156,11 @@ function Hero() {
           state={{ data: navLinks }}
           to={`${navLinks?.links?.[2]?.path || "#works"}`}
         >
-          <div className="flex flex-col items-center">
+          <div
+            onMouseEnter={() => animateCursor("buttonHover")}
+            onMouseLeave={() => animateCursor("cursorEnter")}
+            className="flex flex-col items-center"
+          >
             <ChevronsDown
               className="bg-white rounded-full dark:bg-black dark:text-white backdrop-blur-xl backdrop-filter bg-opacity-10 dark:bg-opacity-10 animate-bounce"
               size={72}

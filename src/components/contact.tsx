@@ -35,11 +35,13 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Toaster } from "./ui/toaster";
 import { queryClient } from "@/main";
+import { useCursorStore } from "@/stores/cursor-store";
 
 function ContactForm({ contactData }: { contactData: TContact }) {
   const language = useLanguageStore((state) => state.language);
   const contact =
     contactData || queryClient.getQueryData<TContact>(["contact", language]);
+  const animateCursor = useCursorStore((state) => state.animateCursor);
 
   const formSchema = buildFormSchema(contactData?.errorMessages);
   const form = useForm<FormSchemaType>({
@@ -153,6 +155,8 @@ function ContactForm({ contactData }: { contactData: TContact }) {
         {/* Submit Button */}
         <motion.div>
           <Button
+            onMouseEnter={() => animateCursor("buttonHover")}
+            onMouseLeave={() => animateCursor("cursorEnter")}
             disabled={status === "pending" || form.formState.isSubmitting}
             variant="outline"
             className="w-full h-4 py-6 px-4 bg-inherit tracking-wide dark:text-white border-[1px] border-primary-foreground/20 rounded-sm 

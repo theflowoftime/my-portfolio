@@ -18,10 +18,12 @@ import { Separator } from "../ui/separator";
 import Toggles from "./hero/preferences-toggle";
 import LogoWithName from "./site-logo";
 import { Button } from "../ui/button";
+import { useCursorStore } from "@/stores/cursor-store";
 
 const NavBar = ({ className }: ComponentProps<"div">) => {
   const { data: navbarData, isLoading } = useNavLinks();
   const scrollYProgress = useScrollY();
+  const animateCursor = useCursorStore((state) => state.animateCursor);
 
   if (isLoading || !navbarData)
     return (
@@ -74,7 +76,11 @@ const NavBar = ({ className }: ComponentProps<"div">) => {
             <NavigationMenu orientation="vertical">
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="p-2 dark:text-white bg-inherit focus:bg-transparent">
+                  <NavigationMenuTrigger
+                    onMouseEnter={() => animateCursor("buttonHover")}
+                    onMouseLeave={() => animateCursor("cursorEnter")}
+                    className="p-2 dark:text-white bg-inherit focus:bg-transparent"
+                  >
                     <MenuIcon className="dark:stroke-white stroke-black" />
                   </NavigationMenuTrigger>
 
@@ -82,6 +88,8 @@ const NavBar = ({ className }: ComponentProps<"div">) => {
                     {links?.map((link: LinkType) => (
                       <NavigationMenuLink key={link.title} asChild>
                         <Link
+                          onMouseEnter={() => animateCursor("buttonHover")}
+                          onMouseLeave={() => animateCursor("cursorEnter")}
                           state={{ data: links }}
                           className="text-base whitespace-nowrap dark:text-white hover:opacity-40 font-unbounded"
                           to={link.path || `#${link.slug}`}
@@ -119,7 +127,11 @@ const NavBar = ({ className }: ComponentProps<"div">) => {
                   state={{ data: links }}
                   className="relative"
                 >
-                  <Button className="relative transition-transform duration-300 rounded-full shadow-lg dark:text-white md:px-6 md:py-3 font-unbounded hover:bg-gradient-to-r hover:from-pink-500 hover:to-purple-400 hover:scale-105">
+                  <Button
+                    onMouseEnter={() => animateCursor("buttonHover")}
+                    onMouseLeave={() => animateCursor("cursorEnter")}
+                    className="relative transition-transform duration-300 rounded-full shadow-lg dark:text-white md:px-6 md:py-3 font-unbounded hover:bg-gradient-to-r hover:from-pink-500 hover:to-purple-400 hover:scale-105"
+                  >
                     <span className="absolute inset-0 rounded-full blur-md mix-blend-lighten bg-gradient-to-r from-purple-400 to-pink-500" />
                     <span className="hidden text-white md:inline">{text}</span>
                     <MessageCircle className="inline-block md:hidden" />
