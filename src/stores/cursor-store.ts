@@ -1,7 +1,7 @@
 import { cursorVariants } from "@/lib/framer-variants";
 import { create } from "zustand";
 
-type EventType = keyof typeof cursorVariants;
+export type EventType = keyof typeof cursorVariants;
 
 type State = {
   animateCursorVariant: EventType;

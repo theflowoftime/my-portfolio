@@ -92,9 +92,9 @@ export const cursorVariants = {
       duration: 0.2,
     },
   },
-  // buttonHover: {
-  //   scale: 1,
-  //   backgroundColor: "#eeff00",
-  //   borderRadius: "50%",
-  // },
+  buttonHover: {
+    scale: 1,
+    backgroundColor: "#eeff00",
+    borderRadius: "50%",
+  },
 };
