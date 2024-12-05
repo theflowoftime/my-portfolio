@@ -5,10 +5,11 @@ import { useEffect } from "react";
 const useCustomCursor = () => {
   const animateCursor = useCursorStore((state) => state.animateCursor);
   const cursorX = useMotionValue(0);
-  const cursorY = useMotionValue(0);
-  const bodyElement = document.body;
+  const cursorY = useMotionValue(-100);
 
   useEffect(() => {
+    const bodyElement = document.body;
+
     const mouseMoveHandler = (e: MouseEvent) => {
       cursorX.set(e.clientX - 12); // can Adjust for cursor size
       cursorY.set(e.clientY - bodyElement.scrollTop - 12);

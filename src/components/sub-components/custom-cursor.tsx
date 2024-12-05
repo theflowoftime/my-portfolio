@@ -12,7 +12,8 @@ export default function Cursor() {
   return (
     <AnimatePresence>
       <motion.div
-        className="fixed z-50 w-12 h-12 pointer-events-none"
+        id="cursor"
+        className="fixed z-50 w-8 h-8 pointer-events-none mix-blend-hard-light"
         variants={cursorVariants}
         animate={animateCursorVariant} // Animated cursor variant
         exit="cursorLeave"
