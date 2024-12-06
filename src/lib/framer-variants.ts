@@ -75,7 +75,7 @@ export const pathVariants: Variants = {
 
 export const cursorVariants = {
   cursorEnter: {
-    border: "1px solid #eeff00",
+    border: "1px solid #7D0DC3",
     boxShadow: "0 0 1px 0px #eeff00 inset, 0 0 1px 0px #eeff00",
     scale: 2,
     borderRadius: "50%",
@@ -94,7 +94,7 @@ export const cursorVariants = {
   },
   buttonHover: {
     scale: 1,
-    backgroundColor: "#eeff00",
+    backgroundColor: "#7D0DC3",
     borderRadius: "50%",
   },
 };
