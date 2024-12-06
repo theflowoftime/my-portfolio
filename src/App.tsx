@@ -12,7 +12,8 @@ function App() {
   useHashNavigation();
 
   return (
-    <div className="relative overflow-x-hidden cursor-none">
+    // <div className="relative overflow-x-hidden cursor-none">
+    <div className="relative cursor-none">
       <Cursor />
       <Noise />
       <div id="top">

@@ -48,7 +48,7 @@ export type Hero = {
       highlight: number[];
       img: {
         position: number;
-        image: SanityImageSource;
+        images: SanityImageSource[];
         altText: string;
       };
     };

@@ -9,11 +9,17 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { HERO_AVATAR_SIZES, PX_REM_ratio } from "@/lib/constants";
 import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
 import { useCursorStore } from "@/stores/cursor-store";
+import Autoplay from "embla-carousel-autoplay";
+import { Carousel, CarouselContent, CarouselItem } from "./ui/carousel";
 
 function Hero() {
   const { data: heroData, isLoading } = useHero();
   const { navLinks } = useCachedNavLinks();
   const animateCursor = useCursorStore((state) => state.animateCursor);
+
+  const plugin = React.useRef(
+    Autoplay({ delay: 1500, stopOnInteraction: true })
+  );
 
   if (isLoading || !heroData)
     return (
@@ -42,7 +48,7 @@ function Hero() {
 
     // Dimming based on line index (lower lines = dimmer)
     const lineDimming = 1 - 0.1 * lineIndex; // Each line gets progressively dimmer
-    const opacity = Math.max(baseOpacity * lineDimming, 0.2); // Ensure opacity never goes below 0.2 for readability
+    const opacity = Math.max(baseOpacity * lineDimming, 0.4); // Ensure opacity never goes below 0.4 for readability
 
     // Generate the radial gradient with the adjusted opacity
     return `radial-gradient(150% 150% at ${offset}% 100%, rgba(0, 0, 0, ${opacity}) 0%, rgba(0, 0, 0, 1) 100%) add`;
@@ -50,6 +56,7 @@ function Hero() {
 
   return (
     <motion.div
+      id="hero"
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
@@ -74,15 +81,39 @@ function Hero() {
                       WebkitMask: generateMask(wordIndex, true, lineIndex), // Cross-browser support
                     }}
                   >
-                    <AvatarImage
-                      className="object-cover"
-                      src={urlFor(item.line.img.image)
-                        .width(w)
-                        .quality(80)
-                        .format("webp")
-                        .url()}
-                      alt={item.line.img.altText}
-                    />
+                    <Carousel
+                      plugins={[plugin.current]}
+                      opts={{
+                        loop: true,
+                        align: "start",
+                        axis: "y",
+                        containScroll: "trimSnaps",
+                        skipSnaps: true,
+                      }}
+                      orientation="vertical"
+                      onMouseEnter={plugin.current.stop}
+                      onMouseLeave={plugin.current.reset}
+                    >
+                      <CarouselContent className={`h-[${h / PX_REM_ratio}rem]`}>
+                        {item.line.img.images?.map((image, index) => (
+                          <CarouselItem
+                            className={`p-0 m-0 h-fit cursor-grab`}
+                            key={index}
+                          >
+                            <AvatarImage
+                              className="object-contain w-full h-full overflow-hidden"
+                              src={urlFor(image)
+                                .fit("max")
+                                .quality(80)
+                                .auto("format")
+                                .url()}
+                              alt={item.line.img.altText}
+                            />
+                          </CarouselItem>
+                        ))}
+                      </CarouselContent>
+                    </Carousel>
+
                     <AvatarFallback></AvatarFallback>
                   </Avatar>
                 )}
@@ -116,15 +147,25 @@ function Hero() {
                   }}
                 >
                   <AvatarImage
-                    className="object-cover"
-                    src={urlFor(item.line.img.image)
-                      .width(w)
+                    className={cn(lineIndex === 0 && "object-contain")}
+                    src={urlFor(item.line.img.images?.[0])
+                      .fit("fillmax")
                       .quality(80)
-                      .format("webp")
+                      .auto("format")
                       .url()}
                     alt={item.line.img.altText}
                   />
-                  <AvatarFallback></AvatarFallback>
+                  <AvatarFallback>
+                    {/* <AvatarImage
+                      className=""
+                      src={urlFor(item.line.img.image)
+                        .fit("max")
+                        .quality(80)
+                        .format("jpg")
+                        .url()}
+                      alt={item.line.img.altText}
+                    /> */}
+                  </AvatarFallback>
                 </Avatar>
               );
             }

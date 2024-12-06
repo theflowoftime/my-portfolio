@@ -15,16 +15,20 @@ const LazyBackground = ({
 
   useEffect(() => {
     const img = new Image();
-    img.src = urlFor(image).width(1920).quality(80).format("webp").url();
+    img.src = urlFor(image).width(1920).quality(40).auto("format").url();
     img.onload = () => setLoaded(true);
   }, [image]);
 
-  const placeholderImage = urlFor(image).width(50).height(50).blur(20).url();
+  const placeholderImage = urlFor(image)
+    .size(50, 50)
+    .blur(20)
+    .auto("format")
+    .url();
 
   const images = {
-    sm: urlFor(image).width(640).quality(80).format("webp").url(),
-    md: urlFor(image).width(1024).quality(80).format("webp").url(),
-    lg: urlFor(image).width(1920).quality(80).format("webp").url(),
+    sm: urlFor(image).width(640).quality(80).auto("format").url(),
+    md: urlFor(image).width(1024).quality(80).auto("format").url(),
+    lg: urlFor(image).width(1920).quality(80).auto("format").url(),
   };
 
   return (
