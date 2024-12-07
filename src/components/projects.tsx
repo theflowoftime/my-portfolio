@@ -73,7 +73,7 @@ function Projects() {
           {projects.map((project, index) => (
             <motion.div
               key={project._id}
-              className={`sticky group h-[25rem] w-full font-unbounded grid grid-cols-2 gap-x-8 justify-between shadow-md rounded-lg bg-background bg-opacity-50 p-2`}
+              className={`sticky group h-[25rem] w-full font-unbounded grid grid-cols-1 sm:grid-cols-2 gap-x-8 justify-between shadow-md rounded-lg bg-background  p-2`}
               style={{
                 top: `calc(${index * 50}px + 5rem)`,
                 scale: scales[index] ? scales[index] : 1,
@@ -90,7 +90,7 @@ function Projects() {
             >
               {/* Project Image */}
               <LazyBackground
-                className="relative overflow-hidden bg-no-repeat bg-contain rounded-lg"
+                className="relative overflow-hidden bg-no-repeat bg-contain rounded-lg sm:bg-cover h-96"
                 size="lg"
                 image={project.image}
               >

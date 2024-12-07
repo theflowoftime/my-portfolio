@@ -183,6 +183,7 @@ function ContactForm({ contactData }: { contactData: TContact }) {
             <span>or</span>
           </div>
           <Button
+            type="button"
             onMouseEnter={() => animateCursor("buttonHover")}
             onMouseLeave={() => animateCursor("cursorEnter")}
             className="w-full h-4 py-6 px-4 bg-inherit tracking-wide text-black dark:text-white border-[1px] border-primary-foreground/20 rounded-sm 

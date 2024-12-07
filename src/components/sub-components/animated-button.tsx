@@ -41,6 +41,7 @@ export default function AnimatedButton({
         {/* Animated Background */}
         <motion.span
           className="absolute inset-0 w-full h-full dark:bg-white bg-black origin-[50%_50%_0px]"
+          style={{ willChange: "transform" }}
           variants={{
             rest: {
               scale: 0.2,
