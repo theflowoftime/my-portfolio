@@ -61,7 +61,7 @@ function AboutMe() {
           viewport={{ once: true, amount: "all" }}
           initial={{ opacity: 0, y: 150 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ type: "tween", duration: 0.6, delay: 2 }}
+          transition={{ type: "tween", duration: 0.6, delay: 1 }}
         >
           <AnimatedButton textContent="download resume" />
         </motion.div>

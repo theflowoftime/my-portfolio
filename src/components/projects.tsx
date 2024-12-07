@@ -95,7 +95,7 @@ function Projects() {
                 image={project.image}
               >
                 <Button className="absolute transition-all duration-300 -translate-x-1/2 translate-y-[200%] w-fit bottom-8 left-1/2 right-1/2 group-hover:translate-y-0 ease">
-                  View Project
+                  <Link to={`/projects/${project._id}`}>View Project</Link>
                 </Button>
               </LazyBackground>
 
