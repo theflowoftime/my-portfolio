@@ -1,12 +1,42 @@
 import { Copyright, Mail, Phone } from "lucide-react";
 import LogoWithName from "./sub-components/site-logo";
 import SocialIcons from "./sub-components/social-icons";
+import { Link, LinkProps } from "react-router-dom";
 
 const footerData = {
   email: "flowoftime@gmail.com",
   phone: "+216-56-140-270",
   socialsTitle: "Media",
   creator: "Made by Yacine",
+};
+
+const Mailto = ({
+  className,
+  subject,
+  body,
+  to: email,
+  children,
+}: LinkProps & {
+  subject?: string;
+  body?: string;
+}) => {
+  let params = subject || body ? "?" : "";
+  if (subject) params += `subject=${encodeURIComponent(subject)}`;
+  if (body) params += `${subject ? "&" : ""}body=${encodeURIComponent(body)}`;
+
+  return (
+    <Link className={className} to={`mailto:${email}${params}`}>
+      {children}
+    </Link>
+  );
+};
+
+const Callto = ({ to: phone, className, children }: LinkProps) => {
+  return (
+    <Link className={className} to={`tel:${phone}`}>
+      {children}
+    </Link>
+  );
 };
 
 function Footer() {
@@ -16,18 +46,20 @@ function Footer() {
         <div className="flex flex-wrap justify-between">
           <div className="space-y-2">
             <LogoWithName />
-            <div className="space-x-2">
+            <Mailto
+              className="block space-x-2 text-sm font-medium dark:text-white opacity-80 md:text-base hover:underline"
+              to={footerData.email}
+            >
               <Mail className="inline-block" size="16" />
-              <span className="text-sm font-medium dark:text-white opacity-80 md:text-base">
-                {footerData.email}
-              </span>
-            </div>
-            <div className="space-x-2 ">
+              <span>{footerData.email}</span>
+            </Mailto>
+            <Callto
+              to={footerData.phone}
+              className="block space-x-2 text-sm font-medium dark:text-white opacity-80 md:text-base hover:underline"
+            >
               <Phone className="inline-block" size="16" />
-              <span className="text-sm font-medium dark:text-white opacity-80 md:text-base">
-                {footerData.phone}
-              </span>
-            </div>
+              <span>{footerData.phone}</span>
+            </Callto>
           </div>
 
           <div className="flex flex-col items-center">

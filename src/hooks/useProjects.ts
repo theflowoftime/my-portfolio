@@ -16,6 +16,7 @@ export const useProjects = (language: Language) => {
   } = useQuery<Projects>({
     queryKey: ["projects", language],
     queryFn: () => fetchprojects(language),
+    staleTime: 1000 * 60 * 15, // // Cache for 15 minutes
   });
 
   return { projects, error, isLoading };

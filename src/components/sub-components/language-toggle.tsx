@@ -10,6 +10,7 @@ import type { Language } from "@/types/types";
 import { languages, useLanguageStore } from "@/stores/language-store";
 import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
 import { useCursorStore } from "@/stores/cursor-store";
+import { Languages } from "lucide-react";
 
 export function LanguageToggle({ className }: { className?: string }) {
   const { setLanguage, language } = useLanguageStore(); // Get language and setLanguage from Zustand store
@@ -30,7 +31,7 @@ export function LanguageToggle({ className }: { className?: string }) {
           variant="ghost"
           size="icon"
         >
-          <span>{language}</span>
+          <Languages />
           <span className="sr-only">Toggle language</span>
         </Button>
       </DropdownMenuTrigger>

@@ -26,7 +26,7 @@ import { useLanguageStore } from "@/stores/language-store";
 import type { FormSchemaType, Contact as TContact } from "@/types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
-import { Loader2, Send } from "lucide-react";
+import { CalendarClock, Loader2, Send } from "lucide-react";
 import { useEffect } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useForm } from "react-hook-form";
@@ -153,7 +153,7 @@ function ContactForm({ contactData }: { contactData: TContact }) {
         />
 
         {/* Submit Button */}
-        <motion.div>
+        <motion.div className="flex flex-col items-center gap-y-2">
           <Button
             onMouseEnter={() => animateCursor("buttonHover")}
             onMouseLeave={() => animateCursor("cursorEnter")}
@@ -170,10 +170,28 @@ function ContactForm({ contactData }: { contactData: TContact }) {
               </>
             ) : (
               <div className="flex items-center justify-center gap-x-2">
-                {contact.button.initialText}
+                <span>{contact.button.initialText}</span>
                 <Send className="stroke-purple-400" />
               </div>
             )}
+          </Button>
+          <div
+            className="text-base font-instrument before:content[''] before:w-16 before:h-[0.062rem] dark:before:bg-white/10 
+          before:bg-purple-700/30 text-purple-400 before:absolute before:-translate-y-1/2 after:-translate-y-1/2 before:top-1/2 before:left-[30%] 
+          after:content[''] text-center after:w-16 after:h-[0.062rem]  dark:after:bg-white/10  after:bg-purple-700/30 after:absolute after:top-1/2 after:right-[30%] relative w-full"
+          >
+            <span>or</span>
+          </div>
+          <Button
+            onMouseEnter={() => animateCursor("buttonHover")}
+            onMouseLeave={() => animateCursor("cursorEnter")}
+            className="w-full h-4 py-6 px-4 bg-inherit tracking-wide text-black dark:text-white border-[1px] border-primary-foreground/20 rounded-sm 
+          hover:bg-purple-500/20 hover:transition-all hover:duration-250 shadow-sm dark:shadow-black hover:bg-opacity-20"
+          >
+            <div className="flex items-center justify-center gap-x-2">
+              <span>Schedule a Meeting</span>
+              <CalendarClock className="stroke-purple-400" />
+            </div>
           </Button>
         </motion.div>
       </form>
@@ -195,10 +213,6 @@ function Contact() {
       <SectionLayout slug={slug}>
         <div className="flex flex-col justify-center h-full">
           <div className="grid items-center justify-center gap-y-8 gap-x-8 lg:grid-cols-2">
-            <div className="p-4 rounded-lg shadow-sm h-fit dark:shadow-black">
-              <ContactForm contactData={contactData} />
-            </div>
-
             <motion.h5 className="text-[9.75rem] text-center font-unbounded leading-[0.7em]">
               {contactData?.HeaderWords?.map(({ word, isHighlighted }) => (
                 <motion.p
@@ -210,6 +224,10 @@ function Contact() {
                 </motion.p>
               ))}
             </motion.h5>
+
+            <div className="p-4 rounded-lg shadow-sm h-fit dark:shadow-black">
+              <ContactForm contactData={contactData} />
+            </div>
           </div>
         </div>
         <Toaster />

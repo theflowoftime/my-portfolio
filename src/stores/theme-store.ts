@@ -1,4 +1,5 @@
 import type { ThemeStore } from "@/types/types";
+import { Moon, Sun } from "lucide-react";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 

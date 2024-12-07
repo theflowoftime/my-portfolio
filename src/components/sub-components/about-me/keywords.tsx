@@ -30,7 +30,7 @@ const Keywords = ({ keywords }: { keywords?: string[] }) => {
           }}
           whileInView={{
             opacity: 1,
-            x: 0,
+            x: [50, 0, -50, 0], // random replace with some pattern
             transition: { type: "spring", stiffness: 10 },
           }}
           viewport={{ once: true }}

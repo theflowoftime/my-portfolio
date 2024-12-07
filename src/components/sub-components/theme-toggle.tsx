@@ -54,7 +54,7 @@ export function ThemeToggle({ className }: { className?: string }) {
           (thm, index) =>
             theme !== thm && (
               <DropdownMenuItem key={thm} onClick={() => setTheme(thm)}>
-                {navbarData?.themes?.[index]}
+                <span>{navbarData?.themes?.[index]}</span>
               </DropdownMenuItem>
             )
         )}

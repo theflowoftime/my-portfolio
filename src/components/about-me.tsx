@@ -6,6 +6,7 @@ import Keywords from "./sub-components/about-me/keywords";
 import Experiences from "./sub-components/about-me/experiences";
 import Introduction from "./sub-components/about-me/introduction";
 import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
+import AnimatedButton from "./sub-components/animated-button";
 
 function AboutMe() {
   const { navLinks } = useCachedNavLinks();
@@ -19,7 +20,7 @@ function AboutMe() {
 
   return (
     <SectionLayout slug={slug}>
-      <div className="flex flex-col items-center justify-center gap-y-16">
+      <div className="flex flex-col items-center justify-center gap-y-32">
         <div className="relative flex flex-col items-center justify-center gap-y-8">
           <div className="flex flex-col flex-wrap items-center gap-y-4">
             <div
@@ -55,6 +56,14 @@ function AboutMe() {
             {aboutMeData?.career?.title}
           </h3>
           <Experiences experiences={aboutMeData?.career?.experiences} />
+        </motion.div>
+        <motion.div
+          viewport={{ once: true, amount: "all" }}
+          initial={{ opacity: 0, y: 150 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ type: "tween", duration: 0.6, delay: 2 }}
+        >
+          <AnimatedButton textContent="download resume" />
         </motion.div>
       </div>
     </SectionLayout>

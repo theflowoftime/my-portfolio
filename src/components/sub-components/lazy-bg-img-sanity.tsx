@@ -6,6 +6,7 @@ import { ComponentProps, useEffect, useState } from "react";
 const LazyBackground = ({
   className,
   image,
+  children,
   size = "lg",
 }: ComponentProps<"div"> & {
   image: SanityImageSource;
@@ -28,7 +29,7 @@ const LazyBackground = ({
   const images = {
     sm: urlFor(image).width(640).quality(80).auto("format").url(),
     md: urlFor(image).width(1024).quality(80).auto("format").url(),
-    lg: urlFor(image).width(1920).quality(80).auto("format").url(),
+    lg: urlFor(image).fit("max").quality(100).auto("format").url(),
   };
 
   return (
@@ -36,15 +37,15 @@ const LazyBackground = ({
       initial={{ opacity: 0.5, scale: 1.05 }} // Start with slightly zoomed and dim
       animate={{ opacity: loaded ? 1 : 0.5, scale: loaded ? 1 : 1.05 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
-      className={cn(
-        "bg-cover bg-center bg-no-repeat h-full dark:shadow-[inset_0_0_0_0.2rem_var(--detail-medium-contrast)] w-full select-none",
-        className
-      )}
+      className={cn("select-none", className)}
       style={{
+        // dark:shadow-[inset_0_0_0_0.2rem_var(--detail-medium-contrast)]
         // --background-image: `var(--background-image)`,
         backgroundImage: `url(${loaded ? images[size] : placeholderImage})`,
       }}
-    />
+    >
+      {children}
+    </motion.div>
   );
 };
 

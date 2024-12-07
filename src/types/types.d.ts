@@ -3,6 +3,7 @@ import { languages } from "@/stores/language-store";
 import { NavLinkProps } from "react-router-dom";
 import { z } from "zod";
 import { type SanityImageSource } from "@sanity/image-url/lib/types/types";
+import { themes } from "@/stores/theme-store";
 
 export type Language = (typeof languages)[number];
 export interface LanguageStore {
