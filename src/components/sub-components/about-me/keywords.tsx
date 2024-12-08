@@ -1,10 +1,13 @@
 import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+import { useLanguageStore } from "@/stores/language-store";
 import { useTime, useTransform, motion } from "framer-motion";
 import { useRef } from "react";
 
 const Keywords = ({ keywords }: { keywords?: string[] }) => {
   const time = useTime();
   const z = useTransform(() => Math.sin(time.get() / 1000) * -50);
+  const language = useLanguageStore((state) => state.language);
 
   const constraintRef = useRef<HTMLDivElement>(null);
 
@@ -51,7 +54,14 @@ const Keywords = ({ keywords }: { keywords?: string[] }) => {
             className="px-6 py-3 bg-black shadow-sm select-none font-unbounded dark:shadow-white shadow-black backdrop-blur-sm backdrop-filter dark:bg-opacity-5 dark:bg-white bg-opacity-5"
             variant="outline"
           >
-            <span className="text-xs font-light">{keyword}</span>
+            <span
+              className={cn(
+                "text-xs font-light",
+                language === "AR" && "font-bold text-base tracking-wider"
+              )}
+            >
+              {keyword}
+            </span>
           </Badge>
         </motion.div>
       ))}

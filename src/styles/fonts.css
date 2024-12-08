@@ -63,3 +63,30 @@
   font-optical-sizing: auto;
   src: url("../assets/fonts/Jura/Jura-Medium.ttf") format("truetype");
 }
+
+@font-face {
+  font-family: "Baloo Bhaijaan 2";
+  font-style: normal;
+  font-weight: 400;
+  font-optical-sizing: auto;
+  src: url("../assets/fonts/BalooBhaijaan2/BalooBhaijaan2-Regular.ttf")
+    format("truetype");
+}
+
+@font-face {
+  font-family: "Baloo Bhaijaan 2";
+  font-style: normal;
+  font-weight: 500;
+  font-optical-sizing: auto;
+  src: url("../assets/fonts/BalooBhaijaan2/BalooBhaijaan2-Medium.ttf")
+    format("truetype");
+}
+
+@font-face {
+  font-family: "Baloo Bhaijaan 2";
+  font-style: normal;
+  font-weight: 800;
+  font-optical-sizing: auto;
+  src: url("../assets/fonts/BalooBhaijaan2/BalooBhaijaan2-Bold.ttf")
+    format("truetype");
+}

@@ -80,6 +80,7 @@ module.exports = {
         unbounded: ["var(--font-unbounded)", ...fontFamily.sans],
         instrument: ["var(--font-instrument)", ...fontFamily.serif],
         jura: ["var(--font-jura)", ...fontFamily.sans],
+        baloo: ["var(--font-baloo)", ...fontFamily.sans],
       },
       keyframes: {
         "accordion-down": {

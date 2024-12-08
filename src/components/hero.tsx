@@ -11,11 +11,13 @@ import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
 import { useCursorStore } from "@/stores/cursor-store";
 import Autoplay from "embla-carousel-autoplay";
 import { Carousel, CarouselContent, CarouselItem } from "./ui/carousel";
+import { useLanguageStore } from "@/stores/language-store";
 
 function Hero() {
   const { data: heroData, isLoading } = useHero();
   const { navLinks } = useCachedNavLinks();
   const animateCursor = useCursorStore((state) => state.animateCursor);
+  const language = useLanguageStore((state) => state.language);
 
   const plugin = React.useRef(
     Autoplay({ delay: 1500, stopOnInteraction: true })
@@ -185,7 +187,10 @@ function Hero() {
         {/* Description Section */}
         <motion.p
           variants={waterFall}
-          className="leading-relaxed tracking-widest text-balance dark:text-white/60"
+          className={cn(
+            "mx-auto leading-loose tracking-widest text-balance dark:text-white/60",
+            language === "AR" && "text-lg tracking-[0.125em]"
+          )}
         >
           {heroData.secondaryText}
         </motion.p>
@@ -207,7 +212,12 @@ function Hero() {
               size={72}
               strokeWidth={1}
             />
-            <span className="text-xs dark:text-white animate-pulse opacity-20 font-unbounded">
+            <span
+              className={cn(
+                "text-xs dark:text-white animate-pulse opacity-20 font-unbounded",
+                language === "AR" && "text-base"
+              )}
+            >
               {heroData.buttonText}
             </span>
           </div>

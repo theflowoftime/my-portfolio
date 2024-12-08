@@ -1,21 +1,18 @@
 import { Separator } from "@/components/ui/separator";
 import { waterFall } from "@/lib/framer-variants";
-import { formatDate } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
+import { useLanguageStore } from "@/stores/language-store";
 import { AboutMe } from "@/types/types";
 import { motion } from "framer-motion";
-import {
-  Activity,
-  BriefcaseBusiness,
-  Building2,
-  CalendarFold,
-  MoveDown,
-} from "lucide-react";
+import { BriefcaseBusiness, Building2, MoveDown } from "lucide-react";
 
 export default function Experiences({
   experiences,
 }: {
   experiences?: AboutMe["career"]["experiences"];
 }) {
+  const language = useLanguageStore((state) => state.language);
+
   return (
     <motion.div className="flex flex-col w-full gap-y-32 font-unbounded">
       {experiences?.map(
@@ -23,23 +20,31 @@ export default function Experiences({
           <div key={index}>
             <motion.div
               variants={waterFall}
-              className="grid items-center justify-center grid-cols-2 grid-rows-2 text-xs sm:gap-y-0 gap-y-6 sm:justify-between sm:grid-cols-3 sm:grid-rows-1"
+              className={cn(
+                "grid items-center justify-center grid-cols-2 grid-rows-2 text-xs sm:gap-y-0 gap-y-6 sm:justify-between sm:grid-cols-3 sm:grid-rows-1",
+                language === "AR" && "text-base"
+              )}
             >
-              <p className="col-span-2 sm:col-span-1">
+              <p
+                className={cn(
+                  "col-span-2 sm:col-span-1",
+                  language === "AR" && "order-3"
+                )}
+              >
                 <BriefcaseBusiness
                   size={22}
                   className="w-full text-center stroke-purple-500"
                 />
                 {role}
               </p>
-              <p>
+              <p className={cn(language === "AR" && "order-2")}>
                 <Building2
                   size={22}
                   className="w-full text-center stroke-purple-500"
                 />
                 {company}
               </p>
-              <p>
+              <p className={cn(language === "AR" && "order-1")}>
                 <span className="opacity-60"> {formatDate(start)} </span>
                 <MoveDown
                   size={16}

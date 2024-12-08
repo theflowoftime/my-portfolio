@@ -7,13 +7,21 @@ import Projects from "./components/projects";
 import Noise from "./components/sub-components/bg-noise-and-mask";
 import useHashNavigation from "./hooks/useHashNavigation";
 import Cursor from "./components/sub-components/custom-cursor";
+import { cn } from "./lib/utils";
+import { useLanguageStore } from "./stores/language-store";
 
 function App() {
   useHashNavigation();
+  const language = useLanguageStore((state) => state.language);
 
   return (
     // <div className="relative overflow-x-hidden cursor-none">
-    <div className="relative cursor-none">
+    <div
+      className={cn(
+        "relative cursor-none",
+        language === "AR" && "tracking-widest font-baloo"
+      )}
+    >
       <Cursor />
       <Noise />
       <div id="top">

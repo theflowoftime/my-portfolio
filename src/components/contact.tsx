@@ -80,15 +80,18 @@ function ContactForm({ contactData }: { contactData: TContact }) {
                     <div className="relative">
                       <FormLabel>
                         <LabelIcon
-                          className="absolute -translate-y-1/2 top-1/2 dark:stroke-purple-400 stroke-purple-700 strk-white"
+                          className={cn(
+                            "absolute -translate-y-1/2 top-1/2 dark:stroke-purple-400 stroke-purple-700 strk-white",
+                            language === "AR" && "right-0"
+                          )}
                           name={input.name}
-                          size={16}
+                          size={20}
                         />
                       </FormLabel>
                       <FormControl>
                         <Input
                           placeholder={input.placeholder}
-                          className="text-center border-t-0 border-l-0 border-r-0 rounded-none placeholder:text-xs placeholder:text-center dark:placeholder:text-primary border-b-primary-foreground/20 focus-within:border-b-primary-foreground bg-inherit focus-visible:ring-0"
+                          className="text-center border-t-0 border-l-0 border-r-0 rounded-none placeholder:font-jura placeholder:text-base placeholder:uppercase placeholder:text-center placeholder:text-primary/80 border-b-primary-foreground/20 focus-within:border-b-primary-foreground bg-inherit focus-visible:ring-0"
                           {...field}
                         />
                       </FormControl>
@@ -117,13 +120,16 @@ function ContactForm({ contactData }: { contactData: TContact }) {
                       <div className="relative">
                         <FormLabel>
                           <LabelIcon
-                            className="absolute -translate-y-1/2 top-1/2 dark:stroke-purple-400 stroke-purple-700 strk-white"
+                            className={cn(
+                              "absolute -translate-y-1/2 top-1/2 dark:stroke-purple-400 stroke-purple-700 strk-white",
+                              language === "AR" && "right-0"
+                            )}
                             name={select.name}
-                            size={16}
+                            size={20}
                           />
                         </FormLabel>
                         <FormControl>
-                          <SelectTrigger className="h-8 text-xs border-t-0 border-l-0 border-r-0 rounded-none w-full dark:data-[placeholder]:text-primary  [&>span]:w-full  [&>span]:text-center data-[placeholder]:text-center border-b-primary-foreground/20 bg-inherit focus:ring-0 focus-within:border-b-primary">
+                          <SelectTrigger className="h-8 border-t-0 border-l-0 border-r-0 rounded-none w-full data-[placeholder]:text-primary/80 data-[placeholder]:text-base data-[placeholder]:font-jura data-[placeholder]:uppercase  [&>span]:w-full  [&>span]:text-center data-[placeholder]:text-center border-b-primary-foreground/20 bg-inherit focus:ring-0 focus-within:border-b-primary">
                             <SelectValue placeholder={select.placeholder} />
                           </SelectTrigger>
                         </FormControl>
@@ -153,14 +159,14 @@ function ContactForm({ contactData }: { contactData: TContact }) {
         />
 
         {/* Submit Button */}
-        <motion.div className="flex items-center justify-between px-10 gap-x-2 gap-y-2">
+        <motion.div className="flex flex-col items-center px-2 lg:px-28 item-center gap-y-4">
           <Button
             onMouseEnter={() => animateCursor("buttonHover")}
             onMouseLeave={() => animateCursor("cursorEnter")}
             disabled={status === "pending" || form.formState.isSubmitting}
             variant="outline"
-            className="font-jura font-medium  w-full h-4 py-6 px-4 bg-inherit tracking-[10%] dark:text-white border-[1px] border-primary-foreground/20 rounded-sm 
-          hover:bg-purple-500/20 hover:transition-all hover:duration-250 shadow-sm dark:shadow-black hover:bg-opacity-20"
+            className="font-jura text-[1.05rem] w-full h-4 py-6 transition-colors ease-in tracking-[10%] border-[1px] border-primary-foreground/20 rounded-sm font-medium
+          dark:hover:bg-purple-500/20 dark:hover:text-white hover:bg-purple-500/20 hover:text-black dark:bg-white bg-black text-white dark:text-black hover:transition-all hover:duration-250 shadow-sm dark:shadow-black hover:bg-opacity-20 uppercase"
             type="submit"
           >
             {status === "pending" ? (
@@ -169,27 +175,29 @@ function ContactForm({ contactData }: { contactData: TContact }) {
                 {contact.button.submittingText}...
               </>
             ) : (
-              <div className="flex items-center justify-center gap-x-2">
-                <span>{contact.button.initialText}</span>
+              <div className="flex items-center w-full">
+                <Send className={cn(language === "AR" && "order-2")} />
+                <span className="grow">{contact.button.initialText}</span>
               </div>
             )}
           </Button>
           <div
-            className="before:content[''] before:w-16 before:h-[0.062rem] dark:before:bg-white/10 
+            className="before:content[''] before:w-64 before:h-[0.062rem] dark:before:bg-white/10 
           before:bg-purple-700/30 text-purple-400 before:absolute before:-translate-y-1/2 after:-translate-y-1/2 before:top-1/2 before:left-[60%] 
-          after:content[''] text-center after:w-16 after:h-[0.062rem]  dark:after:bg-white/10  after:bg-purple-700/30 after:absolute after:top-1/2 after:right-[60%] relative w-full"
+          after:content[''] text-center after:w-64 after:h-[0.062rem]  dark:after:bg-white/10  after:bg-purple-700/30 after:absolute after:top-1/2 after:right-[60%] relative w-full"
           >
-            <span className="text-xl font-instrument">or</span>
+            <span className="text-base font-instrument">Or</span>
           </div>
           <Button
             type="button"
             onMouseEnter={() => animateCursor("buttonHover")}
             onMouseLeave={() => animateCursor("cursorEnter")}
-            className="font-jura font-medium w-full h-4 py-6 px-4 bg-inherit tracking-[10%] text-black dark:text-white border-[1px] border-primary-foreground/20 rounded-sm 
-          hover:bg-purple-500/20 hover:transition-all hover:duration-250 shadow-sm dark:shadow-black hover:bg-opacity-20"
+            className="font-jura text-[1.05rem] font-medium dark:bg-black bg-white transition-colors ease-in text-black dark:text-white w-full h-4 py-6 tracking-[10%] border-[1px] border-primary-foreground/20 rounded-sm uppercase
+          hover:bg-purple-500/20 dark:hover:bg-purple-500/20 hover:transition-all hover:duration-250 shadow-sm dark:shadow-black hover:bg-opacity-20"
           >
-            <div className="flex items-center justify-center gap-x-2">
-              <span>Schedule a Meeting</span>
+            <div className="flex items-center w-full">
+              <CalendarClock className={cn(language === "AR" && "order-2")} />
+              <span className="grow">Schedule A Meeting</span>
             </div>
           </Button>
         </motion.div>
@@ -238,7 +246,7 @@ function Contact() {
       <SectionLayout slug={slug}>
         <div className="flex flex-col justify-center h-full overflow-hidden gap-y-4">
           <div className="">
-            <div className="px-16 rounded-lg shadow-sm dark:shadow-black">
+            <div className="px-0 rounded-lg shadow-sm lg:px-32 md:px-8 dark:shadow-black">
               <ContactForm contactData={contactData} />
             </div>
           </div>

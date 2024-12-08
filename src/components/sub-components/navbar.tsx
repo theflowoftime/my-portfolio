@@ -19,11 +19,13 @@ import Toggles from "./hero/preferences-toggle";
 import LogoWithName from "./site-logo";
 import { Button } from "../ui/button";
 import { useCursorStore } from "@/stores/cursor-store";
+import { useLanguageStore } from "@/stores/language-store";
 
 const NavBar = ({ className }: ComponentProps<"div">) => {
   const { data: navbarData, isLoading } = useNavLinks();
   const scrollYProgress = useScrollY();
   const animateCursor = useCursorStore((state) => state.animateCursor);
+  const language = useLanguageStore((state) => state.language);
 
   if (isLoading || !navbarData)
     return (
@@ -91,10 +93,17 @@ const NavBar = ({ className }: ComponentProps<"div">) => {
                           onMouseEnter={() => animateCursor("buttonHover")}
                           onMouseLeave={() => animateCursor("cursorEnter")}
                           state={{ data: links }}
-                          className="text-base whitespace-nowrap dark:text-white hover:opacity-40 font-unbounded"
+                          className="flex text-base whitespace-nowrap dark:text-white hover:opacity-40 font-unbounded gap-x-1"
                           to={link.path || `#${link.slug}`}
                         >
-                          <span className="text-primary-foreground">#</span>
+                          <span
+                            className={cn(
+                              "text-primary-foreground",
+                              language === "AR" && "order-2"
+                            )}
+                          >
+                            #
+                          </span>
                           {link.title.replace("-", " ")}
                         </Link>
                       </NavigationMenuLink>
