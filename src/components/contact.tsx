@@ -165,8 +165,8 @@ function ContactForm({ contactData }: { contactData: TContact }) {
             onMouseLeave={() => animateCursor("cursorEnter")}
             disabled={status === "pending" || form.formState.isSubmitting}
             variant="outline"
-            className="font-jura text-[1.05rem] w-full h-4 py-6 transition-colors ease-in tracking-[10%] border-[1px] border-primary-foreground/20 rounded-sm font-medium
-          dark:hover:bg-purple-500/20 dark:hover:text-white hover:bg-purple-500/20 hover:text-black dark:bg-white bg-black text-white dark:text-black hover:transition-all hover:duration-250 shadow-sm dark:shadow-black hover:bg-opacity-20 uppercase"
+            className="font-jura text-[1.05rem] w-full h-4 py-6 transition-colors bg-inherit ease-in tracking-[10%] border-[1px] border-primary-foreground/20 rounded-sm font-medium
+           hover:bg-purple-500/20 hover:transition-all hover:duration-250 shadow-sm dark:shadow-black hover:bg-opacity-20 uppercase"
             type="submit"
           >
             {status === "pending" ? (
@@ -176,28 +176,33 @@ function ContactForm({ contactData }: { contactData: TContact }) {
               </>
             ) : (
               <div className="flex items-center w-full">
-                <Send className={cn(language === "AR" && "order-2")} />
-                <span className="grow">{contact.button.initialText}</span>
+                <span className={cn("grow", language === "AR" && "order-2")}>
+                  {contact.button.initialText}
+                </span>
+                <Send className="stroke-purple-700" />
               </div>
             )}
           </Button>
           <div
-            className="before:content[''] before:w-64 before:h-[0.062rem] dark:before:bg-white/10 
-          before:bg-purple-700/30 text-purple-400 before:absolute before:-translate-y-1/2 after:-translate-y-1/2 before:top-1/2 before:left-[60%] 
-          after:content[''] text-center after:w-64 after:h-[0.062rem]  dark:after:bg-white/10  after:bg-purple-700/30 after:absolute after:top-1/2 after:right-[60%] relative w-full"
+            className="before:content[''] before:w-96 before:h-[0.062rem] dark:before:bg-white/10 
+          before:bg-purple-400/30 text-purple-700 dark:text-purple-400 before:absolute before:-translate-y-1/2 after:-translate-y-1/2 before:top-1/2 before:left-[60%] 
+          after:content[''] text-center after:w-96 after:h-[0.062rem]  dark:after:bg-white/10  after:bg-purple-400/30 after:absolute after:top-1/2 after:right-[60%] relative w-full"
           >
             <span className="text-base font-instrument">Or</span>
           </div>
           <Button
             type="button"
+            variant="outline"
             onMouseEnter={() => animateCursor("buttonHover")}
             onMouseLeave={() => animateCursor("cursorEnter")}
-            className="font-jura text-[1.05rem] font-medium dark:bg-black bg-white transition-colors ease-in text-black dark:text-white w-full h-4 py-6 tracking-[10%] border-[1px] border-primary-foreground/20 rounded-sm uppercase
-          hover:bg-purple-500/20 dark:hover:bg-purple-500/20 hover:transition-all hover:duration-250 shadow-sm dark:shadow-black hover:bg-opacity-20"
+            className="font-jura text-[1.05rem] w-full h-4 py-6 transition-colors bg-inherit ease-in tracking-[10%] border-[1px] border-primary-foreground/20 rounded-sm font-medium
+           hover:bg-purple-500/20 hover:transition-all hover:duration-250 shadow-sm dark:shadow-black hover:bg-opacity-20 uppercase"
           >
             <div className="flex items-center w-full">
-              <CalendarClock className={cn(language === "AR" && "order-2")} />
-              <span className="grow">Schedule A Meeting</span>
+              <span className={cn("grow", language === "AR" && "order-2")}>
+                Schedule A Meeting
+              </span>
+              <CalendarClock className="stroke-purple-700" />
             </div>
           </Button>
         </motion.div>
