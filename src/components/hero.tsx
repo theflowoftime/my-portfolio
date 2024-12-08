@@ -67,7 +67,12 @@ function Hero() {
     >
       <motion.div className="container h-full space-y-4 text-center dark:text-white">
         {/* Title Section */}
-        <motion.div className="leading-[6.33rem] font-instrument text-[4rem] lg:text-[5.11rem] -tracking-[0.01rem]">
+        <motion.div
+          className={cn(
+            "leading-[6.33rem] font-instrument text-[4rem] lg:text-[5.11rem] -tracking-[0.01rem]",
+            language === "AR" && "lg:text-[5.25rem] text-[4.25rem]"
+          )}
+        >
           {heroData.mainTextLines.map((item, lineIndex) => {
             const words = item.line.text.split(" ");
             const textWithImage = words.map((word, wordIndex) => (

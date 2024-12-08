@@ -211,7 +211,7 @@ function Contact() {
   const { navLinks } = useCachedNavLinks();
   const containerRef = useRef<HTMLDivElement>(null);
   const speed = 30;
-
+  const language = useLanguageStore((state) => state.language);
   const slug = navLinks?.links?.[3].slug || "contact";
 
   if (isLoading || !contactData) return <SectionLayout slug={slug} />;
@@ -229,7 +229,10 @@ function Contact() {
           duration: 1366 / speed,
           ease: "linear",
         }}
-        className="text-[9rem] uppercase whitespace-nowrap font-unbounded"
+        className={cn(
+          "text-[9rem] uppercase whitespace-nowrap font-unbounded",
+          language === "AR" && "text-[12rem]"
+        )}
       >
         {Array.from({ length: 5 }).map(() =>
           contactData?.HeaderWords?.map(({ word, isHighlighted }) => (
