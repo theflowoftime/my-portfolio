@@ -4,12 +4,13 @@ import { useProjects } from "@/hooks/useProjects";
 import SectionLayout from "@/layouts/section-layout";
 import { useLanguageStore } from "@/stores/language-store";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { ArrowRightCircle } from "lucide-react";
 import { useRef } from "react";
+import { Link } from "react-router-dom";
+import AnimatedButton from "./sub-components/animated-button";
 import LazyBackground from "./sub-components/lazy-bg-img-sanity";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
-import AnimatedButton from "./sub-components/animated-button";
-import { Link } from "react-router-dom";
 
 // export type Project = {
 //   _id: string;
@@ -43,6 +44,8 @@ function Projects() {
     ],
   });
 
+  // useInView
+
   const project1_scale = useTransform(
     scrollYProgress,
     [0.69, 0.75, 0.8, 1],
@@ -73,7 +76,7 @@ function Projects() {
           {projects.map((project, index) => (
             <motion.div
               key={project._id}
-              className={`sticky group h-[25rem] w-full font-unbounded grid grid-cols-1 sm:grid-cols-2 gap-x-8 justify-between shadow-md rounded-lg bg-background  p-2`}
+              className={`sm:sticky static group h-[25rem] w-full font-unbounded grid grid-cols-1 sm:grid-cols-2 gap-x-8 justify-between shadow-md rounded-lg bg-background  p-2`}
               style={{
                 top: `calc(${index * 50}px + 5rem)`,
                 scale: scales[index] ? scales[index] : 1,
@@ -94,8 +97,14 @@ function Projects() {
                 size="lg"
                 image={project.image}
               >
-                <Button className="absolute transition-all duration-300 -translate-x-1/2 translate-y-[200%] w-fit bottom-8 left-1/2 right-1/2 group-hover:translate-y-0 ease">
-                  <Link to={`/projects/${project._id}`}>View Project</Link>
+                <Button className="absolute p-4 transition-all dark:text-white bg-background text-blackn duration-300 -translate-x-1/2 translate-y-[200%] w-fit bottom-2 left-1/2 right-1/2 group-hover:translate-y-0 ease">
+                  <Link
+                    className="flex items-center justify-between h-full gap-x-2 "
+                    to={`/projects/${project._id}`}
+                  >
+                    <span>View Project</span>
+                    <ArrowRightCircle />
+                  </Link>
                 </Button>
               </LazyBackground>
 
@@ -123,10 +132,11 @@ function Projects() {
           ))}
         </div>
         <motion.div
+          className="w-full"
           viewport={{ once: true, amount: "all" }}
-          initial={{ opacity: 0, y: 150 }}
+          initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ type: "tween", duration: 2 }}
+          transition={{ type: "tween", duration: 0.6 }}
         >
           <Link className="w-full" to="/projects">
             <AnimatedButton textContent="all projects" />

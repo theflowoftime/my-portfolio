@@ -29,7 +29,7 @@ export default function AnimatedButton({
       >
         {/* Text */}
         <div className="z-10 flex items-center pointer-events-none gap-x-2">
-          <span className="relative text-base tracking-widest text-black uppercase transition-colors duration-200 delay-150 dark:text-white group-hover:text-white dark:group-hover:text-black font-fira">
+          <span className="relative text-[1.25rem] tracking-[5%] font-medium text-black uppercase transition-colors duration-200 delay-150 dark:text-white group-hover:text-white dark:group-hover:text-black font-jura">
             {textContent}
           </span>
           <ArrowRight

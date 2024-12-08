@@ -58,10 +58,11 @@ function AboutMe() {
           <Experiences experiences={aboutMeData?.career?.experiences} />
         </motion.div>
         <motion.div
+          className="w-full"
           viewport={{ once: true, amount: "all" }}
-          initial={{ opacity: 0, y: 150 }}
+          initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ type: "tween", duration: 0.6, delay: 1 }}
+          transition={{ type: "tween", duration: 0.6, delay: 0.2 }}
         >
           <AnimatedButton textContent="download resume" />
         </motion.div>

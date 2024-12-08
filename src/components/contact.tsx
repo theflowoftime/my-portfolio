@@ -27,7 +27,7 @@ import type { FormSchemaType, Contact as TContact } from "@/types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { CalendarClock, Loader2, Send } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useForm } from "react-hook-form";
 import LabelIcon from "./sub-components/contact/form-label-icon";
@@ -176,9 +176,9 @@ function ContactForm({ contactData }: { contactData: TContact }) {
             )}
           </Button>
           <div
-            className="text-base font-instrument before:content[''] before:w-16 before:h-[0.062rem] dark:before:bg-white/10 
-          before:bg-purple-700/30 text-purple-400 before:absolute before:-translate-y-1/2 after:-translate-y-1/2 before:top-1/2 before:left-[30%] 
-          after:content[''] text-center after:w-16 after:h-[0.062rem]  dark:after:bg-white/10  after:bg-purple-700/30 after:absolute after:top-1/2 after:right-[30%] relative w-full"
+            className="text-base font-instrument before:content[''] before:w-32 before:h-[0.062rem] dark:before:bg-white/10 
+          before:bg-purple-700/30 text-purple-400 before:absolute before:-translate-y-1/2 after:-translate-y-1/2 before:top-1/2 before:left-[60%] 
+          after:content[''] text-center after:w-32 after:h-[0.062rem]  dark:after:bg-white/10  after:bg-purple-700/30 after:absolute after:top-1/2 after:right-[60%] relative w-full"
           >
             <span>or</span>
           </div>
@@ -203,6 +203,8 @@ function ContactForm({ contactData }: { contactData: TContact }) {
 function Contact() {
   const { data: contactData, isLoading, isError } = useContact();
   const { navLinks } = useCachedNavLinks();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const speed = 30;
 
   const slug = navLinks?.links?.[3].slug || "contact";
 
@@ -210,30 +212,42 @@ function Contact() {
   if (isError) return <SectionLayout slug={slug}>Oops error..</SectionLayout>;
 
   return (
-    <>
+    <div className="overflow-x-hidden" ref={containerRef}>
+      <motion.h5
+        animate={{
+          x: -1366,
+        }}
+        transition={{
+          repeat: Infinity,
+          repeatType: "loop",
+          duration: 1366 / speed,
+          ease: "linear",
+        }}
+        className="text-[9rem] uppercase whitespace-nowrap font-unbounded"
+      >
+        {Array.from({ length: 5 }).map(() =>
+          contactData?.HeaderWords?.map(({ word, isHighlighted }) => (
+            <motion.span
+              key={word}
+              className={cn(isHighlighted && "!text-purple-500")}
+              variants={contactTitleBackFlip}
+            >
+              {word}{" "}
+            </motion.span>
+          ))
+        )}
+      </motion.h5>
       <SectionLayout slug={slug}>
-        <div className="flex flex-col justify-center h-full">
-          <div className="grid items-center justify-center gap-y-8 gap-x-8 lg:grid-cols-2">
-            <motion.h5 className="text-[9.75rem] text-center font-unbounded leading-[0.7em]">
-              {contactData?.HeaderWords?.map(({ word, isHighlighted }) => (
-                <motion.p
-                  key={word}
-                  className={cn(isHighlighted && "text-purple-500")}
-                  variants={contactTitleBackFlip}
-                >
-                  {word}
-                </motion.p>
-              ))}
-            </motion.h5>
-
-            <div className="p-4 rounded-lg shadow-sm h-fit dark:shadow-black">
+        <div className="flex flex-col justify-center h-full overflow-hidden gap-y-4">
+          <div className="">
+            <div className="p-4 rounded-lg shadow-sm dark:shadow-black">
               <ContactForm contactData={contactData} />
             </div>
           </div>
         </div>
         <Toaster />
       </SectionLayout>
-    </>
+    </div>
   );
 }
 

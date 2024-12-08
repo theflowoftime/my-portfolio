@@ -55,3 +55,11 @@
   src: url("../assets/fonts/InstrumentSerif/InstrumentSerif-Italic.ttf")
     format("truetype");
 }
+
+@font-face {
+  font-family: "Jura";
+  font-style: normal;
+  font-weight: 500;
+  font-optical-sizing: auto;
+  src: url("../assets/fonts/Jura/Jura-Medium.ttf") format("truetype");
+}

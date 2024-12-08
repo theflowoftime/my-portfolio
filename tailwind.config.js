@@ -79,6 +79,7 @@ module.exports = {
         fira: ["var(--font-fira)", ...fontFamily.sans],
         unbounded: ["var(--font-unbounded)", ...fontFamily.sans],
         instrument: ["var(--font-instrument)", ...fontFamily.serif],
+        jura: ["var(--font-jura)", ...fontFamily.sans],
       },
       keyframes: {
         "accordion-down": {
