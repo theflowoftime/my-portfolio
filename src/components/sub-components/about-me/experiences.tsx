@@ -22,7 +22,7 @@ export default function Experiences({
               variants={waterFall}
               className={cn(
                 "grid items-center justify-center grid-cols-2 grid-rows-2 text-xs sm:gap-y-0 gap-y-6 sm:justify-between sm:grid-cols-3 sm:grid-rows-1",
-                language === "AR" && "text-base"
+                language === "AR" && "text-base font-baloo"
               )}
             >
               <p

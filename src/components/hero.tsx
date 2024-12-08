@@ -70,7 +70,7 @@ function Hero() {
         <motion.div
           className={cn(
             "leading-[6.33rem] font-instrument text-[4rem] lg:text-[5.11rem] -tracking-[0.01rem]",
-            language === "AR" && "lg:text-[5.25rem] text-[4.25rem]"
+            language === "AR" && "lg:text-[5.25rem] text-[4.25rem] font-baloo"
           )}
         >
           {heroData.mainTextLines.map((item, lineIndex) => {
@@ -194,7 +194,7 @@ function Hero() {
           variants={waterFall}
           className={cn(
             "mx-auto leading-loose tracking-widest text-balance dark:text-white/60",
-            language === "AR" && "text-lg tracking-[0.125em]"
+            language === "AR" && "text-lg font-baloo tracking-[0.125em]"
           )}
         >
           {heroData.secondaryText}
@@ -220,7 +220,7 @@ function Hero() {
             <span
               className={cn(
                 "text-xs dark:text-white animate-pulse opacity-20 font-unbounded",
-                language === "AR" && "text-base"
+                language === "AR" && "font-baloo"
               )}
             >
               {heroData.buttonText}

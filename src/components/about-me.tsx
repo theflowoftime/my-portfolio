@@ -7,12 +7,15 @@ import Experiences from "./sub-components/about-me/experiences";
 import Introduction from "./sub-components/about-me/introduction";
 import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
 import AnimatedButton from "./sub-components/animated-button";
+import { cn } from "@/lib/utils";
+import { useLanguageStore } from "@/stores/language-store";
 
 function AboutMe() {
   const { navLinks } = useCachedNavLinks();
 
   const { isLoading, data: aboutMeData } = useAboutMe();
   const slug = navLinks?.links?.[1].slug || "about-me";
+  const language = useLanguageStore((state) => state.language);
 
   const words = aboutMeData?.introduction?.whatIdo?.split(" ") || [];
 
@@ -24,15 +27,18 @@ function AboutMe() {
         <div className="relative flex flex-col items-center justify-center gap-y-8">
           <div className="flex flex-col flex-wrap items-center gap-y-4">
             <div
-              className="flex flex-col items-center h-full space-y-4 text-center font-instrument"
+              className={cn(
+                "flex flex-col items-center h-full space-y-4 text-center font-instrument",
+                language === "AR" && "font-baloo"
+              )}
               style={{
                 perspective: 1200,
               }}
             >
               <h3
-                className="text-2xl font-instrument before:content[''] before:w-16 before:h-[0.062rem] dark:before:bg-white/10 
-          before:bg-purple-700/30 text-purple-400 before:absolute before:-translate-y-1/2 after:-translate-y-1/2 before:top-1/2 before:left-[36%] 
-          after:content[''] after:w-16 after:h-[0.062rem]  dark:after:bg-white/10  after:bg-purple-700/30 after:absolute after:top-1/2 after:right-[36%] relative w-full"
+                className={cn(
+                  "text-2xl font-instrument before:content[''] before:w-16 before:h-[0.062rem] dark:before:bg-white/10 before:bg-purple-700/30 text-purple-400 before:absolute before:-translate-y-1/2 after:-translate-y-1/2 before:top-1/2 before:left-[36%] after:content[''] after:w-16 after:h-[0.062rem]  dark:after:bg-white/10  after:bg-purple-700/30 after:absolute after:top-1/2 after:right-[36%] relative w-full"
+                )}
               >
                 {aboutMeData?.introduction?.title}
               </h3>
@@ -49,9 +55,10 @@ function AboutMe() {
           className="flex flex-col items-center w-full space-y-16 text-center"
         >
           <h3
-            className="text-2xl font-instrument before:content[''] before:w-16 before:h-[0.062rem] dark:before:bg-white/10 
-            before:bg-purple-700/30 text-purple-400 before:absolute before:-translate-y-1/2 after:-translate-y-1/2 before:top-1/2 before:left-[36%] 
-            after:content[''] after:w-16 after:h-[0.062rem] dark:after:bg-white/10 after:bg-purple-700/30 after:absolute after:top-1/2 after:right-[36%] relative w-full"
+            className={cn(
+              "text-2xl font-instrument before:content[''] before:w-16 before:h-[0.062rem] dark:before:bg-white/10 before:bg-purple-700/30 text-purple-400 before:absolute before:-translate-y-1/2 after:-translate-y-1/2 before:top-1/2 before:left-[36%] after:content[''] after:w-16 after:h-[0.062rem] dark:after:bg-white/10 after:bg-purple-700/30 after:absolute after:top-1/2 after:right-[36%] relative w-full",
+              language === "AR" && "font-baloo"
+            )}
           >
             {aboutMeData?.career?.title}
           </h3>

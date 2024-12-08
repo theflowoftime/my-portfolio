@@ -10,11 +10,14 @@ import {
 import useThemeStore, { themes } from "@/stores/theme-store";
 import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
 import { useCursorStore } from "@/stores/cursor-store";
+import { useLanguageStore } from "@/stores/language-store";
+import { cn } from "@/lib/utils";
 
 export function ThemeToggle({ className }: { className?: string }) {
   const { theme, setTheme } = useThemeStore();
   const { navLinks: navbarData } = useCachedNavLinks();
   const animateCursor = useCursorStore((state) => state.animateCursor);
+  const language = useLanguageStore((state) => state.language);
 
   useEffect(() => {
     const root = window.document.documentElement;
@@ -48,7 +51,10 @@ export function ThemeToggle({ className }: { className?: string }) {
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
-        className="border-none animate-accordion-down min-w-min"
+        className={cn(
+          "border-none animate-accordion-down min-w-min",
+          language === "AR" && "font-baloo"
+        )}
       >
         {themes.map(
           (thm, index) =>

@@ -11,6 +11,7 @@ import AnimatedButton from "./sub-components/animated-button";
 import LazyBackground from "./sub-components/lazy-bg-img-sanity";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
+import { cn } from "@/lib/utils";
 
 // export type Project = {
 //   _id: string;
@@ -76,7 +77,10 @@ function Projects() {
           {projects.map((project, index) => (
             <motion.div
               key={project._id}
-              className={`sm:sticky static group h-[25rem] w-full font-unbounded grid grid-cols-1 sm:grid-cols-2 gap-x-8 justify-between shadow-md rounded-lg bg-background  p-2`}
+              className={cn(
+                `sm:sticky static group h-[25rem] w-full font-unbounded grid grid-cols-1 sm:grid-cols-2 gap-x-8 justify-between shadow-md rounded-lg bg-background  p-2`,
+                language === "AR" && "font-baloo"
+              )}
               style={{
                 top: `calc(${index * 50}px + 5rem)`,
                 scale: scales[index] ? scales[index] : 1,

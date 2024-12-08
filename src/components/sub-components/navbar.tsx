@@ -93,7 +93,10 @@ const NavBar = ({ className }: ComponentProps<"div">) => {
                           onMouseEnter={() => animateCursor("buttonHover")}
                           onMouseLeave={() => animateCursor("cursorEnter")}
                           state={{ data: links }}
-                          className="flex text-base whitespace-nowrap dark:text-white hover:opacity-40 font-unbounded gap-x-1"
+                          className={cn(
+                            "flex text-base whitespace-nowrap dark:text-white hover:opacity-40 font-unbounded gap-x-1",
+                            language === "AR" && "font-baloo"
+                          )}
                           to={link.path || `#${link.slug}`}
                         >
                           <span
@@ -139,7 +142,10 @@ const NavBar = ({ className }: ComponentProps<"div">) => {
                   <Button
                     onMouseEnter={() => animateCursor("buttonHover")}
                     onMouseLeave={() => animateCursor("cursorEnter")}
-                    className="relative transition-transform duration-300 rounded-full shadow-lg dark:text-white md:px-6 md:py-3 font-unbounded hover:bg-gradient-to-r hover:from-pink-500 hover:to-purple-400 hover:scale-105"
+                    className={cn(
+                      "relative transition-transform duration-300 rounded-full shadow-lg dark:text-white md:px-6 md:py-3 font-unbounded hover:bg-gradient-to-r hover:from-pink-500 hover:to-purple-400 hover:scale-105",
+                      language === "AR" && "font-baloo"
+                    )}
                   >
                     <span className="absolute inset-0 rounded-full blur-md mix-blend-lighten bg-gradient-to-r from-purple-400 to-pink-500" />
                     <span className="hidden text-white md:inline">{text}</span>

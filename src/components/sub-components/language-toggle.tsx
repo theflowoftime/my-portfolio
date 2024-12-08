@@ -11,6 +11,7 @@ import { languages, useLanguageStore } from "@/stores/language-store";
 import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
 import { useCursorStore } from "@/stores/cursor-store";
 import { Languages } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export function LanguageToggle({ className }: { className?: string }) {
   const { setLanguage, language } = useLanguageStore(); // Get language and setLanguage from Zustand store
@@ -37,7 +38,10 @@ export function LanguageToggle({ className }: { className?: string }) {
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
-        className="border-none animate-accordion-down min-w-min"
+        className={cn(
+          "border-none animate-accordion-down min-w-min",
+          language === "AR" && "font-baloo"
+        )}
       >
         {languages.map(
           (lng, index) =>

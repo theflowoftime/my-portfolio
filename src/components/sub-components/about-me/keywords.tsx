@@ -57,7 +57,8 @@ const Keywords = ({ keywords }: { keywords?: string[] }) => {
             <span
               className={cn(
                 "text-xs font-light",
-                language === "AR" && "font-bold text-base tracking-wider"
+                language === "AR" &&
+                  "font-bold font-baloo text-base tracking-wider"
               )}
             >
               {keyword}

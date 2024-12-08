@@ -91,7 +91,11 @@ function ContactForm({ contactData }: { contactData: TContact }) {
                       <FormControl>
                         <Input
                           placeholder={input.placeholder}
-                          className="text-center border-t-0 border-l-0 border-r-0 rounded-none placeholder:font-jura placeholder:text-base placeholder:uppercase placeholder:text-center placeholder:text-primary/80 border-b-primary-foreground/20 focus-within:border-b-primary-foreground bg-inherit focus-visible:ring-0"
+                          className={cn(
+                            "text-center border-t-0 border-l-0 border-r-0 rounded-none placeholder:font-jura placeholder:text-base placeholder:uppercase placeholder:text-center dark:placeholder:text-primary/80 placeholder:text-primary/80 border-b-primary-foreground/20 focus-within:border-b-primary-foreground bg-inherit focus-visible:ring-0",
+                            language === "AR" &&
+                              "placeholder:font-baloo font-baloo"
+                          )}
                           {...field}
                         />
                       </FormControl>
@@ -129,7 +133,13 @@ function ContactForm({ contactData }: { contactData: TContact }) {
                           />
                         </FormLabel>
                         <FormControl>
-                          <SelectTrigger className="h-8 border-t-0 border-l-0 border-r-0 rounded-none w-full data-[placeholder]:text-primary/80 data-[placeholder]:text-base data-[placeholder]:font-jura data-[placeholder]:uppercase  [&>span]:w-full  [&>span]:text-center data-[placeholder]:text-center border-b-primary-foreground/20 bg-inherit focus:ring-0 focus-within:border-b-primary">
+                          <SelectTrigger
+                            className={cn(
+                              "h-8 border-t-0 border-l-0 border-r-0 dark:placeholder:text-primary/80 rounded-none w-full data-[placeholder]:text-primary/80 data-[placeholder]:text-base data-[placeholder]:font-jura data-[placeholder]:uppercase  [&>span]:w-full  [&>span]:text-center data-[placeholder]:text-center border-b-primary-foreground/20 bg-inherit focus:ring-0 focus-within:border-b-primary",
+                              language === "AR" &&
+                                "data-[placeholder]:font-baloo font-baloo"
+                            )}
+                          >
                             <SelectValue placeholder={select.placeholder} />
                           </SelectTrigger>
                         </FormControl>
@@ -176,7 +186,12 @@ function ContactForm({ contactData }: { contactData: TContact }) {
               </>
             ) : (
               <div className="flex items-center w-full">
-                <span className={cn("grow", language === "AR" && "order-2")}>
+                <span
+                  className={cn(
+                    "grow",
+                    language === "AR" && "order-2 font-baloo"
+                  )}
+                >
                   {contact.button.initialText}
                 </span>
                 <Send className="stroke-purple-700" />
@@ -199,7 +214,12 @@ function ContactForm({ contactData }: { contactData: TContact }) {
            hover:bg-purple-500/20 hover:transition-all hover:duration-250 shadow-sm dark:shadow-black hover:bg-opacity-20 uppercase"
           >
             <div className="flex items-center w-full">
-              <span className={cn("grow", language === "AR" && "order-2")}>
+              <span
+                className={cn(
+                  "grow",
+                  language === "AR" && "order-2 font-baloo"
+                )}
+              >
                 Schedule A Meeting
               </span>
               <CalendarClock className="stroke-purple-700" />
@@ -236,7 +256,7 @@ function Contact() {
         }}
         className={cn(
           "text-[9rem] uppercase whitespace-nowrap font-unbounded",
-          language === "AR" && "text-[12rem]"
+          language === "AR" && "text-[12rem] font-baloo"
         )}
       >
         {Array.from({ length: 5 }).map(() =>
