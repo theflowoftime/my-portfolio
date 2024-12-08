@@ -97,13 +97,13 @@ function Projects() {
                 size="lg"
                 image={project.image}
               >
-                <Button className="absolute p-4 transition-all dark:text-white bg-background text-blackn duration-300 -translate-x-1/2 translate-y-[200%] w-fit bottom-2 left-1/2 right-1/2 group-hover:translate-y-0 ease">
+                <Button className="absolute group/button p-4 transition-all dark:text-white bg-background hover:text-white text-black duration-300 -translate-x-1/2 translate-y-[200%] w-fit bottom-2 left-1/2 right-1/2 group-hover:translate-y-0 ease">
                   <Link
                     className="flex items-center justify-between h-full gap-x-2 "
                     to={`/projects/${project._id}`}
                   >
                     <span>View Project</span>
-                    <ArrowRightCircle />
+                    <ArrowRightCircle className="transition-transform ease-in group-hover/button:rotate-90" />
                   </Link>
                 </Button>
               </LazyBackground>

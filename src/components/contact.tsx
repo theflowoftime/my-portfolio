@@ -66,7 +66,7 @@ function ContactForm({ contactData }: { contactData: TContact }) {
   return (
     <Form {...form}>
       <form
-        className="px-8 py-4 space-y-16"
+        className="px-8 py-4 space-y-24"
         onSubmit={form.handleSubmit(onSubmit, onError)}
       >
         {contact.fields.inputs.map((input) => (
@@ -123,7 +123,7 @@ function ContactForm({ contactData }: { contactData: TContact }) {
                           />
                         </FormLabel>
                         <FormControl>
-                          <SelectTrigger className="h-8 border-t-0 border-l-0 border-r-0 rounded-none w-full dark:data-[placeholder]:text-primary  [&>span]:w-full  [&>span]:text-center data-[placeholder]:text-center border-b-primary-foreground/20 bg-inherit focus:ring-0 focus-within:border-b-primary">
+                          <SelectTrigger className="h-8 text-xs border-t-0 border-l-0 border-r-0 rounded-none w-full dark:data-[placeholder]:text-primary  [&>span]:w-full  [&>span]:text-center data-[placeholder]:text-center border-b-primary-foreground/20 bg-inherit focus:ring-0 focus-within:border-b-primary">
                             <SelectValue placeholder={select.placeholder} />
                           </SelectTrigger>
                         </FormControl>
@@ -153,13 +153,13 @@ function ContactForm({ contactData }: { contactData: TContact }) {
         />
 
         {/* Submit Button */}
-        <motion.div className="flex flex-col items-center gap-y-2">
+        <motion.div className="flex items-center justify-between px-10 gap-x-2 gap-y-2">
           <Button
             onMouseEnter={() => animateCursor("buttonHover")}
             onMouseLeave={() => animateCursor("cursorEnter")}
             disabled={status === "pending" || form.formState.isSubmitting}
             variant="outline"
-            className="w-full h-4 py-6 px-4 bg-inherit tracking-wide dark:text-white border-[1px] border-primary-foreground/20 rounded-sm 
+            className="font-jura font-medium  w-full h-4 py-6 px-4 bg-inherit tracking-[10%] dark:text-white border-[1px] border-primary-foreground/20 rounded-sm 
           hover:bg-purple-500/20 hover:transition-all hover:duration-250 shadow-sm dark:shadow-black hover:bg-opacity-20"
             type="submit"
           >
@@ -171,27 +171,25 @@ function ContactForm({ contactData }: { contactData: TContact }) {
             ) : (
               <div className="flex items-center justify-center gap-x-2">
                 <span>{contact.button.initialText}</span>
-                <Send className="stroke-purple-400" />
               </div>
             )}
           </Button>
           <div
-            className="text-base font-instrument before:content[''] before:w-32 before:h-[0.062rem] dark:before:bg-white/10 
+            className="before:content[''] before:w-16 before:h-[0.062rem] dark:before:bg-white/10 
           before:bg-purple-700/30 text-purple-400 before:absolute before:-translate-y-1/2 after:-translate-y-1/2 before:top-1/2 before:left-[60%] 
-          after:content[''] text-center after:w-32 after:h-[0.062rem]  dark:after:bg-white/10  after:bg-purple-700/30 after:absolute after:top-1/2 after:right-[60%] relative w-full"
+          after:content[''] text-center after:w-16 after:h-[0.062rem]  dark:after:bg-white/10  after:bg-purple-700/30 after:absolute after:top-1/2 after:right-[60%] relative w-full"
           >
-            <span>or</span>
+            <span className="text-xl font-instrument">or</span>
           </div>
           <Button
             type="button"
             onMouseEnter={() => animateCursor("buttonHover")}
             onMouseLeave={() => animateCursor("cursorEnter")}
-            className="w-full h-4 py-6 px-4 bg-inherit tracking-wide text-black dark:text-white border-[1px] border-primary-foreground/20 rounded-sm 
+            className="font-jura font-medium w-full h-4 py-6 px-4 bg-inherit tracking-[10%] text-black dark:text-white border-[1px] border-primary-foreground/20 rounded-sm 
           hover:bg-purple-500/20 hover:transition-all hover:duration-250 shadow-sm dark:shadow-black hover:bg-opacity-20"
           >
             <div className="flex items-center justify-center gap-x-2">
               <span>Schedule a Meeting</span>
-              <CalendarClock className="stroke-purple-400" />
             </div>
           </Button>
         </motion.div>
@@ -240,7 +238,7 @@ function Contact() {
       <SectionLayout slug={slug}>
         <div className="flex flex-col justify-center h-full overflow-hidden gap-y-4">
           <div className="">
-            <div className="p-4 rounded-lg shadow-sm dark:shadow-black">
+            <div className="px-16 rounded-lg shadow-sm dark:shadow-black">
               <ContactForm contactData={contactData} />
             </div>
           </div>
