@@ -69,7 +69,7 @@ function Hero() {
         {/* Title Section */}
         <motion.div
           className={cn(
-            "font-instrument text-[2.5rem] lg:text-[3.5rem] rounded-full tracking-[0.3rem]",
+            "font-instrument text-[2.5rem] lg:text-[3.5rem] rounded-full tracking-[0.8rem]",
             language === "AR" && "lg:text-[3rem] text-[2rem] font-baloo"
           )}
         >
@@ -181,7 +181,11 @@ function Hero() {
               <motion.p
                 key={lineIndex}
                 variants={waterFall}
-                className="flex items-center justify-center mb-8 leading-loose rounded-lg gap-x-4 whitespace-nowrap"
+                className={cn(
+                  "flex items-center justify-center mb-8 italic font-black leading-loose  rounded-lg  gap-x-4 whitespace-nowrap",
+                  lineIndex % 2 === 0 &&
+                    "bg-purple-700 dark:bg-purple-400 dark:backdrop-blur-md dark:backdrop-filter dark:bg-opacity-5 backdrop-blur-md backdrop-filter bg-opacity-10"
+                )}
                 style={{
                   // boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
                   boxShadow:
@@ -198,7 +202,7 @@ function Hero() {
         <motion.p
           variants={waterFall}
           className={cn(
-            "mx-auto leading-[0.4rem] tracking-widest text-balance dark:text-white/40 py-2 text-[0.85rem]",
+            "mx-auto leading-loose tracking-[0.2em] text-balance dark:text-white/40 py-2 text-[0.75rem] font-unbounded font-light",
             language === "AR" && "text-lg font-baloo tracking-[0.125em]"
           )}
           style={{
@@ -222,18 +226,18 @@ function Hero() {
             className="flex flex-col items-center"
           >
             <ChevronsDown
-              className="bg-white rounded-full dark:bg-black dark:text-white backdrop-blur-xl backdrop-filter bg-opacity-10 dark:bg-opacity-10 animate-bounce opacity-60"
+              className="transition-all ease-in bg-white rounded-full stroke-purple-400/20 hover:stroke-purple-400 dark:bg-black dark:text-white backdrop-blur-xl backdrop-filter bg-opacity-10 dark:bg-opacity-10 animate-bounce"
               size={64}
               strokeWidth={1}
             />
-            <span
+            {/* <span
               className={cn(
                 "text-xs dark:text-white animate-pulse opacity-20 font-unbounded",
                 language === "AR" && "font-baloo"
               )}
             >
               {heroData.buttonText}
-            </span>
+            </span> */}
           </div>
         </Link>
       </motion.div>

@@ -38,9 +38,9 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 20% 98%;
 
-    --text-effect-fill: hsl(0, 0%, 0%); /* Black for light theme */
-    --text-effect-stroke: hsl(0, 0%, 100%); /* White for light theme */
-    --text-effect-stroke-width: 1px;
+    --text-effect-fill: hsl(0, 0%, 100%); /* White for dark theme */
+    --text-effect-stroke: hsl(0, 0%, 0%); /* Black for dark theme */
+    --text-effect-stroke-width: 4px;
 
     --color-white: #ffffff;
     --color-light-gray: rgb(217, 217, 217);
@@ -102,9 +102,9 @@
     --text-body: rgb(222, 222, 222);
     --detail-medium-contrast: rgb(21, 21, 21);
 
-    --text-effect-fill: hsl(0, 0%, 100%); /* White for dark theme */
-    --text-effect-stroke: hsl(0, 0%, 0%); /* Black for dark theme */
-    --text-effect-stroke-width: 1px;
+    --text-effect-fill: hsl(0, 0%, 0%); /* Black for light theme */
+    --text-effect-stroke: hsl(0, 0%, 100%); /* White for light theme */
+    --text-effect-stroke-width: 4px;
 
     --color-white: #0f0f0f;
     --color-light-gray: rgb(50, 50, 50);
