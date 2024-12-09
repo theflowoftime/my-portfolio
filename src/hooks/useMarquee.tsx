@@ -1,7 +1,7 @@
 import { useLanguageStore } from "@/stores/language-store";
 import { Contact } from "@/types/types";
 import { useAnimationControls } from "framer-motion";
-import { useState, useRef, useEffect, useLayoutEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -24,14 +24,10 @@ export function useMarquee({ speed }: UseMarqueeOptions) {
 
       // Only proceed if valid dimensions are available
       if (containerWidth > 0 && textWidth > 0) {
-        repeatCount.current = Math.ceil(containerWidth / textWidth);
+        repeatCount.current = Math.ceil(containerWidth / textWidth) + 1;
 
-        // Calculate the total distance to scroll before we reset (longest scrollable distance)
-        const extra = (repeatCount.current * textWidth) % containerWidth;
-        const extraOfExtra = extra % textWidth;
-
-        const totalDistance = extra + extraOfExtra; // The final longest scrollable distance
-        setAnimationDistance(totalDistance);
+        // The total distance to travel is the full text width minus the extra remaining part
+        setAnimationDistance(textWidth + 1);
       }
     }
   };
