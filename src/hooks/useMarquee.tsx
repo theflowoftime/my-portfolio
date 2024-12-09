@@ -24,9 +24,14 @@ export function useMarquee({ speed }: UseMarqueeOptions) {
 
       // Only proceed if valid dimensions are available
       if (containerWidth > 0 && textWidth > 0) {
-        repeatCount.current = Math.ceil(containerWidth / textWidth) + 1;
+        repeatCount.current = Math.ceil(containerWidth / textWidth);
 
-        setAnimationDistance(textWidth);
+        // Calculate the total distance to scroll before we reset (longest scrollable distance)
+        const extra = (repeatCount.current * textWidth) % containerWidth;
+        const extraOfExtra = extra % textWidth;
+
+        const totalDistance = extra + extraOfExtra; // The final longest scrollable distance
+        setAnimationDistance(totalDistance);
       }
     }
   };
@@ -77,7 +82,7 @@ export default function Marquee({ contactData }: { contactData: Contact }) {
       ref={containerRef}
       animate={controls}
       className={cn(
-        "lg:text-[9rem] md:text-[6rem] text-[3rem] will-change-transform uppercase whitespace-nowrap font-unbounded",
+        "lg:text-[9rem] md:text-[6rem] sm:text-[3rem] will-change-transform uppercase whitespace-nowrap font-unbounded",
         language === "AR" && "text-[12rem] font-baloo"
       )}
     >
