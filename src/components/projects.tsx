@@ -136,7 +136,7 @@ function Projects() {
           ))}
         </div>
         <motion.div
-          className="w-full"
+          className="w-full mt-24 md:mt-0"
           viewport={{ once: true, amount: "all" }}
           initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}

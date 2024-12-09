@@ -32,7 +32,7 @@ const SectionLayout = forwardRef<
         // }}
         ref={ref}
         // className={cn("relative overflow-hidden mb-16", className)}
-        className={cn("relative mb-16", className)}
+        className={cn("relative mb-64", className)}
       >
         <div className="container" id={slug}>
           <div className="py-16">{children}</div>

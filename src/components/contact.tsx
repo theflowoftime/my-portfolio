@@ -19,7 +19,6 @@ import SectionLayout from "@/layouts/section-layout";
 import { defaultValues } from "@/lib/constants";
 
 import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
-import { contactTitleBackFlip } from "@/lib/framer-variants";
 import { cn } from "@/lib/utils";
 import { buildFormSchema } from "@/lib/zod-schemas";
 import { useLanguageStore } from "@/stores/language-store";
@@ -27,7 +26,7 @@ import type { FormSchemaType, Contact as TContact } from "@/types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
 import { CalendarClock, Loader2, Send } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useForm } from "react-hook-form";
 import LabelIcon from "./sub-components/contact/form-label-icon";
@@ -36,6 +35,7 @@ import { Input } from "./ui/input";
 import { Toaster } from "./ui/toaster";
 import { queryClient } from "@/main";
 import { useCursorStore } from "@/stores/cursor-store";
+import Marquee from "@/hooks/useMarquee";
 
 function ContactForm({ contactData }: { contactData: TContact }) {
   const language = useLanguageStore((state) => state.language);
@@ -175,8 +175,10 @@ function ContactForm({ contactData }: { contactData: TContact }) {
             onMouseLeave={() => animateCursor("cursorEnter")}
             disabled={status === "pending" || form.formState.isSubmitting}
             variant="outline"
-            className="font-jura text-[1.05rem] w-full h-4 py-6 transition-colors bg-inherit ease-in tracking-[10%] border-[1px] border-primary-foreground/20 rounded-sm font-medium
-           hover:bg-purple-500/20 hover:transition-all hover:duration-250 shadow-sm dark:shadow-black hover:bg-opacity-20 uppercase"
+            className={cn(
+              "font-jura font-medium text-base w-full h-4 py-6 transition-colors bg-inherit ease-in tracking-[0.3em] border-[1px] border-primary-foreground/20 rounded-sm hover:bg-purple-500/20 hover:transition-all hover:duration-250 shadow-sm dark:shadow-black hover:bg-opacity-20 uppercase",
+              language === "AR" && "tracking-wide"
+            )}
             type="submit"
           >
             {status === "pending" ? (
@@ -210,7 +212,7 @@ function ContactForm({ contactData }: { contactData: TContact }) {
             variant="outline"
             onMouseEnter={() => animateCursor("buttonHover")}
             onMouseLeave={() => animateCursor("cursorEnter")}
-            className="font-jura text-[1.05rem] w-full h-4 py-6 transition-colors bg-inherit ease-in tracking-[10%] border-[1px] border-primary-foreground/20 rounded-sm font-medium
+            className="font-jura font-medium text-base w-full h-4 py-6 transition-colors bg-inherit ease-in tracking-[0.3em] border-[1px] border-primary-foreground/20 rounded-sm
            hover:bg-purple-500/20 hover:transition-all hover:duration-250 shadow-sm dark:shadow-black hover:bg-opacity-20 uppercase"
           >
             <div className="flex items-center w-full">
@@ -234,43 +236,14 @@ function ContactForm({ contactData }: { contactData: TContact }) {
 function Contact() {
   const { data: contactData, isLoading, isError } = useContact();
   const { navLinks } = useCachedNavLinks();
-  const containerRef = useRef<HTMLDivElement>(null);
-  const speed = 30;
-  const language = useLanguageStore((state) => state.language);
   const slug = navLinks?.links?.[3].slug || "contact";
 
   if (isLoading || !contactData) return <SectionLayout slug={slug} />;
   if (isError) return <SectionLayout slug={slug}>Oops error..</SectionLayout>;
 
   return (
-    <div className="overflow-x-hidden" ref={containerRef}>
-      <motion.h5
-        animate={{
-          x: -1366,
-        }}
-        transition={{
-          repeat: Infinity,
-          repeatType: "loop",
-          duration: 1366 / speed,
-          ease: "linear",
-        }}
-        className={cn(
-          "text-[9rem] uppercase whitespace-nowrap font-unbounded",
-          language === "AR" && "text-[12rem] font-baloo"
-        )}
-      >
-        {Array.from({ length: 5 }).map(() =>
-          contactData?.HeaderWords?.map(({ word, isHighlighted }) => (
-            <motion.span
-              key={word}
-              className={cn(isHighlighted && "!text-purple-500")}
-              variants={contactTitleBackFlip}
-            >
-              {word}{" "}
-            </motion.span>
-          ))
-        )}
-      </motion.h5>
+    <div className="overflow-x-hidden">
+      <Marquee contactData={contactData} />
       <SectionLayout slug={slug}>
         <div className="flex flex-col justify-center h-full overflow-hidden gap-y-4">
           <div className="">
