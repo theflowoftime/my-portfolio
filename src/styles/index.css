@@ -40,7 +40,7 @@
 
     --text-effect-fill: hsl(0, 0%, 100%); /* White for dark theme */
     --text-effect-stroke: hsl(0, 0%, 0%); /* Black for dark theme */
-    --text-effect-stroke-width: 4px;
+    --text-effect-stroke-width: 2px;
 
     --color-white: #ffffff;
     --color-light-gray: rgb(217, 217, 217);

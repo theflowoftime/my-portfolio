@@ -63,13 +63,13 @@ function Hero() {
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
       variants={waterFall}
-      className="relative flex flex-col overflow-hidden items-center justify-around h-full min-h-[calc(100vh-4.56rem)] dark:mix-blend-lighten mix-blend-darken"
+      className="relative flex flex-col items-center justify-center h-full min-h-screen overflow-hidden dark:mix-blend-lighten mix-blend-darken"
     >
       <motion.div className="container h-full text-center dark:text-white">
         {/* Title Section */}
         <motion.div
           className={cn(
-            "font-instrument text-[2.5rem] lg:text-[3.5rem] rounded-full tracking-[0.8rem]",
+            "font-instrument text-[2.5rem] lg:text-[3.25rem] rounded-full tracking-[0.8rem] flex flex-col gap-y-8",
             language === "AR" && "lg:text-[3rem] text-[2rem] font-baloo"
           )}
         >
@@ -184,12 +184,13 @@ function Hero() {
                 className={cn(
                   "flex items-center justify-center mb-8 italic font-black leading-loose  rounded-lg  gap-x-4 whitespace-nowrap",
                   lineIndex % 2 === 0 &&
-                    "bg-purple-700 dark:bg-purple-400 dark:backdrop-blur-md dark:backdrop-filter dark:bg-opacity-5 backdrop-blur-md backdrop-filter bg-opacity-10"
+                    "bg-black dark:bg-purple-200 dark:backdrop-blur-4xl dark:backdrop-filter dark:bg-opacity-5 backdrop-blur-4xl backdrop-filter bg-opacity-5"
                 )}
                 style={{
                   // boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
                   boxShadow:
-                    " rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",
+                    // "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",
+                    "rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
                 }}
               >
                 {textWithImage}
@@ -199,10 +200,10 @@ function Hero() {
         </motion.div>
 
         {/* Description Section */}
-        <motion.p
+        {/* <motion.p
           variants={waterFall}
           className={cn(
-            "mx-auto leading-loose tracking-[0.2em] text-balance dark:text-white/40 py-2 text-[0.75rem] font-unbounded font-light",
+            "lg:px-8 -leading-[0.001em] tracking-[0.2em] text-balance dark:text-white text-opacity-40 py-4 text-[0.75rem] font-unbounded font-light",
             language === "AR" && "text-lg font-baloo tracking-[0.125em]"
           )}
           style={{
@@ -211,7 +212,7 @@ function Hero() {
           }}
         >
           {heroData.secondaryText}
-        </motion.p>
+        </motion.p> */}
       </motion.div>
 
       {/* scroll to projects Section */}
@@ -226,8 +227,8 @@ function Hero() {
             className="flex flex-col items-center"
           >
             <ChevronsDown
-              className="transition-all ease-in bg-white rounded-full stroke-purple-400/20 hover:stroke-purple-400 dark:bg-black dark:text-white backdrop-blur-xl backdrop-filter bg-opacity-10 dark:bg-opacity-10 animate-bounce"
-              size={64}
+              className="transition-all ease-in bg-white rounded-full opacity-40 hover:opacity-100 dark:bg-black dark:text-white backdrop-blur-xl backdrop-filter bg-opacity-10 dark:bg-opacity-10 animate-bounce"
+              size={74}
               strokeWidth={1}
             />
             {/* <span
