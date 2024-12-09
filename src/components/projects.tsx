@@ -97,7 +97,7 @@ function Projects() {
             >
               {/* Project Image */}
               <LazyBackground
-                className="relative overflow-hidden bg-no-repeat bg-contain rounded-lg sm:bg-cover h-96"
+                className="relative overflow-hidden transition-all duration-1000 ease-in bg-no-repeat bg-contain rounded-lg sm:bg-cover h-96"
                 size="lg"
                 image={project.image}
               >

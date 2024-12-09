@@ -65,12 +65,12 @@ function Hero() {
       variants={waterFall}
       className="relative flex flex-col overflow-hidden items-center justify-around h-full min-h-[calc(100vh-4.56rem)] dark:mix-blend-lighten mix-blend-darken"
     >
-      <motion.div className="container h-full space-y-4 text-center dark:text-white">
+      <motion.div className="container h-full text-center dark:text-white">
         {/* Title Section */}
         <motion.div
           className={cn(
-            "leading-[6.33rem] font-instrument text-[4rem] lg:text-[5.11rem] -tracking-[0.01rem]",
-            language === "AR" && "lg:text-[5.25rem] text-[4.25rem] font-baloo"
+            "font-instrument text-[2.5rem] lg:text-[3.5rem] rounded-full tracking-[0.3rem]",
+            language === "AR" && "lg:text-[3rem] text-[2rem] font-baloo"
           )}
         >
           {heroData.mainTextLines.map((item, lineIndex) => {
@@ -181,7 +181,12 @@ function Hero() {
               <motion.p
                 key={lineIndex}
                 variants={waterFall}
-                className="flex items-center justify-center gap-x-4 whitespace-nowrap"
+                className="flex items-center justify-center mb-8 leading-loose rounded-lg gap-x-4 whitespace-nowrap"
+                style={{
+                  // boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+                  boxShadow:
+                    " rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",
+                }}
               >
                 {textWithImage}
               </motion.p>
@@ -193,9 +198,13 @@ function Hero() {
         <motion.p
           variants={waterFall}
           className={cn(
-            "mx-auto leading-loose tracking-widest text-balance dark:text-white/60",
+            "mx-auto leading-[0.4rem] tracking-widest text-balance dark:text-white/40 py-2 text-[0.85rem]",
             language === "AR" && "text-lg font-baloo tracking-[0.125em]"
           )}
+          style={{
+            boxShadow:
+              " rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",
+          }}
         >
           {heroData.secondaryText}
         </motion.p>
@@ -213,8 +222,8 @@ function Hero() {
             className="flex flex-col items-center"
           >
             <ChevronsDown
-              className="bg-white rounded-full dark:bg-black dark:text-white backdrop-blur-xl backdrop-filter bg-opacity-10 dark:bg-opacity-10 animate-bounce"
-              size={72}
+              className="bg-white rounded-full dark:bg-black dark:text-white backdrop-blur-xl backdrop-filter bg-opacity-10 dark:bg-opacity-10 animate-bounce opacity-60"
+              size={64}
               strokeWidth={1}
             />
             <span
