@@ -6,7 +6,7 @@ import { ChevronsDown } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { HERO_AVATAR_SIZES, PX_REM_ratio } from "@/lib/constants";
+import { HERO_AVATAR_SIZES } from "@/lib/constants";
 import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
 import { useCursorStore } from "@/stores/cursor-store";
 import Autoplay from "embla-carousel-autoplay";
@@ -28,11 +28,7 @@ function Hero() {
       <div className="relative flex flex-col items-center justify-around h-full min-h-[calc(100vh-4.56rem)] dark:mix-blend-lighten mix-blend-darken" />
     );
 
-  // const [w, h] = heroData.avatarSize || HERO_AVATAR_SIZES;
-  const [w, h] = HERO_AVATAR_SIZES;
-  const twImgSize = `w-[${w / PX_REM_ratio}rem] h-[${h / PX_REM_ratio}rem]`;
-
-  console.log({ w, h });
+  const [w, h] = heroData.avatarSize || HERO_AVATAR_SIZES;
 
   // Function to create dynamic mask based on index and image width
   const generateMask = (
@@ -66,13 +62,13 @@ function Hero() {
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
       variants={waterFall}
-      className="relative flex flex-col items-center justify-around h-full min-h-screen overflow-hidden"
+      className="relative flex flex-col justify-around h-full min-h-screen overflow-hidden"
     >
       <motion.div className="container h-full text-center dark:text-white">
         {/* Title Section */}
         <motion.div
           className={cn(
-            "font-instrument text-[4rem] lg:text-[5.25rem] rounded-full flex flex-col leading-tight items-center",
+            "font-instrument font-medium text-[4rem] lg:text-[5.35rem] rounded-full flex flex-col items-center leading-tight",
             language === "AR" && "lg:text-[4.5rem] text-[3.25rem] font-baloo"
           )}
         >
@@ -84,14 +80,13 @@ function Hero() {
               <React.Fragment key={wordIndex}>
                 {wordIndex === item.line.img.position && (
                   <Avatar
-                    className={cn(
-                      "border-4 dark:border-white border-black hidden sm:inline-block  w-[6.25rem] h-[4.5rem] bg-black"
-                      // twImgSize
-                    )}
+                    className="hidden bg-black border-4 border-black dark:border-white sm:inline-block"
                     style={{
                       mask: generateMask(wordIndex, true, lineIndex), // Apply mask to the image as well
-                      WebkitMask: generateMask(wordIndex, true, lineIndex), // Cross-browser support
+                      WebkitMask: generateMask(wordIndex, true, lineIndex),
                       boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+                      width: w,
+                      height: h,
                     }}
                   >
                     <Carousel
@@ -107,7 +102,7 @@ function Hero() {
                       onMouseEnter={plugin.current.stop}
                       onMouseLeave={() => plugin.current.play()}
                     >
-                      <CarouselContent className={`h-[4.5rem]`}>
+                      <CarouselContent style={{ height: h }}>
                         {item.line.img.images?.map((image, index) => (
                           <CarouselItem
                             className={`p-0 m-0 cursor-grab`}
@@ -132,20 +127,14 @@ function Hero() {
                 )}
 
                 {item.line.highlight?.includes(wordIndex) ? (
-                  <em
-                    className="italic dark:text-white/50 text-black/50 -tracking-[0.02] "
-                    // style={{
-                    //   mask: generateMask(wordIndex, false, lineIndex), // Apply dynamic mask for each word
-                    //   WebkitMask: generateMask(wordIndex, false, lineIndex), // Cross-browser support
-                    // }}
-                  >
+                  <em className="italic dark:text-white/50 text-black/50 -tracking-[0.04em]">
                     {word}
                   </em>
                 ) : (
                   <span
                     style={{
                       mask: generateMask(wordIndex, false, lineIndex), // Apply dynamic mask for each word
-                      WebkitMask: generateMask(wordIndex, false, lineIndex), // Cross-browser support
+                      WebkitMask: generateMask(wordIndex, false, lineIndex),
                     }}
                   >
                     {word}
@@ -159,14 +148,13 @@ function Hero() {
               textWithImage.push(
                 <Avatar
                   key="end-image"
-                  className={cn(
-                    "border-4 dark:border-white border-black hidden sm:inline-block w-[6.25rem] h-[4.5rem]  bg-black"
-                    // twImgSize
-                  )}
+                  className="hidden bg-black border-4 border-black dark:border-white sm:inline-block"
                   style={{
                     mask: generateMask(words.length, true, lineIndex), // Apply mask to image at the end
                     WebkitMask: generateMask(words.length, true, lineIndex), // Cross-browser support
                     boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+                    width: w,
+                    height: h,
                   }}
                 >
                   <AvatarImage
@@ -200,12 +188,6 @@ function Hero() {
                 className={cn(
                   "flex items-center justify-center rounded-lg gap-x-3 whitespace-nowrap"
                 )}
-                // style={{
-                //   // boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
-                //   boxShadow:
-                //     // "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",
-                //     "rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
-                // }}
               >
                 {lineIndex === 0 ? (
                   <span className="flex items-center justify-between gap-x-3">

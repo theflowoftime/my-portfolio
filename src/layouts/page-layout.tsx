@@ -3,8 +3,7 @@ import { ComponentPropsWithoutRef } from "react";
 
 export default function PageLayout({
   children,
-  title,
-}: ComponentPropsWithoutRef<"div"> & { title: string }) {
+}: ComponentPropsWithoutRef<"div">) {
   return (
     <div>
       <NavBar />
