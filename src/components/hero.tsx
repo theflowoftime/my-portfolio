@@ -228,7 +228,7 @@ function Hero() {
         <motion.p
           variants={waterFall}
           className={cn(
-            "break-words whitespace-pre mx-auto  text-[1rem] text-balance dark:text-white/60 text-black/40 text-opacity-40 -tracking-[0.03] leading-[27.3px] font-mono text-center",
+            "break-words whitespace-pre mx-auto  text-[1.09rem] text-balance dark:text-white/60 text-black/40 text-opacity-40 -tracking-[0.03] leading-[27.3px] font-mono text-center",
             language === "AR" && "text-lg font-baloo tracking-[0.125em]"
           )}
         >
