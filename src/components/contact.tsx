@@ -92,7 +92,7 @@ function ContactForm({ contactData }: { contactData: TContact }) {
                         <Input
                           placeholder={input.placeholder}
                           className={cn(
-                            "text-center border-t-0 border-l-0 border-r-0 rounded-none placeholder:font-jura placeholder:text-base placeholder:uppercase placeholder:text-center dark:placeholder:text-primary/80 placeholder:text-primary/80 border-b-primary-foreground/20 focus-within:border-b-primary-foreground bg-inherit focus-visible:ring-0",
+                            "text-center ring-offset-transparent focus-visible:ring-offset-0 focus-visible:ring-0 border-t-0 border-l-0 border-r-0 rounded-none placeholder:font-jura placeholder:text-base placeholder:uppercase placeholder:text-center dark:placeholder:text-primary/80 placeholder:text-primary/80 border-b-primary-foreground/20 focus-within:border-b-primary-foreground bg-inherit",
                             language === "AR" &&
                               "placeholder:font-baloo font-baloo"
                           )}
@@ -135,7 +135,7 @@ function ContactForm({ contactData }: { contactData: TContact }) {
                         <FormControl>
                           <SelectTrigger
                             className={cn(
-                              "h-8 border-t-0 border-l-0 border-r-0 dark:placeholder:text-primary/80 rounded-none w-full data-[placeholder]:text-primary/80 data-[placeholder]:text-base data-[placeholder]:font-jura data-[placeholder]:uppercase  [&>span]:w-full  [&>span]:text-center data-[placeholder]:text-center border-b-primary-foreground/20 bg-inherit focus:ring-0 focus-within:border-b-primary",
+                              "h-8 ring-offset-transparent focus-visible:ring-offset-0 focus-visible:ring-0  border-t-0 border-l-0 border-r-0 dark:placeholder:text-primary/80 rounded-none w-full data-[placeholder]:text-primary/80 data-[placeholder]:text-base data-[placeholder]:font-jura data-[placeholder]:uppercase  [&>span]:w-full  [&>span]:text-center data-[placeholder]:text-center border-b-primary-foreground/20 bg-inherit focus:ring-0 focus-within:border-b-primary",
                               language === "AR" &&
                                 "data-[placeholder]:font-baloo font-baloo"
                             )}

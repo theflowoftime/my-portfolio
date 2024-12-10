@@ -72,7 +72,7 @@ function Hero() {
         {/* Title Section */}
         <motion.div
           className={cn(
-            "font-instrument text-[4.25rem] lg:text-[5.5rem] rounded-full flex flex-col leading-tight items-center",
+            "font-instrument text-[4rem] lg:text-[5.25rem] rounded-full flex flex-col leading-tight items-center",
             language === "AR" && "lg:text-[4.5rem] text-[3.25rem] font-baloo"
           )}
         >
@@ -105,7 +105,7 @@ function Hero() {
                       }}
                       orientation="vertical"
                       onMouseEnter={plugin.current.stop}
-                      onMouseLeave={plugin.current.reset}
+                      onMouseLeave={() => plugin.current.play()}
                     >
                       <CarouselContent className={`h-[4.5rem]`}>
                         {item.line.img.images?.map((image, index) => (
