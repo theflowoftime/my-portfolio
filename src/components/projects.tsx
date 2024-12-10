@@ -29,7 +29,6 @@ import { Button } from "./ui/button";
 //   technologies: [];
 // };
 // tags: [];
-
 // };
 
 function Projects() {

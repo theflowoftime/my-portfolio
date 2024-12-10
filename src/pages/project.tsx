@@ -118,53 +118,18 @@ function Project() {
           </div>
         </div>
 
-        {/* Image 2 */}
-        <div
-          className="w-full min-h-screen rounded-2xl"
-          style={{
-            backgroundImage: "url('/project1/project-2.avif')",
-            backgroundRepeat: "no-repeat",
-            height: "100%",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        />
-
-        {/* Image 3 */}
-        <div
-          className="w-full min-h-screen rounded-2xl"
-          style={{
-            backgroundImage: "url('/project1/project-3.avif')",
-            backgroundRepeat: "no-repeat",
-            height: "100%",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        />
-
-        {/* Image 4 */}
-        <div
-          className="w-full min-h-screen rounded-2xl"
-          style={{
-            backgroundImage: "url('/project1/project-4.avif')",
-            backgroundRepeat: "no-repeat",
-            height: "100%",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        />
-
-        {/* Image 5 */}
-        <div
-          className="w-full min-h-screen rounded-2xl"
-          style={{
-            backgroundImage: "url('/project1/project-5.avif')",
-            backgroundRepeat: "no-repeat",
-            height: "100%",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        />
+        {[2, 3, 4, 5].map((i) => (
+          <div
+            className="w-full min-h-screen rounded-2xl"
+            style={{
+              backgroundImage: `url('/project1/project-${i}.avif')`,
+              backgroundRepeat: "no-repeat",
+              height: "100%",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          />
+        ))}
       </div>
 
       {/* See also */}
