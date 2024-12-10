@@ -17,4 +17,4 @@ export const LOCALES: Record<Language, string> = {
 
 // This is for consistency in image size
 export const PX_REM_ratio = 16;
-export const HERO_AVATAR_SIZES = [80, 73.92];
+export const HERO_AVATAR_SIZES = [120, 80];

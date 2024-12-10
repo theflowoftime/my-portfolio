@@ -28,8 +28,11 @@ function Hero() {
       <div className="relative flex flex-col items-center justify-around h-full min-h-[calc(100vh-4.56rem)] dark:mix-blend-lighten mix-blend-darken" />
     );
 
-  const [w, h] = heroData.containerSizes || HERO_AVATAR_SIZES;
+  // const [w, h] = heroData.avatarSize || HERO_AVATAR_SIZES;
+  const [w, h] = HERO_AVATAR_SIZES;
   const twImgSize = `w-[${w / PX_REM_ratio}rem] h-[${h / PX_REM_ratio}rem]`;
+
+  console.log({ w, h });
 
   // Function to create dynamic mask based on index and image width
   const generateMask = (
@@ -63,29 +66,32 @@ function Hero() {
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
       variants={waterFall}
-      className="relative flex flex-col items-center justify-center h-full min-h-screen overflow-hidden dark:mix-blend-lighten mix-blend-darken"
+      className="relative flex flex-col items-center justify-around h-full min-h-screen overflow-hidden"
     >
       <motion.div className="container h-full text-center dark:text-white">
         {/* Title Section */}
         <motion.div
           className={cn(
-            "font-instrument text-[2.5rem] lg:text-[3.25rem] rounded-full tracking-[0.8rem] flex flex-col gap-y-8",
-            language === "AR" && "lg:text-[3rem] text-[2rem] font-baloo"
+            "font-instrument text-[4.25rem] lg:text-[5.5rem] rounded-full flex flex-col leading-tight items-center",
+            language === "AR" && "lg:text-[4.5rem] text-[3.25rem] font-baloo"
           )}
         >
           {heroData.mainTextLines.map((item, lineIndex) => {
             const words = item.line.text.split(" ");
+            if (lineIndex === 0 && item.line.img.position < words.length)
+              words.push(",");
             const textWithImage = words.map((word, wordIndex) => (
               <React.Fragment key={wordIndex}>
                 {wordIndex === item.line.img.position && (
                   <Avatar
                     className={cn(
-                      "border-4 dark:border-white border-black hidden sm:inline-block min-w-min min-h-min w-[5rem] h-[4.62rem] shadow-md bg-black",
-                      twImgSize
+                      "border-4 dark:border-white border-black hidden sm:inline-block  w-[6rem] h-[4.5rem] bg-black"
+                      // twImgSize
                     )}
                     style={{
                       mask: generateMask(wordIndex, true, lineIndex), // Apply mask to the image as well
                       WebkitMask: generateMask(wordIndex, true, lineIndex), // Cross-browser support
+                      boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
                     }}
                   >
                     <Carousel
@@ -101,10 +107,10 @@ function Hero() {
                       onMouseEnter={plugin.current.stop}
                       onMouseLeave={plugin.current.reset}
                     >
-                      <CarouselContent className={`h-[${h / PX_REM_ratio}rem]`}>
+                      <CarouselContent className={`h-[4.5rem]`}>
                         {item.line.img.images?.map((image, index) => (
                           <CarouselItem
-                            className={`p-0 m-0 h-fit cursor-grab`}
+                            className={`p-0 m-0 cursor-grab`}
                             key={index}
                           >
                             <AvatarImage
@@ -124,18 +130,27 @@ function Hero() {
                     <AvatarFallback></AvatarFallback>
                   </Avatar>
                 )}
-                <span
-                  className={cn(
-                    item.line.highlight?.includes(wordIndex) &&
-                      "text-effect mix-blend-lighten"
-                  )}
-                  style={{
-                    mask: generateMask(wordIndex, false, lineIndex), // Apply dynamic mask for each word
-                    WebkitMask: generateMask(wordIndex, false, lineIndex), // Cross-browser support
-                  }}
-                >
-                  {word}{" "}
-                </span>
+
+                {item.line.highlight?.includes(wordIndex) ? (
+                  <em
+                    className="italic dark:text-white/50 text-black/50 "
+                    // style={{
+                    //   mask: generateMask(wordIndex, false, lineIndex), // Apply dynamic mask for each word
+                    //   WebkitMask: generateMask(wordIndex, false, lineIndex), // Cross-browser support
+                    // }}
+                  >
+                    {word}{" "}
+                  </em>
+                ) : (
+                  <span
+                    style={{
+                      mask: generateMask(wordIndex, false, lineIndex), // Apply dynamic mask for each word
+                      WebkitMask: generateMask(wordIndex, false, lineIndex), // Cross-browser support
+                    }}
+                  >
+                    {word}{" "}
+                  </span>
+                )}
               </React.Fragment>
             ));
 
@@ -145,12 +160,13 @@ function Hero() {
                 <Avatar
                   key="end-image"
                   className={cn(
-                    "border-4 dark:border-white border-black hidden sm:inline-block min-w-min min-h-min shadow-md bg-black",
-                    twImgSize
+                    "border-4 dark:border-white border-black hidden sm:inline-block w-[6rem] h-[4.5rem]  bg-black"
+                    // twImgSize
                   )}
                   style={{
                     mask: generateMask(words.length, true, lineIndex), // Apply mask to image at the end
                     WebkitMask: generateMask(words.length, true, lineIndex), // Cross-browser support
+                    boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
                   }}
                 >
                   <AvatarImage
@@ -182,37 +198,42 @@ function Hero() {
                 key={lineIndex}
                 variants={waterFall}
                 className={cn(
-                  "flex items-center justify-center mb-8 italic font-black leading-loose  rounded-lg  gap-x-4 whitespace-nowrap",
-                  lineIndex % 2 === 0 &&
-                    "bg-black dark:bg-purple-200 dark:backdrop-blur-4xl dark:backdrop-filter dark:bg-opacity-5 backdrop-blur-4xl backdrop-filter bg-opacity-5"
+                  "flex items-center justify-center rounded-lg  gap-x-4 whitespace-nowrap"
                 )}
-                style={{
-                  // boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
-                  boxShadow:
-                    // "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",
-                    "rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
-                }}
+                // style={{
+                //   // boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+                //   boxShadow:
+                //     // "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",
+                //     "rgba(0, 0, 0, 0.05) 0px 1px 2px 0px",
+                // }}
               >
-                {textWithImage}
+                {lineIndex === 0 ? (
+                  <span className="">
+                    {textWithImage}
+                    <span>
+                      {lineIndex === 0 && item.line.img.position >= words.length
+                        ? ","
+                        : ""}
+                    </span>
+                  </span>
+                ) : (
+                  textWithImage
+                )}
               </motion.p>
             );
           })}
         </motion.div>
 
         {/* Description Section */}
-        {/* <motion.p
+        <motion.p
           variants={waterFall}
           className={cn(
-            "lg:px-8 -leading-[0.001em] tracking-[0.2em] text-balance dark:text-white text-opacity-40 py-4 text-[0.75rem] font-unbounded font-light",
+            "break-words whitespace-pre mx-auto  text-[1rem] text-balance dark:text-white/60 text-black/40 text-opacity-40 -tracking-[0.03] leading-[27.3px] font-mono text-center",
             language === "AR" && "text-lg font-baloo tracking-[0.125em]"
           )}
-          style={{
-            boxShadow:
-              " rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",
-          }}
         >
           {heroData.secondaryText}
-        </motion.p> */}
+        </motion.p>
       </motion.div>
 
       {/* scroll to projects Section */}
@@ -228,7 +249,7 @@ function Hero() {
           >
             <ChevronsDown
               className="transition-all ease-in bg-white rounded-full opacity-40 hover:opacity-100 dark:bg-black dark:text-white backdrop-blur-xl backdrop-filter bg-opacity-10 dark:bg-opacity-10 animate-bounce"
-              size={74}
+              size={60}
               strokeWidth={1}
             />
             {/* <span

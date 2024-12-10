@@ -46,7 +46,7 @@ export const hero_QUERY = `*[_type == "hero" && language == $language][0] {
     }[],
     secondaryText,
     buttonText,
-    containerSizes[]
+    avatarSize[]
   }`;
 
 export const contact_QUERY = `*[_type == "contact" && language == $language][0]{

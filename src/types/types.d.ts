@@ -56,7 +56,7 @@ export type Hero = {
   }[];
   secondaryText: string;
   buttonText: string;
-  containerSizes: [number, number];
+  avatarSize: [number, number];
 };
 
 export type AboutMe = {
