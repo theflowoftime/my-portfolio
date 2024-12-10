@@ -169,7 +169,7 @@ function ContactForm({ contactData }: { contactData: TContact }) {
         />
 
         {/* Submit Button */}
-        <motion.div className="flex flex-col items-center px-2 lg:px-28 item-center gap-y-4">
+        <motion.div className="flex flex-col items-center item-center gap-y-4">
           <Button
             onMouseEnter={() => animateCursor("buttonHover")}
             onMouseLeave={() => animateCursor("cursorEnter")}
