@@ -85,7 +85,7 @@ function Hero() {
                 {wordIndex === item.line.img.position && (
                   <Avatar
                     className={cn(
-                      "border-4 dark:border-white border-black hidden sm:inline-block  w-[6rem] h-[4.5rem] bg-black"
+                      "border-4 dark:border-white border-black hidden sm:inline-block  w-[6.25rem] h-[4.5rem] bg-black"
                       // twImgSize
                     )}
                     style={{
@@ -133,13 +133,13 @@ function Hero() {
 
                 {item.line.highlight?.includes(wordIndex) ? (
                   <em
-                    className="italic dark:text-white/50 text-black/50 "
+                    className="italic dark:text-white/50 text-black/50 -tracking-[0.02] "
                     // style={{
                     //   mask: generateMask(wordIndex, false, lineIndex), // Apply dynamic mask for each word
                     //   WebkitMask: generateMask(wordIndex, false, lineIndex), // Cross-browser support
                     // }}
                   >
-                    {word}{" "}
+                    {word}
                   </em>
                 ) : (
                   <span
@@ -148,7 +148,7 @@ function Hero() {
                       WebkitMask: generateMask(wordIndex, false, lineIndex), // Cross-browser support
                     }}
                   >
-                    {word}{" "}
+                    {word}
                   </span>
                 )}
               </React.Fragment>
@@ -160,7 +160,7 @@ function Hero() {
                 <Avatar
                   key="end-image"
                   className={cn(
-                    "border-4 dark:border-white border-black hidden sm:inline-block w-[6rem] h-[4.5rem]  bg-black"
+                    "border-4 dark:border-white border-black hidden sm:inline-block w-[6.25rem] h-[4.5rem]  bg-black"
                     // twImgSize
                   )}
                   style={{
@@ -198,7 +198,7 @@ function Hero() {
                 key={lineIndex}
                 variants={waterFall}
                 className={cn(
-                  "flex items-center justify-center rounded-lg  gap-x-4 whitespace-nowrap"
+                  "flex items-center justify-center rounded-lg gap-x-3 whitespace-nowrap"
                 )}
                 // style={{
                 //   // boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
@@ -208,7 +208,7 @@ function Hero() {
                 // }}
               >
                 {lineIndex === 0 ? (
-                  <span className="">
+                  <span className="flex items-center justify-between gap-x-3">
                     {textWithImage}
                     <span>
                       {lineIndex === 0 && item.line.img.position >= words.length
