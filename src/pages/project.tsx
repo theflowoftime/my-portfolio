@@ -183,7 +183,9 @@ function Project() {
           <div className="bg-white h-96 rounded-2xl">2</div>
         </div> */}
       </div>
-      <ProjectsCarousel projects={projects} />
+      <ProjectsCarousel
+        projects={projects.filter((project) => project._id !== projectId)}
+      />
     </div>
   );
 }
