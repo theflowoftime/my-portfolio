@@ -3,15 +3,15 @@ import type { Language, Project } from "@/types/types";
 import client from "@/sanity/lib/client";
 import { useQuery } from "@tanstack/react-query";
 
-export const fetchproject = async (language: Language, _id: string) => {
-  const params = { language, _id };
+export const fetchproject = async (language: Language, name: string) => {
+  const params = { language, name };
   return await client.fetch(query, params);
 };
 
-export const useProject = (language: Language, _id: string) => {
+export const useProject = (language: Language, name: string) => {
   const { data, error, isLoading } = useQuery<Project>({
     queryKey: ["project", language],
-    queryFn: () => fetchproject(language, _id),
+    queryFn: () => fetchproject(language, name),
     staleTime: 1000 * 60 * 15, // Cache for 15 minutes
   });
 

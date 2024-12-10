@@ -16,7 +16,7 @@ export const router = createBrowserRouter([
 
     children: [
       {
-        path: ":projectId",
+        path: ":projectName",
         element: <Project />,
       },
     ],

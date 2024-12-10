@@ -20,15 +20,15 @@ const stacks = ["Framer", "Figma", "Adobe CC"];
 const timeline = "4 weeks";
 
 function Project() {
-  const { projectId } = useParams();
-  useScrollToTop(projectId);
+  const { projectName } = useParams();
+  useScrollToTop(projectName);
   const language = useLanguageStore((state) => state.language);
   const projects: Projects =
     useOutletContext() || queryClient.getQueryData(["projects", language]);
 
   const project =
-    projects?.find((project) => project._id === projectId) ||
-    useProject(language, projectId!).data;
+    projects?.find((project) => project.title === projectName) ||
+    useProject(language, projectName!).data;
 
   if (!project) return <div>404</div>;
 
@@ -184,7 +184,7 @@ function Project() {
         </div> */}
       </div>
       <ProjectsCarousel
-        projects={projects.filter((project) => project._id !== projectId)}
+        projects={projects.filter((project) => project.title !== projectName)}
       />
     </div>
   );

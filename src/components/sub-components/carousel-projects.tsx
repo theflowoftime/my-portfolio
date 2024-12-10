@@ -122,7 +122,7 @@ export default function ProjectsCarousel({ projects }: { projects: Projects }) {
                       ) : null}
 
                       <CarouselLinkButton
-                        to={`/projects/${project._id}`}
+                        to={`/projects/${project.title}`}
                         label="learn more details"
                         Icon={LinkIcon}
                       />
