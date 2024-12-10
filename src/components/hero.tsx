@@ -114,7 +114,7 @@ function Hero() {
                             key={index}
                           >
                             <AvatarImage
-                              className="object-contain w-full h-full overflow-hidden"
+                              className="object-cover w-full h-full overflow-hidden"
                               src={urlFor(image)
                                 .fit("max")
                                 .quality(80)

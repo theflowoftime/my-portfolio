@@ -2,6 +2,7 @@
 import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
 import { useProjects } from "@/hooks/useProjects";
 import SectionLayout from "@/layouts/section-layout";
+import { cn } from "@/lib/utils";
 import { useLanguageStore } from "@/stores/language-store";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRightCircle } from "lucide-react";
@@ -11,7 +12,6 @@ import AnimatedButton from "./sub-components/animated-button";
 import LazyBackground from "./sub-components/lazy-bg-img-sanity";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
-import { cn } from "@/lib/utils";
 
 // export type Project = {
 //   _id: string;
@@ -66,7 +66,6 @@ function Projects() {
 
   return (
     <SectionLayout ref={targetRef} slug={slug}>
-      {/* <ProjectsCarousel /> */}
       <div className="flex flex-col items-center w-full gap-y-32">
         <div
           style={{

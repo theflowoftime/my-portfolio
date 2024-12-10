@@ -1,8 +1,5 @@
 // import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
-import { useProjects } from "@/hooks/useProjects";
-import SectionLayout from "@/layouts/section-layout";
-import { useLanguageStore } from "@/stores/language-store";
-import type { Orientation, Project } from "@/types/types";
+import type { Orientation, Project, Projects } from "@/types/types";
 import {
   ExternalLink,
   GalleryHorizontal,
@@ -17,6 +14,8 @@ import { cn } from "@/lib/utils";
 import Autoplay from "embla-carousel-autoplay";
 import { motion } from "framer-motion";
 import { useRef, useState } from "react";
+import { Link } from "react-router-dom";
+import { Button } from "../ui/button";
 import {
   Carousel,
   CarouselContent,
@@ -24,8 +23,6 @@ import {
   CarouselItem,
 } from "../ui/carousel";
 import LazyBackground from "./lazy-bg-img-sanity";
-import { Button } from "../ui/button";
-import { Link } from "react-router-dom";
 
 export function CarouselLinkButton({
   to,
@@ -54,9 +51,7 @@ export function CarouselLinkButton({
   );
 }
 
-export default function ProjectsCarousel() {
-  const language = useLanguageStore((state) => state.language);
-
+export default function ProjectsCarousel({ projects }: { projects: Projects }) {
   const [orientation, setOrientation] = useState<Orientation>("horizontal");
   const plugin = useRef(
     Autoplay({
@@ -66,10 +61,6 @@ export default function ProjectsCarousel() {
       stopOnFocusIn: true,
     })
   );
-
-  const { projects, isLoading, error } = useProjects(language);
-  if (isLoading || !projects) return <SectionLayout slug="" />;
-  if (error) return <p>Error fetching projects: {error.message}</p>;
 
   const handleClick = () => {
     setOrientation((prev) => (prev === "vertical" ? "horizontal" : "vertical"));
@@ -103,7 +94,11 @@ export default function ProjectsCarousel() {
                 key={project._id}
                 className="relative flex justify-center w-full overflow-hidden cursor-grab"
               >
-                <LazyBackground size="lg" image={project.image} />
+                <LazyBackground
+                  size="lg"
+                  image={project.image}
+                  className="w-full bg-no-repeat bg-contain sm:bg-cover"
+                />
                 <div
                   className={cn(
                     "absolute bottom-0 w-full",
@@ -127,7 +122,7 @@ export default function ProjectsCarousel() {
                       ) : null}
 
                       <CarouselLinkButton
-                        to={`projects/${project._id}`}
+                        to={`/projects/${project._id}`}
                         label="learn more details"
                         Icon={LinkIcon}
                       />
