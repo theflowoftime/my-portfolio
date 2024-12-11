@@ -20,8 +20,8 @@ export default function AnimatedButton({
       onMouseLeave={() => animateCursor("cursorEnter")}
     >
       <Button
-        variant="outline"
-        className="relative w-full h-full px-6 py-4 overflow-hidden bg-transparent border-black/20 group hover:bg-transparent dark:border-white/20"
+        variant="ghost"
+        className="relative w-full h-full px-6 py-4 overflow-hidden bg-transparent group hover:bg-transparent"
         style={{
           boxShadow:
             "rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px",
