@@ -57,7 +57,7 @@ function Hero() {
       <motion.div className="container h-full text-center dark:text-white">
         <motion.div
           className={cn(
-            "font-instrument font-medium text-[4rem] lg:text-[5.35rem] rounded-full flex flex-col items-center leading-tight",
+            "font-instrument font-medium text-[4rem] lg:text-[5.35rem] rounded-full flex flex-col items-center leading-tight overflow-hidden",
             language === "AR" && "lg:text-[4.5rem] text-[3.25rem] font-baloo"
           )}
         >

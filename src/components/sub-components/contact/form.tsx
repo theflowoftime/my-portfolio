@@ -180,7 +180,7 @@ export function ContactForm({ contactData }: { contactData: TContact }) {
             disabled={status === "pending" || form.formState.isSubmitting}
             variant="outline"
             className={cn(
-              "font-jura font-medium sm:text-[0.75rem] md:text-base w-full h-4 py-6 transition-colors bg-inherit ease-in tracking-[0.3em] border-[1px] border-primary-foreground/20 rounded-sm hover:bg-purple-500/20 hover:transition-all hover:duration-250 shadow-sm dark:shadow-black hover:bg-opacity-20 uppercase",
+              "font-unbounded tracking-[0.052] font-medium sm:text-[0.75rem] md:text-base w-full h-4 py-6 transition-colors bg-inherit ease-in  border-[1px] border-primary-foreground/20 rounded-sm hover:bg-purple-500/20 hover:transition-all hover:duration-250 shadow-sm dark:shadow-black hover:bg-opacity-20 uppercase",
               language === "AR" && "tracking-wide"
             )}
             type="submit"
@@ -231,7 +231,7 @@ export function ContactForm({ contactData }: { contactData: TContact }) {
                 variant="outline"
                 onMouseEnter={() => animateCursor("buttonHover")}
                 onMouseLeave={() => animateCursor("cursorEnter")}
-                className="font-jura font-medium sm:text-[0.75rem] md:text-base w-full h-4 py-6 transition-colors bg-inherit ease-in tracking-[0.3em] border-[1px] border-primary-foreground/20 rounded-sm
+                className="font-unbounded font-medium sm:text-[0.75rem] md:text-base w-full h-4 py-6 transition-colors bg-inherit ease-in tracking-[0.052] border-[1px] border-primary-foreground/20 rounded-sm
              hover:bg-purple-500/20 hover:transition-all hover:duration-250 shadow-sm dark:shadow-black hover:bg-opacity-20 uppercase"
               >
                 <div className="flex items-center w-full">
