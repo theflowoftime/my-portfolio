@@ -44,6 +44,7 @@
   font-family: "Instrument Serif";
   font-style: normal;
   font-weight: 400;
+  font-optical-sizing: auto;
   src: url("../assets/fonts/InstrumentSerif/InstrumentSerif-Regular.ttf")
     format("truetype");
 }
@@ -52,6 +53,7 @@
   font-family: "Instrument Serif";
   font-style: italic;
   font-weight: 400;
+  font-optical-sizing: auto;
   src: url("../assets/fonts/InstrumentSerif/InstrumentSerif-Italic.ttf")
     format("truetype");
 }
