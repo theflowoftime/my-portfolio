@@ -50,9 +50,10 @@ function Hero() {
     // Dimming based on line index (lower lines = dimmer)
     const lineDimming = 1 - 0.1 * lineIndex; // Each line gets progressively dimmer
     const opacity = Math.max(baseOpacity * lineDimming, 0.4); // Ensure opacity never goes below 0.4 for readability
+    console.log(opacity);
 
     // Generate the radial gradient with the adjusted opacity
-    return `radial-gradient(150% 150% at ${offset}% 100%, rgba(0, 0, 0, ${opacity}) 0%, rgba(0, 0, 0, 1) 100%) add`;
+    return `radial-gradient(150% 150% at ${offset}% 100%, rgba(0, 0, 0, ${opacity}) 0%, rgba(0, 0, 0, 1) 100%)`;
   };
 
   return (
@@ -62,7 +63,7 @@ function Hero() {
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
       variants={waterFall}
-      className="relative flex flex-col justify-around h-full min-h-screen overflow-hidden"
+      className="relative flex flex-col justify-around h-full min-h-screen"
     >
       <motion.div className="container h-full text-center dark:text-white">
         {/* Title Section */}
@@ -74,13 +75,13 @@ function Hero() {
         >
           {heroData.mainTextLines.map((item, lineIndex) => {
             const words = item.line.text.split(" ");
-            if (lineIndex === 0 && item.line.img.position < words.length) {
-              if (language === "AR") {
-                words.unshift(",");
-              } else {
-                words.push(",");
-              }
-            }
+            // if (lineIndex === 0 && item.line.img.position < words.length) {
+            //   if (language === "AR") {
+            //     words.unshift(",");
+            //   } else {
+            //     words.push(",");
+            //   }
+            // }
             const textWithImage = words.map((word, wordIndex) => (
               <React.Fragment key={wordIndex}>
                 {wordIndex === item.line.img.position && (
@@ -114,7 +115,7 @@ function Hero() {
                             key={index}
                           >
                             <AvatarImage
-                              className="object-cover w-full h-full overflow-hidden"
+                              className="object-contain w-full h-full overflow-hidden"
                               src={urlFor(image)
                                 .fit("max")
                                 .quality(80)
@@ -194,18 +195,7 @@ function Hero() {
                   "flex items-center justify-center rounded-lg gap-x-3 whitespace-nowrap"
                 )}
               >
-                {lineIndex === 0 ? (
-                  <span className="flex items-center justify-between gap-x-3">
-                    {textWithImage}
-                    <span>
-                      {lineIndex === 0 && item.line.img.position >= words.length
-                        ? ","
-                        : ""}
-                    </span>
-                  </span>
-                ) : (
-                  textWithImage
-                )}
+                {textWithImage}
               </motion.p>
             );
           })}
