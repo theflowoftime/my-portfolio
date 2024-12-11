@@ -11,7 +11,7 @@ export const useGradualReveal = ({
   const { scrollYProgress } = useScroll({
     target: targetRef,
     offset: [
-      [0.25, 1],
+      [0, 1],
       [1, 1],
     ],
   });

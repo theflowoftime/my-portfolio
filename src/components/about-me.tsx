@@ -28,20 +28,22 @@ function AboutMe() {
           <div className="flex flex-col flex-wrap items-center gap-y-4">
             <div
               className={cn(
-                "flex flex-col items-center h-full space-y-4 text-center font-instrument",
+                "flex flex-col items-center gap-y-4 font-instrument place-content-center h-min max-w-full",
                 language === "AR" && "font-baloo"
               )}
               style={{
                 perspective: 1200,
               }}
             >
-              <h3
+              <div
                 className={cn(
-                  "text-2xl font-instrument before:content[''] before:w-16 before:h-[0.062rem] dark:before:bg-white/10 before:bg-purple-700/30 text-purple-400 before:absolute before:-translate-y-1/2 after:-translate-y-1/2 before:top-1/2 before:left-[36%] after:content[''] after:w-16 after:h-[0.062rem]  dark:after:bg-white/10  after:bg-purple-700/30 after:absolute after:top-1/2 after:right-[36%] relative w-full"
+                  "text-2xl font-instrument text-purple-400 relative w-full flex items-center justify-center gap-x-8"
                 )}
               >
-                {aboutMeData?.introduction?.title}
-              </h3>
+                <div className="overflow-hidden h-[1px] relative w-[4.5rem] opacity-50  bg-left" />
+                <h3 className="">{aboutMeData?.introduction?.title}</h3>
+                <div className="overflow-hidden h-[1px] relative w-[4.5rem] opacity-50  bg-right" />
+              </div>
               <Introduction words={words} />
             </div>
           </div>
@@ -54,14 +56,17 @@ function AboutMe() {
           variants={waterFall} // Define stagger children in the parent
           className="flex flex-col items-center w-full space-y-16 text-center"
         >
-          <h3
+          <div
             className={cn(
-              "text-2xl font-instrument before:content[''] before:w-16 before:h-[0.062rem] dark:before:bg-white/10 before:bg-purple-700/30 text-purple-400 before:absolute before:-translate-y-1/2 after:-translate-y-1/2 before:top-1/2 before:left-[36%] after:content[''] after:w-16 after:h-[0.062rem] dark:after:bg-white/10 after:bg-purple-700/30 after:absolute after:top-1/2 after:right-[36%] relative w-full",
+              "text-2xl font-instrument text-purple-400 relative w-full flex items-center justify-center gap-x-8",
               language === "AR" && "font-baloo"
             )}
           >
-            {aboutMeData?.career?.title}
-          </h3>
+            <div className="overflow-hidden h-[1px] relative w-[4.5rem] opacity-50 bg-left" />
+            <h3 className="">{aboutMeData?.career?.title}</h3>
+            <div className="overflow-hidden h-[1px] relative w-[4.5rem] opacity-50 bg-right" />
+          </div>
+
           <Experiences experiences={aboutMeData?.career?.experiences} />
         </motion.div>
         <motion.div

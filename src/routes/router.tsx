@@ -1,8 +1,10 @@
 import App from "@/App";
-import AboutMePage from "@/pages/about-me";
-import Project from "@/pages/project";
-import Projects from "@/pages/projects";
+import { lazy, Suspense } from "react";
 import { createBrowserRouter } from "react-router-dom";
+
+const Projects = lazy(() => import("@/pages/projects"));
+const Project = lazy(() => import("@/pages/project"));
+const AllProjects = lazy(() => import("@/pages/all-projects"));
 
 // define the routers
 export const router = createBrowserRouter([
@@ -12,17 +14,21 @@ export const router = createBrowserRouter([
   },
   {
     path: "/projects",
-    element: <Projects />,
+    element: (
+      <Suspense>
+        <Projects />
+      </Suspense>
+    ),
 
     children: [
       {
         path: ":projectName",
         element: <Project />,
       },
+      {
+        path: "all",
+        element: <AllProjects />,
+      },
     ],
-  },
-  {
-    path: "/about-me",
-    element: <AboutMePage />,
   },
 ]);

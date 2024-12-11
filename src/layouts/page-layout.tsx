@@ -5,7 +5,7 @@ export default function PageLayout({
   children,
 }: ComponentPropsWithoutRef<"div">) {
   return (
-    <div>
+    <div className="h-full min-h-screen">
       <NavBar />
       <div className="container">
         <div>{children}</div>

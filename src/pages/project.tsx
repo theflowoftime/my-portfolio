@@ -7,7 +7,7 @@ import { queryClient } from "@/main";
 import { useLanguageStore } from "@/stores/language-store";
 import { Projects } from "@/types/types";
 import { Link } from "lucide-react";
-import { useOutletContext, useParams } from "react-router-dom";
+import { useLocation, useOutletContext, useParams } from "react-router-dom";
 
 const tags = ["Branding", "Web"];
 const services = [
@@ -21,14 +21,15 @@ const timeline = "4 weeks";
 
 function Project() {
   const { projectName } = useParams();
+  const { state } = useLocation();
   useScrollToTop(projectName);
   const language = useLanguageStore((state) => state.language);
   const projects: Projects =
     useOutletContext() || queryClient.getQueryData(["projects", language]);
 
   const project =
-    projects?.find((project) => project.title === projectName) ||
-    useProject(language, projectName!).data;
+    projects?.find((project) => project._id === state._id) ||
+    useProject(language, state._id).data;
 
   if (!project) return <div>404</div>;
 
@@ -149,7 +150,7 @@ function Project() {
         </div> */}
       </div>
       <ProjectsCarousel
-        projects={projects.filter((project) => project.title !== projectName)}
+        projects={projects.filter((project) => project._id !== state._id)}
       />
     </div>
   );

@@ -113,6 +113,9 @@ module.exports = {
       backgroundImage: {
         gradient:
           "linear-gradient(129.96deg, #FF2F2F 10.43%, #000460 92.78%), radial-gradient(100% 246.94% at 100% 0%, #FFFFFF 0%, #020063 100%), linear-gradient(121.18deg, #1400FF 0.45%, #3A0000 100%), linear-gradient(154.03deg, #FF002E 0%, #FF003D 74.04%), linear-gradient(341.1deg, #B25BBA 7.52%, #1700A7 77.98%), linear-gradient(222.34deg, #0047FF 12.99%, #FF0000 87.21%), linear-gradient(150.76deg, #B7D500 15.35%, #2200AA 89.57%)",
+        right:
+          "linear-gradient(90deg, hsl(var(--primary-foreground, 287 59.8% 66.9%)) 0%, hsl(var(--background)) 100%)",
+        left: "linear-gradient(270deg, hsl(var(--primary-foreground, 287 59.8% 66.9%)) 0%, hsl(var(--background)) 100%)",
       },
     },
   },

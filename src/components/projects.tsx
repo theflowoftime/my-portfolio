@@ -103,6 +103,7 @@ function Projects() {
                   <Link
                     className="flex items-center justify-between h-full gap-x-2 "
                     to={`/projects/${project.title}`}
+                    state={{ _id: project._id }}
                   >
                     <span>View Project</span>
                     <ArrowRightCircle className="transition-transform ease-in group-hover/button:rotate-90" />
@@ -140,7 +141,7 @@ function Projects() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ type: "tween", duration: 0.6 }}
         >
-          <Link className="w-full" to="/projects">
+          <Link className="w-full" to="/projects/all">
             <AnimatedButton textContent="all projects" />
           </Link>
         </motion.div>

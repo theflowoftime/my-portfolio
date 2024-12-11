@@ -12,7 +12,7 @@ export default function Introduction({ words }: { words: string[] }) {
   return (
     <motion.p
       ref={targetRef}
-      className="text-balance text-[3.25rem] leading-loose"
+      className="text-balance text-[3.25rem] leading-loose text-center"
     >
       <Words words={words} progression={progression} />
     </motion.p>

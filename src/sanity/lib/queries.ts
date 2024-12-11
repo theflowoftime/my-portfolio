@@ -20,7 +20,7 @@ export const projects_QUERY = `*[_type == "project" && language == $language] | 
     delivered_at
   }`;
 
-export const project_QUERY = `*[_type == "project" && title == $name && language == $language][0]`;
+export const project_QUERY = `*[_type == "project" && _id == $_id && language == $language][0]`;
 
 export const hero_QUERY = `*[_type == "hero" && language == $language][0] {
     mainTextLines {

@@ -74,8 +74,13 @@ function Hero() {
         >
           {heroData.mainTextLines.map((item, lineIndex) => {
             const words = item.line.text.split(" ");
-            if (lineIndex === 0 && item.line.img.position < words.length)
-              words.push(",");
+            if (lineIndex === 0 && item.line.img.position < words.length) {
+              if (language === "AR") {
+                words.unshift(",");
+              } else {
+                words.push(",");
+              }
+            }
             const textWithImage = words.map((word, wordIndex) => (
               <React.Fragment key={wordIndex}>
                 {wordIndex === item.line.img.position && (
@@ -127,7 +132,7 @@ function Hero() {
                 )}
 
                 {item.line.highlight?.includes(wordIndex) ? (
-                  <em className="italic dark:text-white/50 text-black/50 -tracking-[0.04em]">
+                  <em className="italic dark:text-white text-black -tracking-[0.04em] -z-10">
                     {word}
                   </em>
                 ) : (
@@ -210,7 +215,7 @@ function Hero() {
         <motion.p
           variants={waterFall}
           className={cn(
-            "break-words whitespace-pre mx-auto  text-[1.09rem] text-balance dark:text-white/60 text-black/40 text-opacity-40 -tracking-[0.03] leading-[27.3px] font-mono text-center",
+            "break-words whitespace-pre mx-auto  text-[1.05rem] text-balance dark:text-white/60 text-black/40 text-opacity-40 -tracking-[0.03] leading-[27.3px] font-mono text-center",
             language === "AR" && "text-lg font-baloo tracking-[0.125em]"
           )}
         >

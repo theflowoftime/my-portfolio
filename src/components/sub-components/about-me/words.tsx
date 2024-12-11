@@ -6,7 +6,7 @@ const Words = memo(
     return useMemo(
       () =>
         words?.map((word, index) => {
-          const visibilityThreshold = progression * words.length * 1.2; // increased a bit
+          const visibilityThreshold = progression * words.length;
           const fadeMargin = 4; // can adjust for smoother transitions
           const opacity =
             index < visibilityThreshold

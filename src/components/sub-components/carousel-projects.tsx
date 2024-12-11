@@ -26,18 +26,21 @@ import LazyBackground from "./lazy-bg-img-sanity";
 
 export function CarouselLinkButton({
   to,
+  state,
   label,
   Icon,
   external = false,
 }: {
   to: string;
   label: string;
+  state: { _id: string };
   Icon: LucideIcon;
   external?: boolean;
 }) {
   return (
     <Link
       to={to}
+      state={state}
       target={external ? "_blank" : "_self"}
       rel="noopener noreferrer"
       className="flex items-center gap-x-2"
@@ -115,6 +118,7 @@ export default function ProjectsCarousel({ projects }: { projects: Projects }) {
                       {project.link ? (
                         <CarouselLinkButton
                           to={project.link}
+                          state={{ _id: project._id }}
                           label="visit live website"
                           Icon={ExternalLink}
                           external
@@ -123,6 +127,7 @@ export default function ProjectsCarousel({ projects }: { projects: Projects }) {
 
                       <CarouselLinkButton
                         to={`/projects/${project.title}`}
+                        state={{ _id: project._id }}
                         label="learn more details"
                         Icon={LinkIcon}
                       />
