@@ -7,7 +7,7 @@ import { verifyCaptcha } from "./_utils/verify-google-recaptcha";
 import { retrieveIp } from "./_utils/network";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  const formName = req.query.formName as keyof typeof FORM_RESPONSES;
+  const formName = req.query?.formName as keyof typeof FORM_RESPONSES;
   // Ensure formName is provided and valid
   if (!formName) {
     return res.status(400).json({ message: "Invalid or missing formName" });

@@ -1,4 +1,4 @@
-import { buildFormSchema } from "@/lib/zod-schemas";
+import { buildFormSchema, contactSchema, meetSchema } from "@/lib/zod-schemas";
 import { languages } from "@/stores/language-store";
 import { NavLinkProps } from "react-router-dom";
 import { z } from "zod";
@@ -93,8 +93,9 @@ export type Project = {
 
 export type Projects = Project[];
 
-export type FormSchemaType = z.infer<ReturnType<typeof buildFormSchema>>;
+export type MeetSchemaType = z.infer<ReturnType<typeof meetSchema>>;
 
+export type FormSchemaType = z.infer<ReturnType<typeof contactSchema>>;
 type NameField = "name" | "email" | "reason" | "phoneNumber";
 
 type Input = {
@@ -146,6 +147,8 @@ type Contact = {
   errorMessages?: ErrorMessages;
   toast: Toast;
 };
+
+export type FormNames = "contact" | "meet";
 
 // to do types (updated)
 

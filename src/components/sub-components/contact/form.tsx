@@ -32,6 +32,7 @@ import {
   Drawer,
   DrawerClose,
   DrawerContent,
+  DrawerDescription,
   DrawerFooter,
   DrawerHeader,
   DrawerTitle,
@@ -40,6 +41,50 @@ import {
 import { Input } from "@/components/ui/input";
 import LabelIcon from "./form-label-icon";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
+
+function ScheduleMeeting() {
+  const language = useLanguageStore((state) => state.language);
+  const animateCursor = useCursorStore((state) => state.animateCursor);
+
+  return (
+    <Drawer>
+      <DrawerTrigger className="w-full">
+        <Button
+          type="button"
+          variant="outline"
+          onMouseEnter={() => animateCursor("buttonHover")}
+          onMouseLeave={() => animateCursor("cursorEnter")}
+          className="font-unbounded font-medium sm:text-[0.75rem] md:text-base w-full h-4 py-6 transition-colors bg-inherit ease-in tracking-[0.052] border-[1px] border-primary-foreground/20 rounded-sm
+     hover:bg-purple-500/20 hover:transition-all hover:duration-250 shadow-sm dark:shadow-black hover:bg-opacity-20 uppercase"
+        >
+          <div className="flex items-center w-full">
+            <span
+              className={cn("grow", language === "AR" && "order-2 font-baloo")}
+            >
+              Schedule A Meeting
+            </span>
+            <CalendarClock className="stroke-purple-700" />
+          </div>
+        </Button>
+      </DrawerTrigger>
+      <DrawerContent>
+        <DrawerHeader>
+          <DrawerTitle className="text-pretty">
+            Pick a date of your choice for an online meeting.
+          </DrawerTitle>
+          <DrawerDescription>Let's talk about your buisness!</DrawerDescription>
+        </DrawerHeader>
+        <DrawerFooter>
+          <Button variant="outline">Submit</Button>
+          <DrawerClose>
+            <Button variant="outline">Cancel</Button>
+          </DrawerClose>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
+  );
+}
 
 export function ContactForm({ contactData }: { contactData: TContact }) {
   const language = useLanguageStore((state) => state.language);
@@ -47,19 +92,36 @@ export function ContactForm({ contactData }: { contactData: TContact }) {
     contactData || queryClient.getQueryData<TContact>(["contact", language]);
   const animateCursor = useCursorStore((state) => state.animateCursor);
 
-  const formSchema = buildFormSchema(contactData?.errorMessages);
+  const formSchema = buildFormSchema(contactData?.errorMessages, "contact");
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues,
   });
+  const { toast } = useToast();
+
+  const handleSuccess = () => {
+    toast({
+      description: contactData?.toast.success.message || defaultSuccessMessage,
+    });
+  };
+
+  const handleError = (errorKey: string) => {
+    toast({
+      description:
+        contactData?.toast.error?.[
+          errorKey as keyof typeof contactData.toast.error
+        ] || defaultErrorMessage,
+    });
+  };
+
   const { throttledSubmit, status, recaptchaRef } = useSendMessage(
-    contact,
-    form
+    form,
+    handleSuccess,
+    handleError,
+    "contact"
   );
 
-  const onSubmit = (data: FormSchemaType) => {
-    throttledSubmit(data);
-  };
+  const onSubmit = (data: FormSchemaType) => throttledSubmit(data);
 
   const onError = () => {};
 
@@ -224,47 +286,7 @@ export function ContactForm({ contactData }: { contactData: TContact }) {
             <div className="overflow-hidden h-[1px] relative w-full opacity-50 bg-right" />
           </div>
 
-          <Drawer>
-            <DrawerTrigger className="w-full">
-              <Button
-                type="button"
-                variant="outline"
-                onMouseEnter={() => animateCursor("buttonHover")}
-                onMouseLeave={() => animateCursor("cursorEnter")}
-                className="font-unbounded font-medium sm:text-[0.75rem] md:text-base w-full h-4 py-6 transition-colors bg-inherit ease-in tracking-[0.052] border-[1px] border-primary-foreground/20 rounded-sm
-             hover:bg-purple-500/20 hover:transition-all hover:duration-250 shadow-sm dark:shadow-black hover:bg-opacity-20 uppercase"
-              >
-                <div className="flex items-center w-full">
-                  <span
-                    className={cn(
-                      "grow",
-                      language === "AR" && "order-2 font-baloo"
-                    )}
-                  >
-                    Schedule A Meeting
-                  </span>
-                  <CalendarClock className="stroke-purple-700" />
-                </div>
-              </Button>
-            </DrawerTrigger>
-            <DrawerContent>
-              <DrawerHeader>
-                <DrawerTitle className="text-pretty">
-                  Pick a date of your choice for an online meeting so we can
-                  talk about your buisness!
-                </DrawerTitle>
-                {/* <DrawerDescription>
-                    This action cannot be undone.
-                  </DrawerDescription> */}
-              </DrawerHeader>
-              <DrawerFooter>
-                <Button variant="outline">Submit</Button>
-                <DrawerClose>
-                  <Button variant="outline">Cancel</Button>
-                </DrawerClose>
-              </DrawerFooter>
-            </DrawerContent>
-          </Drawer>
+          <ScheduleMeeting />
         </motion.div>
       </form>
     </Form>

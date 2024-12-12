@@ -1,69 +1,61 @@
 import axios from "axios";
-import { useToast } from "./use-toast";
+
 import { useRef } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useMutation } from "@tanstack/react-query";
-import type { FormSchemaType, Contact } from "@/types/types";
-import { UseFormReturn } from "react-hook-form";
+import type { FormNames } from "@/types/types";
+import { FieldValues, UseFormReturn } from "react-hook-form";
 import useThrottle from "./useThrottle";
 import { API_ENDPOINTS, THROTTLE_DELAY } from "@/lib/constants";
 
-const SendMessage = async (
-  data: FormSchemaType & { recaptchaToken: string }
+const SendMessage = async <F>(
+  data: F & { recaptchaToken: string },
+  formName: FormNames
 ) => {
   const response = await axios.post(API_ENDPOINTS["contact-me"], data, {
-    params: { formName: "contact" },
+    params: { formName },
   });
   return response.data;
 };
 
-const useSendMessage = (
-  contactData: Contact | undefined,
-  form: UseFormReturn<FormSchemaType>
+const useSendMessage = <FormSchema extends FieldValues>(
+  form: UseFormReturn<FormSchema>,
+  onSuccess: () => void, // External success handler
+  onError: (errorKey: "recaptcha" | "unauthorized" | "rateLimit") => void, // External error handler
+  formName: FormNames
 ) => {
-  const { toast } = useToast();
   const recaptchaRef = useRef<ReCAPTCHA | null>(null);
 
   const { mutate, status } = useMutation({
-    mutationFn: SendMessage,
+    mutationFn: (data: FormSchema & { recaptchaToken: string }) =>
+      SendMessage<FormSchema>(data, formName),
     onSuccess: () => {
       form.reset();
 
-      toast({
-        description: contactData?.toast.success.message,
-      });
+      onSuccess();
     },
     onError: (data: any) => {
-      const msg = data.response.data.message;
+      const errorMessage = data.response.data.message || "Unknown error";
 
-      toast({
-        description:
-          contactData?.toast.error?.[
-            msg as keyof typeof contactData.toast.error
-          ],
-      });
+      onError(errorMessage);
     },
   });
 
   const handleRecaptcha = async () => {
+    if (!recaptchaRef.current) return null; // Skip reCAPTCHA if not required
     const token = await recaptchaRef.current?.executeAsync();
     recaptchaRef.current?.reset();
 
     return token;
   };
 
-  const throttledSubmit = useThrottle(async (data: FormSchemaType) => {
+  const throttledSubmit = useThrottle(async (data: FormSchema) => {
     const recaptchaToken = await handleRecaptcha();
 
     if (recaptchaToken) {
-      mutate({ ...data, recaptchaToken });
+      mutate({ ...data, recaptchaToken, formName });
     } else {
-      toast({
-        description:
-          contactData?.toast.error?.[
-            "recaptcha" as keyof typeof contactData.toast.error
-          ] || "reCAPTCHA verification failed. Please try again.",
-      });
+      onError("recaptcha");
     }
   }, THROTTLE_DELAY);
 

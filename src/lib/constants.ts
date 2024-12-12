@@ -22,3 +22,6 @@ export const HERO_AVATAR_SIZES = [120, 80];
 export const API_ENDPOINTS = {
   "contact-me": "/api/contact-me",
 };
+
+export const defaultSuccessMessage = "Message submitted successfully!";
+export const defaultErrorMessage = "An unknown error occurred.";

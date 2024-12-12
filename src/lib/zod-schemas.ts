@@ -1,7 +1,7 @@
-import { ErrorMessages } from "@/types/types";
+import { ErrorMessages, FormNames } from "@/types/types";
 import { z } from "zod";
 
-export function buildFormSchema(errorMessages: ErrorMessages = null) {
+export function contactSchema(errorMessages: ErrorMessages = null) {
   return z.object({
     name: z
       .string()
@@ -30,4 +30,17 @@ export function buildFormSchema(errorMessages: ErrorMessages = null) {
       message: errorMessages?.reason?.min || "Please select a reason",
     }),
   });
+}
+
+export function meetSchema() {
+  return z.object({});
+}
+
+export function buildFormSchema(
+  errorMessages: ErrorMessages = null,
+  formName: FormNames
+) {
+  if (formName === "contact") return contactSchema(errorMessages);
+
+  return meetSchema();
 }
