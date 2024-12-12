@@ -6,15 +6,12 @@ import { useMutation } from "@tanstack/react-query";
 import type { FormSchemaType, Contact } from "@/types/types";
 import { UseFormReturn } from "react-hook-form";
 import useThrottle from "./useThrottle";
-import { THROTTLE_DELAY } from "@/lib/constants";
+import { API_ENDPOINTS, THROTTLE_DELAY } from "@/lib/constants";
 
 const SendMessage = async (
   data: FormSchemaType & { recaptchaToken: string }
 ) => {
-  const response = await axios.post(
-    `/api/verifyRecaptchaAndSubmitMessage`,
-    data
-  );
+  const response = await axios.post(API_ENDPOINTS["contact-me"], data);
   return response.data;
 };
 

@@ -18,3 +18,7 @@ export const LOCALES: Record<Language, string> = {
 // This is for consistency in image size
 export const PX_REM_ratio = 16;
 export const HERO_AVATAR_SIZES = [120, 80];
+
+export const API_ENDPOINTS = {
+  "contact-me": "/api/contact-me",
+};
