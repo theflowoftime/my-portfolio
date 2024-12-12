@@ -54,7 +54,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const { status, message } = CONTACT_FORM_RESPONSES["success"];
     return res.status(status).json(message);
   } catch (error) {
-    console.error("Error occurred:", error);
     const { status, message } = CONTACT_FORM_RESPONSES["error"];
     return res.status(status).json({
       message,

@@ -34,6 +34,8 @@ const useSendMessage = (
     onError: (data: any) => {
       const msg = data.response.data.message;
 
+      console.log(msg);
+
       toast({
         description:
           contactData?.toast.error?.[
