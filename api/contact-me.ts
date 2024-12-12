@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
-import { buildFormSchema } from "@/lib/zod-schemas";
+import { buildFormSchema } from "./../src/lib/zod-schemas";
 import { verifyCaptcha } from "api/utils/verify-google-recaptcha";
 import { CONTACT_FORM_RESPONSES } from "./utils/constants";
 import { sendMessage } from "./utils/sanity";
