@@ -5,6 +5,7 @@ import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
 import Marquee from "@/hooks/useMarquee";
 import { Toaster } from "./ui/toaster";
 import { ContactForm } from "./sub-components/contact/form";
+import ScheduleMeeting from "./sub-components/contact/meeting-scheduling";
 
 function Contact() {
   const { data: contactData, isLoading, isError } = useContact();
@@ -22,6 +23,7 @@ function Contact() {
           <div className="">
             <div className="px-0 rounded-lg shadow-sm lg:px-32 md:px-8 dark:shadow-black">
               <ContactForm contactData={contactData} />
+              <ScheduleMeeting />
             </div>
           </div>
         </div>

@@ -33,7 +33,11 @@ export function contactSchema(errorMessages: ErrorMessages = null) {
 }
 
 export function meetSchema() {
-  return z.object({});
+  return z.object({
+    meetingDate: z.date({
+      required_error: "A date of meeting is required.",
+    }),
+  });
 }
 
 export function buildFormSchema(

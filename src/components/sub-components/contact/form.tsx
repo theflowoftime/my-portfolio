@@ -20,6 +20,9 @@ import {
   defaultValues,
 } from "@/lib/constants";
 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import { buildFormSchema } from "@/lib/zod-schemas";
 import { queryClient } from "@/main";
@@ -28,70 +31,15 @@ import { useLanguageStore } from "@/stores/language-store";
 import type { FormSchemaType, Contact as TContact } from "@/types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { motion } from "framer-motion";
-import { CalendarClock, Loader2, Send } from "lucide-react";
+import { Loader2, Send } from "lucide-react";
 import { useEffect } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useForm } from "react-hook-form";
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "@/components/ui/drawer";
-import { Input } from "@/components/ui/input";
 import LabelIcon from "./form-label-icon";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
-
-function ScheduleMeeting() {
-  const language = useLanguageStore((state) => state.language);
-  const animateCursor = useCursorStore((state) => state.animateCursor);
-
-  return (
-    <Drawer>
-      <DrawerTrigger className="w-full">
-        <Button
-          type="button"
-          variant="outline"
-          onMouseEnter={() => animateCursor("buttonHover")}
-          onMouseLeave={() => animateCursor("cursorEnter")}
-          className="font-unbounded font-medium sm:text-[0.75rem] md:text-base w-full h-4 py-6 transition-colors bg-inherit ease-in tracking-[0.052] border-[1px] border-primary-foreground/20 rounded-sm
-     hover:bg-purple-500/20 hover:transition-all hover:duration-250 shadow-sm dark:shadow-black hover:bg-opacity-20 uppercase"
-        >
-          <div className="flex items-center w-full">
-            <span
-              className={cn("grow", language === "AR" && "order-2 font-baloo")}
-            >
-              Schedule A Meeting
-            </span>
-            <CalendarClock className="stroke-purple-700" />
-          </div>
-        </Button>
-      </DrawerTrigger>
-      <DrawerContent>
-        <DrawerHeader>
-          <DrawerTitle className="text-pretty">
-            Pick a date of your choice for an online meeting.
-          </DrawerTitle>
-          <DrawerDescription>Let's talk about your buisness!</DrawerDescription>
-        </DrawerHeader>
-        <DrawerFooter>
-          <Button variant="outline">Submit</Button>
-          <DrawerClose>
-            <Button variant="outline">Cancel</Button>
-          </DrawerClose>
-        </DrawerFooter>
-      </DrawerContent>
-    </Drawer>
-  );
-}
 
 export function ContactForm({ contactData }: { contactData: TContact }) {
   const language = useLanguageStore((state) => state.language);
+  const { toast } = useToast();
   const contact =
     contactData || queryClient.getQueryData<TContact>(["contact", language]);
   const animateCursor = useCursorStore((state) => state.animateCursor);
@@ -101,15 +49,17 @@ export function ContactForm({ contactData }: { contactData: TContact }) {
     resolver: zodResolver(formSchema),
     defaultValues,
   });
-  const { toast } = useToast();
 
   const handleSuccess = () => {
+    form.reset();
     toast({
       description: contactData?.toast.success.message || defaultSuccessMessage,
     });
   };
 
-  const handleError = (errorKey: string) => {
+  const handleError = (
+    errorKey: "recaptcha" | "unauthorized" | "rateLimit"
+  ) => {
     toast({
       description:
         contactData?.toast.error?.[
@@ -119,7 +69,6 @@ export function ContactForm({ contactData }: { contactData: TContact }) {
   };
 
   const { throttledSubmit, status, recaptchaRef } = useSendMessage(
-    form,
     handleSuccess,
     handleError,
     "contact"
@@ -289,8 +238,6 @@ export function ContactForm({ contactData }: { contactData: TContact }) {
 
             <div className="overflow-hidden h-[1px] relative w-full opacity-50 bg-right" />
           </div>
-
-          <ScheduleMeeting />
         </motion.div>
       </form>
     </Form>
