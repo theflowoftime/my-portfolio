@@ -8,7 +8,7 @@ import { verifyCaptcha } from "./_utils/verify-google-recaptcha";
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
     const { status, message } = CONTACT_FORM_RESPONSES["unauthorized"];
-    return res.status(status).json(message);
+    return res.status(status).json({ message });
   }
 
   const { recaptchaToken, ...formData } = req.body;
@@ -26,7 +26,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Ensure recaptchaToken exists
     if (!recaptchaToken) {
       const { status, message } = CONTACT_FORM_RESPONSES["recaptcha"];
-      return res.status(status).json(message);
+      return res.status(status).json({ message });
     }
 
     // Verify reCAPTCHA
@@ -34,7 +34,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     if (!success || score < 0.5) {
       const { status, message } = CONTACT_FORM_RESPONSES["recaptcha"];
-      return res.status(status).json(message);
+      return res.status(status).json({ message });
     }
 
     // Rate limit check
@@ -43,7 +43,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     if (lastMessageTimestamp) {
       const { status, message } = CONTACT_FORM_RESPONSES["rateLimit"];
-      return res.status(status).json(message);
+      return res.status(status).json({ message });
     }
 
     // Store IP and send message
@@ -52,7 +52,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     // Success response
     const { status, message } = CONTACT_FORM_RESPONSES["success"];
-    return res.status(status).json(message);
+    return res.status(status).json({ message });
   } catch (error) {
     const { status, message } = CONTACT_FORM_RESPONSES["error"];
     return res.status(status).json({
