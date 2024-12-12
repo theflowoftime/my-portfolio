@@ -1,9 +1,9 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { buildFormSchema } from "./../src/lib/zod-schemas";
-import { CONTACT_FORM_RESPONSES } from "../server/constants";
-import { sendMessage } from "../server/sanity";
-import { storeIP, verifyIPRateLimit } from "../server/redis";
-import { verifyCaptcha } from "../server/verify-google-recaptcha";
+import { CONTACT_FORM_RESPONSES } from "./_utils/constants";
+import { sendMessage } from "./_utils/sanity";
+import { storeIP, verifyIPRateLimit } from "./_utils/redis";
+import { verifyCaptcha } from "./_utils/verify-google-recaptcha";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
