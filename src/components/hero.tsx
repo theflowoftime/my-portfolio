@@ -3,7 +3,7 @@ import { waterFall } from "@/lib/framer-variants";
 import { cn, urlFor } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { ChevronsDown } from "lucide-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { HERO_AVATAR_SIZES } from "@/lib/constants";
@@ -18,12 +18,35 @@ function Hero() {
   const { navLinks } = useCachedNavLinks();
   const animateCursor = useCursorStore((state) => state.animateCursor);
   const language = useLanguageStore((state) => state.language);
+  const [areFontsLoaded, setAreFontsLoaded] = useState(false);
 
   const plugin = React.useRef(
     Autoplay({ delay: 1500, stopOnInteraction: true })
   );
 
-  if (isLoading || !heroData)
+  useEffect(() => {
+    if (!document.fonts) {
+      setAreFontsLoaded(true); // Fallback for unsupported browsers
+      return;
+    }
+
+    if (document.fonts.status === "loaded") {
+      setAreFontsLoaded(true); // Fonts already loaded
+      return;
+    }
+
+    const handleLoadingDone = () => {
+      setAreFontsLoaded(true);
+    };
+
+    document.fonts.addEventListener("loadingdone", handleLoadingDone);
+
+    return () => {
+      document.fonts.removeEventListener("loadingdone", handleLoadingDone);
+    };
+  }, []);
+
+  if (isLoading || !heroData || !areFontsLoaded)
     return (
       <div className="relative flex flex-col items-center justify-around h-full min-h-[calc(100vh-4.56rem)] dark:mix-blend-lighten mix-blend-darken" />
     );
@@ -54,11 +77,12 @@ function Hero() {
       variants={waterFall}
       className="relative flex flex-col justify-around h-full min-h-screen"
     >
-      <motion.div className="container h-full text-center dark:text-white">
+      <motion.div className="container flex flex-col items-center h-full text-center dark:text-white">
         <motion.div
           className={cn(
-            "font-instrument font-medium text-[4rem] lg:text-[5.35rem] rounded-full flex flex-col items-center leading-tight overflow-hidden",
-            language === "AR" && "lg:text-[4.5rem] text-[3.25rem] font-baloo"
+            "font-instrument font-medium text-[4rem] lg:text-[5.35rem] flex flex-col items-center leading-tight  w-fit px-4",
+            language === "AR" &&
+              "lg:text-[5rem] text-[4.25rem] -tracking-[0.02em] font-baloo"
           )}
         >
           {heroData.mainTextLines.map((item, lineIndex) => {
@@ -80,7 +104,7 @@ function Hero() {
                 <React.Fragment key={wordIndex}>
                   {wordIndex === item.line.img.position && (
                     <Avatar
-                      className="hidden bg-black border-4 border-black dark:border-white sm:inline-block"
+                      className="hidden overflow-hidden bg-transparent border-4 border-black shadow-lg shadow-black dark:border-white sm:inline-block"
                       style={{
                         mask: generateMask(wordIndex, true, lineIndex),
                         WebkitMask: generateMask(wordIndex, true, lineIndex),
@@ -89,49 +113,62 @@ function Hero() {
                         height: h,
                       }}
                     >
-                      <Carousel
-                        plugins={[plugin.current]}
-                        opts={{
-                          loop: true,
-                          align: "start",
-                          axis: "y",
-                          containScroll: "trimSnaps",
-                          skipSnaps: true,
-                        }}
-                        orientation="vertical"
-                        onMouseEnter={plugin.current.stop}
-                        onMouseLeave={() => plugin.current.play()}
-                      >
-                        <CarouselContent style={{ height: h }}>
-                          {item.line.img.images?.map((image, index) => (
-                            <CarouselItem
-                              className={`p-0 m-0 cursor-grab`}
-                              key={index}
-                            >
-                              <AvatarImage
-                                className="object-contain w-full h-full overflow-hidden"
-                                src={urlFor(image)
-                                  .fit("max")
-                                  .quality(80)
-                                  .auto("format")
-                                  .url()}
-                                alt={item.line.img.altText}
-                              />
-                            </CarouselItem>
-                          ))}
-                        </CarouselContent>
-                      </Carousel>
+                      {item.line.img.images.length > 1 ? (
+                        <Carousel
+                          plugins={[plugin.current]}
+                          opts={{
+                            loop: true,
+                            align: "start",
+                            axis: "y",
+                            containScroll: "trimSnaps",
+                            skipSnaps: true,
+                          }}
+                          orientation="vertical"
+                          onMouseEnter={plugin.current.stop}
+                          onMouseLeave={() => plugin.current.play()}
+                        >
+                          <CarouselContent style={{ height: h }}>
+                            {item.line.img.images?.map((image, index) => (
+                              <CarouselItem
+                                className={`p-0 m-0 cursor-grab`}
+                                key={index}
+                              >
+                                <AvatarImage
+                                  className="object-contain w-full h-full overflow-hidden bg-transparent"
+                                  src={urlFor(image)
+                                    .fit("max")
+                                    .quality(100)
+                                    .auto("format")
+                                    .url()}
+                                  alt={item.line.img.altText}
+                                />
+                              </CarouselItem>
+                            ))}
+                          </CarouselContent>
+                        </Carousel>
+                      ) : (
+                        <AvatarImage
+                          className="object-contain w-full h-full overflow-hidden"
+                          src={urlFor(item.line.img.images?.[0])
+                            .fit("max")
+                            .quality(100)
+                            .auto("format")
+                            .url()}
+                          alt={item.line.img.altText}
+                        />
+                      )}
 
                       <AvatarFallback></AvatarFallback>
                     </Avatar>
                   )}
 
                   {item.line.highlight?.includes(wordIndex) ? (
-                    <em className="italic dark:text-white text-black -tracking-[0.04em] -z-10">
+                    <em className="italic px-1.5 dark:text-white text-black -tracking-[0.04em] -z-10">
                       {word}
                     </em>
                   ) : (
                     <span
+                      className="px-1.5"
                       style={{
                         mask: generateMask(wordIndex, false, lineIndex),
                         WebkitMask: generateMask(wordIndex, false, lineIndex),
@@ -158,11 +195,11 @@ function Hero() {
                 <div className="flex items-center">
                   <Avatar
                     key="end-image"
-                    className="hidden bg-black border-4 border-black dark:border-white sm:inline-block"
+                    className="hidden bg-transparent border-4 border-black shadow-lg dark:border-white sm:inline-block shadow-black"
                     style={{
                       mask: generateMask(words.length, true, lineIndex),
                       WebkitMask: generateMask(words.length, true, lineIndex),
-                      boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
+                      // boxShadow: "rgba(100, 100, 111, 0.2) 0px 7px 29px 0px",
                       width: w,
                       height: h,
                     }}
@@ -170,8 +207,8 @@ function Hero() {
                     <AvatarImage
                       className={cn(lineIndex === 0 && "object-contain")}
                       src={urlFor(item.line.img.images?.[0])
-                        .fit("fillmax")
-                        .quality(80)
+                        .fit("max")
+                        .quality(100)
                         .auto("format")
                         .url()}
                       alt={item.line.img.altText}
@@ -189,7 +226,7 @@ function Hero() {
                 key={lineIndex}
                 variants={waterFall}
                 className={cn(
-                  "flex items-center justify-center rounded-lg gap-x-3 whitespace-nowrap"
+                  "flex items-center justify-center rounded-lg gap-x-2 whitespace-nowrap w-full px-2 py-1"
                 )}
               >
                 {textWithImage}
@@ -201,7 +238,7 @@ function Hero() {
         <motion.p
           variants={waterFall}
           className={cn(
-            "break-words whitespace-pre mx-auto text-[1.05rem] text-balance dark:text-white/60 text-black/40 text-opacity-40 -tracking-[0.03] leading-[27.3px] font-mono text-center",
+            "break-words whitespace-pre mx-auto  text-[1.05rem] text-balance dark:text-white/60 text-black/40 text-opacity-40 -tracking-[0.03] leading-[27.3px] font-mono text-center",
             language === "AR" && "text-lg font-baloo tracking-[0.125em]"
           )}
         >
