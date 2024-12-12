@@ -22,7 +22,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const ip = retrieveIp(req);
 
-  const verifySchema = buildFormSchema().safeParse(formData);
+  const verifySchema = buildFormSchema(null, formName).safeParse(formData);
 
   try {
     // Ensure formData matches schema
