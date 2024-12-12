@@ -11,7 +11,9 @@ import { API_ENDPOINTS, THROTTLE_DELAY } from "@/lib/constants";
 const SendMessage = async (
   data: FormSchemaType & { recaptchaToken: string }
 ) => {
-  const response = await axios.post(API_ENDPOINTS["contact-me"], data);
+  const response = await axios.post(API_ENDPOINTS["contact-me"], data, {
+    params: { formName: "contact" },
+  });
   return response.data;
 };
 
@@ -33,8 +35,6 @@ const useSendMessage = (
     },
     onError: (data: any) => {
       const msg = data.response.data.message;
-
-      console.log(msg);
 
       toast({
         description:

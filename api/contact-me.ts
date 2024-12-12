@@ -1,21 +1,26 @@
 import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { buildFormSchema } from "./../src/lib/zod-schemas";
-import { CONTACT_FORM_RESPONSES } from "./_utils/constants";
-import { sendMessage } from "./_utils/sanity";
-import { storeIP, verifyIPRateLimit } from "./_utils/redis";
+import { FORM_RESPONSES } from "./_utils/constants";
+import { sendMessage } from "./_utils/sanity-cms";
+import { storeIP, verifyIPRateLimit } from "./_utils/db_redis";
 import { verifyCaptcha } from "./_utils/verify-google-recaptcha";
+import { retrieveIp } from "./_utils/network";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
+  const formName = req.query.formName as keyof typeof FORM_RESPONSES;
+  // Ensure formName is provided and valid
+  if (!formName) {
+    return res.status(400).json({ message: "Invalid or missing formName" });
+  }
+
   if (req.method !== "POST") {
-    const { status, message } = CONTACT_FORM_RESPONSES["unauthorized"];
+    const { status, message } = FORM_RESPONSES[formName]["unauthorized"];
     return res.status(status).json({ message });
   }
 
   const { recaptchaToken, ...formData } = req.body;
 
-  const ip =
-    (req.headers["x-forwarded-for"] as string)?.split(",")[0] ||
-    req.socket.remoteAddress;
+  const ip = retrieveIp(req);
 
   const verifySchema = buildFormSchema().safeParse(formData);
 
@@ -25,7 +30,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     // Ensure recaptchaToken exists
     if (!recaptchaToken) {
-      const { status, message } = CONTACT_FORM_RESPONSES["recaptcha"];
+      const { status, message } = FORM_RESPONSES[formName]["recaptcha"];
       return res.status(status).json({ message });
     }
 
@@ -33,16 +38,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const { success, score } = await verifyCaptcha(recaptchaToken);
 
     if (!success || score < 0.5) {
-      const { status, message } = CONTACT_FORM_RESPONSES["recaptcha"];
+      const { status, message } = FORM_RESPONSES[formName]["recaptcha"];
       return res.status(status).json({ message });
     }
 
     // Rate limit check
-    const ipKey = `contact-rate-limit:${ip}`;
+    const ipKey = `${FORM_RESPONSES["contact"]["ip_prefix"]}${ip}`;
     const lastMessageTimestamp = await verifyIPRateLimit(ipKey);
 
     if (lastMessageTimestamp) {
-      const { status, message } = CONTACT_FORM_RESPONSES["rateLimit"];
+      const { status, message } = FORM_RESPONSES[formName]["rateLimit"];
       return res.status(status).json({ message });
     }
 
@@ -51,10 +56,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     await sendMessage(formData);
 
     // Success response
-    const { status, message } = CONTACT_FORM_RESPONSES["success"];
+    const { status, message } = FORM_RESPONSES[formName]["success"];
     return res.status(status).json({ message });
   } catch (error) {
-    const { status, message } = CONTACT_FORM_RESPONSES["error"];
+    const { status, message } = FORM_RESPONSES[formName]["error"];
     return res.status(status).json({
       message,
       error:
