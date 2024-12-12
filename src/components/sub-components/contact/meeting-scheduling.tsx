@@ -54,9 +54,7 @@ export default function ScheduleMeeting() {
     // });
   };
 
-  const handleError = (
-    errorKey: "recaptcha" | "unauthorized" | "rateLimit"
-  ) => {
+  const handleError = (errorKey: "recaptcha" | "rateLimit" | "message") => {
     // toast({
     //   description:
     //     meetData?.toast.error?.[
@@ -102,7 +100,7 @@ export default function ScheduleMeeting() {
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader>
-          <DrawerTitle className="text-pretty">
+          <DrawerTitle>
             Pick a date of your choice for an online meeting
           </DrawerTitle>
           <DrawerDescription>Let's talk about your buisness!</DrawerDescription>

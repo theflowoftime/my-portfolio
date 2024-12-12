@@ -43,7 +43,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     // Rate limit check
-    const ipKey = `${FORM_RESPONSES["contact"]["ip_prefix"]}${ip}`;
+    const ipKey = `${FORM_RESPONSES[formName]["ip_prefix"]}${ip}`;
     const lastMessageTimestamp = await verifyIPRateLimit(ipKey);
 
     if (lastMessageTimestamp) {

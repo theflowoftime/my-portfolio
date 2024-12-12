@@ -57,9 +57,7 @@ export function ContactForm({ contactData }: { contactData: TContact }) {
     });
   };
 
-  const handleError = (
-    errorKey: "recaptcha" | "unauthorized" | "rateLimit"
-  ) => {
+  const handleError = (errorKey: "recaptcha" | "rateLimit" | "message") => {
     toast({
       description:
         contactData?.toast.error?.[

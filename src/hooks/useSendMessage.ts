@@ -20,7 +20,7 @@ const SendMessage = async <F>(
 
 const useSendMessage = <FormSchema extends FieldValues>(
   onSuccess: () => void, // External success handler
-  onError: (errorKey: "recaptcha" | "unauthorized" | "rateLimit") => void, // External error handler
+  onError: (errorKey: "recaptcha" | "rateLimit" | "message") => void, // External error handler
   formName: FormNames
 ) => {
   const recaptchaRef = useRef<ReCAPTCHA | null>(null);
@@ -44,7 +44,7 @@ const useSendMessage = <FormSchema extends FieldValues>(
     const recaptchaToken = await handleRecaptcha();
 
     if (recaptchaToken) {
-      mutate({ ...data, recaptchaToken, formName });
+      mutate({ ...data, recaptchaToken });
     } else {
       onError("recaptcha");
     }
