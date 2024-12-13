@@ -33,7 +33,7 @@ import { useLanguageStore } from "@/stores/language-store";
 import type { MeetSchemaType } from "@/types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
-import { CalendarClock, CalendarIcon, Loader2 } from "lucide-react";
+import { CalendarClock, CalendarIcon, Globe, Loader2 } from "lucide-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -47,6 +47,29 @@ import {
 } from "@/components/ui/select";
 import useThemeStore from "@/stores/theme-store";
 import { Separator } from "@/components/ui/separator";
+
+/**
+ * Get client side timezone.
+ *
+ * @returns {(+|-)HH:mm} - Where `HH` is 2 digits hours and `mm` 2 digits minutes.
+ * @example
+ * // From Indian/Reunion with UTC+4
+ * // '+04:00'
+ * getTimeZone()
+ */
+const getTimeZoneOffset = () => {
+  const timezoneOffset = new Date().getTimezoneOffset();
+  const offset = Math.abs(timezoneOffset);
+  const offsetOperator = timezoneOffset < 0 ? "+" : "-";
+  const offsetHours = Math.floor(offset / 60)
+    .toString()
+    .padStart(2, "0");
+  const offsetMinutes = Math.floor(offset % 60)
+    .toString()
+    .padStart(2, "0");
+
+  return `UTC ${offsetOperator}${offsetHours}:${offsetMinutes}`;
+};
 
 const meetingOptions = ["google meets", "zoom", "slack", "other"];
 
@@ -178,9 +201,11 @@ function ScheduleMeetingForm() {
                       />
                     </FormControl>
                     <FormDescription>
-                      <small className="opacity-70">
+                      <small className="flex items-center opacity-70 gap-x-2">
                         {/* will be changed to figuring out the user timezone and displaying it in here instead */}
-                        Coordinated Universal Time (UTC)
+                        <Globe size={16} />
+                        {Intl.DateTimeFormat().resolvedOptions().timeZone}{" "}
+                        {getTimeZoneOffset()}
                       </small>
                     </FormDescription>
                   </div>
