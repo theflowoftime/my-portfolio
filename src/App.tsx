@@ -25,16 +25,16 @@ function App() {
 
   const { data: locationInfo } = useQuery({
     queryFn: async () => {
+      console.log(ipData);
+
       const response = await axios.get(`http://ip-api.com/json/${ipData}`);
       console.log(response);
 
-      return response.data; // Assuming the location info is in `response.data`
+      return response; // Assuming the location info is in `response.data`
     },
     queryKey: ["info"],
     enabled: !!ipData, // Only fetch if IP is available
   });
-
-  console.log(locationInfo);
 
   return (
     <div className="relative cursor-none">
