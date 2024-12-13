@@ -15,7 +15,7 @@ function App() {
 
   const { data } = useQuery({
     queryFn: () => {
-      axios.get("/info");
+      axios.get("/api/info");
     },
     queryKey: ["info"],
   });
