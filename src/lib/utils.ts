@@ -60,3 +60,18 @@ export function formatDate(dateToFormat: Date): string {
 
   return new Intl.DateTimeFormat(locale).format(new Date(dateToFormat));
 }
+
+// disabled dates saturday and sunday cannot be picked as default meeting date
+export function computeDefaultMeetingDate() {
+  const today = new Date();
+  let defaultMeetingDate = today;
+
+  function increaseDate(by: 1 | 2) {
+    return defaultMeetingDate.setUTCDate(today.getUTCDate() + by);
+  }
+
+  if (today.getDay() === 0) increaseDate(1);
+  else if (today.getDay() === 6) increaseDate(2);
+
+  return defaultMeetingDate;
+}

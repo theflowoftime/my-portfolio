@@ -36,6 +36,15 @@ export function meetSchema() {
     meetingDate: z.date({
       required_error: "A date of meeting is required.",
     }),
+    meetingTime: z.string({
+      required_error: "A time of meeting is required.",
+    }),
+    meetingPlatform: z.string({
+      required_error: "A meeting platform is required.",
+    }),
+    email: z.string().email({
+      message: "Please enter a valid email address",
+    }),
   });
 }
 

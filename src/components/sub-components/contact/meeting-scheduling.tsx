@@ -26,7 +26,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
+import { cn, computeDefaultMeetingDate } from "@/lib/utils";
 import { buildFormSchema } from "@/lib/zod-schemas";
 import { useCursorStore } from "@/stores/cursor-store";
 import { useLanguageStore } from "@/stores/language-store";
@@ -34,18 +34,35 @@ import type { MeetSchemaType } from "@/types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarClock, CalendarIcon, Loader2 } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import ReCAPTCHA from "react-google-recaptcha";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import useThemeStore from "@/stores/theme-store";
+
+const meetingOptions = ["google meets", "zoom", "slack", "other"];
 
 function ScheduleMeetingForm() {
   const language = useLanguageStore((state) => state.language);
+  const theme = useThemeStore((state) => state.theme);
   const animateCursor = useCursorStore((state) => state.animateCursor);
 
   const formSchema = buildFormSchema(null, "meet"); // will pass in meetData.errorMessages instead of null
   const form = useForm<MeetSchemaType>({
     resolver: zodResolver(formSchema),
     // defaultValues,
+    defaultValues: {
+      meetingDate: computeDefaultMeetingDate(),
+      meetingTime: "09:00",
+      meetingPlatform: "google meets",
+    },
   });
 
   const handleSuccess = () => {
@@ -70,7 +87,10 @@ function ScheduleMeetingForm() {
     "meet"
   );
 
-  const onSubmit = (data: MeetSchemaType) => throttledSubmit(data);
+  const onSubmit = (data: MeetSchemaType) => {
+    console.log(data);
+    throttledSubmit(data);
+  };
 
   const onError = () => {};
 
@@ -81,76 +101,193 @@ function ScheduleMeetingForm() {
   return (
     <Form {...form}>
       <form
-        onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
-          e.stopPropagation();
-          form.handleSubmit(onSubmit)(e);
-        }}
-        className="space-y-8"
+        onSubmit={form.handleSubmit(onSubmit, onError)}
+        className={cn(
+          "py-8 lg:px-32 shadow-dark-form rounded-xl",
+          theme === "light" && "shadow-light-form"
+        )}
       >
-        <FormField
-          control={form.control}
-          name="meetingDate"
-          render={({ field }) => (
-            <FormItem className="flex flex-col">
-              <FormLabel>Date:</FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant={"outline"}
-                      className={cn(
-                        "w-[240px] pl-3 text-left font-normal",
-                        !field.value && "text-muted-foreground"
-                      )}
-                    >
-                      {field.value ? (
-                        format(field.value, "PPP")
-                      ) : (
-                        <span>Pick a date</span>
-                      )}
-                      <CalendarIcon className="w-4 h-4 ml-auto opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={field.value}
-                    onSelect={field.onChange}
-                    disabled={[{ before: new Date() }, { dayOfWeek: [0, 6] }]}
-                    // locale
-                  />
-                </PopoverContent>
-              </Popover>
-              <FormDescription></FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="flex flex-col items-center gap-y-8 lg:gap-y-16">
+          <div className="flex flex-col w-full gap-4 lg:flex-row">
+            <FormField
+              control={form.control}
+              name="meetingDate"
+              render={({ field }) => (
+                <FormItem className="flex flex-col items-center w-full">
+                  <FormLabel className="self-start text-xs tracking-wide whitespace-nowrap">
+                    When are you available?
+                  </FormLabel>
+                  <div className="w-full">
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant="outline"
+                            className={cn(
+                              "w-full pl-3 text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value ? (
+                              format(field.value, "PPP")
+                            ) : (
+                              <span>Pick a date</span>
+                            )}
+                            <CalendarIcon className="w-4 h-4 ml-auto opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-4" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          disabled={[
+                            { before: new Date() },
+                            { dayOfWeek: [0, 6] },
+                          ]}
+                          // locale
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  </div>
+                  <FormDescription></FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-        <ReCAPTCHA
-          className="hidden"
-          ref={recaptchaRef}
-          sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY!}
-          size="invisible"
-        />
+            <FormField
+              control={form.control}
+              name="meetingTime"
+              render={({ field }) => (
+                <FormItem className="flex flex-col w-full">
+                  <FormLabel className="self-start text-xs tracking-wide whitespace-nowrap">
+                    Pick any time from 9am to 6pm
+                  </FormLabel>
+                  <div className="w-full">
+                    <FormControl>
+                      <Input
+                        className="w-full"
+                        type="time"
+                        min="09:00"
+                        max="18:00"
+                        {...field}
+                        required
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      <small className="opacity-70">
+                        {/* will be changed to figuring out the user timezone and displaying it in here instead */}
+                        Coordinated Universal Time (UTC)
+                      </small>
+                    </FormDescription>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
-        <Button
-          onMouseEnter={() => animateCursor("buttonHover")}
-          onMouseLeave={() => animateCursor("cursorEnter")}
-          disabled={status === "pending" || form.formState.isSubmitting}
-          variant="outline"
-          type="submit"
-        >
-          {status === "pending" ? (
-            <>
-              <Loader2 className="animate-spin" />
-              sending...
-            </>
-          ) : (
-            <>Submit</>
-          )}
-        </Button>
+          <div className="flex flex-col w-full gap-4 lg:flex-row">
+            <FormField
+              control={form.control}
+              name="meetingPlatform"
+              render={({ field }) => (
+                <FormItem className="flex flex-col w-full">
+                  <Select
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <div className="relative w-full">
+                      <FormLabel className="text-xs tracking-wide">
+                        Which platform suits you best?
+                      </FormLabel>
+                      <FormControl>
+                        <SelectTrigger
+                          className={cn(
+                            language === "AR" &&
+                              "data-[placeholder]:font-baloo font-baloo"
+                          )}
+                        >
+                          <SelectValue placeholder="" />
+                        </SelectTrigger>
+                      </FormControl>
+                    </div>
+                    <SelectContent className="border-none focus:ring-0">
+                      {meetingOptions.map((option) => (
+                        <SelectItem key={option} value={option}>
+                          {option}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+
+                  <FormMessage className="text-xs" />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem className="flex flex-col w-full">
+                  <div className="relative w-full">
+                    <FormLabel className="text-xs tracking-wide">
+                      What's your email address?
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        className="w-full placeholder:text-center placeholder:opacity-20"
+                        placeholder="your email address"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription className="text-start">
+                      <small className="opacity-80">
+                        Email associated with the chosen platform
+                      </small>
+                    </FormDescription>
+                  </div>
+                  <FormMessage className="text-xs" />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <ReCAPTCHA
+            className="hidden"
+            ref={recaptchaRef}
+            sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY!}
+            size="invisible"
+          />
+
+          <div className="flex justify-center w-full gap-4 md:flex-col">
+            <Button
+              className="w-full font-unbounded"
+              onMouseEnter={() => animateCursor("buttonHover")}
+              onMouseLeave={() => animateCursor("cursorEnter")}
+              disabled={status === "pending" || form.formState.isSubmitting}
+              variant="outline"
+              type="submit"
+            >
+              {status === "pending" ? (
+                <>
+                  <Loader2 className="animate-spin" />
+                  sending...
+                </>
+              ) : (
+                <>Confirm</>
+              )}
+            </Button>
+            <DrawerClose className="w-full">
+              <Button className="w-full font-unbounded" variant="outline">
+                Cancel
+              </Button>
+            </DrawerClose>
+          </div>
+        </div>
       </form>
     </Form>
   );
@@ -181,19 +318,15 @@ export default function ScheduleMeeting() {
           </div>
         </Button>
       </DrawerTrigger>
-      <DrawerContent>
+      <DrawerContent className="max-h-screen space-y-2">
         <DrawerHeader>
-          <DrawerTitle>
-            Pick a date of your choice for an online meeting
-          </DrawerTitle>
-          <DrawerDescription>Let's talk about your buisness!</DrawerDescription>
+          <DrawerTitle>Let's talk about your buisness!</DrawerTitle>
+          <DrawerDescription>Schedule an online meeting</DrawerDescription>
         </DrawerHeader>
-        <ScheduleMeetingForm />
-        <DrawerFooter>
-          <DrawerClose>
-            <Button variant="outline">Cancel</Button>
-          </DrawerClose>
-        </DrawerFooter>
+        <div className="container">
+          <ScheduleMeetingForm />
+        </div>
+        <DrawerFooter className="p-2"></DrawerFooter>
       </DrawerContent>
     </Drawer>
   );
