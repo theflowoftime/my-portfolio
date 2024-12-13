@@ -9,20 +9,36 @@ import useHashNavigation from "./hooks/useHashNavigation";
 import Cursor from "./components/sub-components/custom-cursor";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { useEffect } from "react";
 
 function App() {
   useHashNavigation();
 
-  const query = useQuery({
-    queryFn: () => {
-      axios.get("/api/info");
+  const { data: ipData, refetch: fetchIP } = useQuery({
+    queryFn: async () => {
+      const response = await axios.get("/api/info");
+      return response.data.ip; // Assuming the IP is in `response.data.ip`
     },
-    queryKey: ["info"],
-    enabled: false,
+    queryKey: ["ip"],
+    enabled: false, // Start disabled
     staleTime: Infinity,
   });
 
-  console.log(query);
+  const { data: locationInfo } = useQuery({
+    queryFn: async () => {
+      const response = await axios.get(`http://ip-api.com/json/${ipData}`);
+      return response.data; // Assuming the location info is in `response.data`
+    },
+    queryKey: ["info"],
+    enabled: !!ipData, // Only fetch if IP is available
+  });
+
+  // Trigger the first query on initial load
+  useEffect(() => {
+    fetchIP();
+  }, [fetchIP]);
+
+  console.log(locationInfo);
 
   return (
     <div className="relative cursor-none">
