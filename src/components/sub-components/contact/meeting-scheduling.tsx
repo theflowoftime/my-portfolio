@@ -34,7 +34,7 @@ import type { MeetSchemaType } from "@/types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarClock, CalendarIcon, Loader2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import ReCAPTCHA from "react-google-recaptcha";
 import { Input } from "@/components/ui/input";
@@ -46,6 +46,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import useThemeStore from "@/stores/theme-store";
+import { Separator } from "@/components/ui/separator";
 
 const meetingOptions = ["google meets", "zoom", "slack", "other"];
 
@@ -107,7 +108,7 @@ function ScheduleMeetingForm() {
           theme === "light" && "shadow-light-form"
         )}
       >
-        <div className="flex flex-col items-center gap-y-8 lg:gap-y-16">
+        <div className="flex flex-col items-center gap-y-4 lg:gap-y-8">
           <div className="flex flex-col w-full gap-4 lg:flex-row">
             <FormField
               control={form.control}
@@ -189,6 +190,8 @@ function ScheduleMeetingForm() {
             />
           </div>
 
+          <Separator className="bg-input" />
+
           <div className="flex flex-col w-full gap-4 lg:flex-row">
             <FormField
               control={form.control}
@@ -256,6 +259,8 @@ function ScheduleMeetingForm() {
             />
           </div>
 
+          <Separator className="bg-input" />
+
           <ReCAPTCHA
             className="hidden"
             ref={recaptchaRef}
@@ -263,7 +268,7 @@ function ScheduleMeetingForm() {
             size="invisible"
           />
 
-          <div className="flex justify-center w-full gap-4 md:flex-col">
+          <div className="flex flex-col justify-center w-full gap-x-8 gap-y-2 lg:px-32 lg:flex-row">
             <Button
               className="w-full font-unbounded"
               onMouseEnter={() => animateCursor("buttonHover")}
@@ -278,12 +283,14 @@ function ScheduleMeetingForm() {
                   sending...
                 </>
               ) : (
-                <>Confirm</>
+                <>confirm</>
               )}
             </Button>
+            {/* <Separator className="bg-input" /> */}
+
             <DrawerClose className="w-full">
               <Button className="w-full font-unbounded" variant="outline">
-                Cancel
+                cancel
               </Button>
             </DrawerClose>
           </div>
