@@ -13,14 +13,16 @@ import axios from "axios";
 function App() {
   useHashNavigation();
 
-  const { data } = useQuery({
+  const query = useQuery({
     queryFn: () => {
       axios.get("/api/info");
     },
     queryKey: ["info"],
+    enabled: false,
+    staleTime: Infinity,
   });
 
-  console.log(data);
+  console.log(query);
 
   return (
     <div className="relative cursor-none">
