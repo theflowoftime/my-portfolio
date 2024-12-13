@@ -1,4 +1,4 @@
-import { FormNames } from "@/types/types";
+import { FormName } from "@/types/types";
 
 type ResponseTypes =
   | "unauthorized"
@@ -10,7 +10,7 @@ type ResponseTypes =
 type ResponseType = { message: string; status: number };
 
 type TFORM_RESPONSES = {
-  [P in FormNames]: {
+  [P in FormName]: {
     [R in ResponseTypes]: ResponseType;
   } & { ip_prefix: string };
 };

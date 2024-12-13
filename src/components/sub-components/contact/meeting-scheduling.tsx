@@ -33,11 +33,12 @@ import { useLanguageStore } from "@/stores/language-store";
 import type { MeetSchemaType } from "@/types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
-import { CalendarClock, CalendarIcon } from "lucide-react";
+import { CalendarClock, CalendarIcon, Loader2 } from "lucide-react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import ReCAPTCHA from "react-google-recaptcha";
 
-export default function ScheduleMeeting() {
+function ScheduleMeetingForm() {
   const language = useLanguageStore((state) => state.language);
   const animateCursor = useCursorStore((state) => state.animateCursor);
 
@@ -78,6 +79,88 @@ export default function ScheduleMeeting() {
   }, [language]);
 
   return (
+    <Form {...form}>
+      <form
+        onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
+          e.stopPropagation();
+          form.handleSubmit(onSubmit)(e);
+        }}
+        className="space-y-8"
+      >
+        <FormField
+          control={form.control}
+          name="meetingDate"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <FormLabel>Date:</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-[240px] pl-3 text-left font-normal",
+                        !field.value && "text-muted-foreground"
+                      )}
+                    >
+                      {field.value ? (
+                        format(field.value, "PPP")
+                      ) : (
+                        <span>Pick a date</span>
+                      )}
+                      <CalendarIcon className="w-4 h-4 ml-auto opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={field.value}
+                    onSelect={field.onChange}
+                    disabled={[{ before: new Date() }, { dayOfWeek: [0, 6] }]}
+                    // locale
+                  />
+                </PopoverContent>
+              </Popover>
+              <FormDescription></FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <ReCAPTCHA
+          className="hidden"
+          ref={recaptchaRef}
+          sitekey={import.meta.env.VITE_RECAPTCHA_SITE_KEY!}
+          size="invisible"
+        />
+
+        <Button
+          onMouseEnter={() => animateCursor("buttonHover")}
+          onMouseLeave={() => animateCursor("cursorEnter")}
+          disabled={status === "pending" || form.formState.isSubmitting}
+          variant="outline"
+          type="submit"
+        >
+          {status === "pending" ? (
+            <>
+              <Loader2 className="animate-spin" />
+              sending...
+            </>
+          ) : (
+            <>Submit</>
+          )}
+        </Button>
+      </form>
+    </Form>
+  );
+}
+
+export default function ScheduleMeeting() {
+  const language = useLanguageStore((state) => state.language);
+  const animateCursor = useCursorStore((state) => state.animateCursor);
+
+  return (
     <Drawer>
       <DrawerTrigger className="w-full">
         <Button
@@ -105,66 +188,8 @@ export default function ScheduleMeeting() {
           </DrawerTitle>
           <DrawerDescription>Let's talk about your buisness!</DrawerDescription>
         </DrawerHeader>
-
-        <Form {...form}>
-          <form
-            onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
-              e.stopPropagation();
-              form.handleSubmit(onSubmit)(e);
-            }}
-            className="space-y-8"
-          >
-            <FormField
-              control={form.control}
-              name="meetingDate"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <FormLabel>Date:</FormLabel>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant={"outline"}
-                          className={cn(
-                            "w-[240px] pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground"
-                          )}
-                        >
-                          {field.value ? (
-                            format(field.value, "PPP")
-                          ) : (
-                            <span>Pick a date</span>
-                          )}
-                          <CalendarIcon className="w-4 h-4 ml-auto opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={field.onChange}
-                        disabled={[
-                          { before: new Date() },
-                          { dayOfWeek: [0, 6] },
-                        ]}
-                        // locale
-                      />
-                    </PopoverContent>
-                  </Popover>
-                  <FormDescription></FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button variant="outline" type="submit">
-              Submit
-            </Button>
-          </form>
-        </Form>
-
+        <ScheduleMeetingForm />
         <DrawerFooter>
-          {/* <Button variant="outline">Submit</Button> */}
           <DrawerClose>
             <Button variant="outline">Cancel</Button>
           </DrawerClose>

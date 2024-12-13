@@ -1,4 +1,4 @@
-import { ErrorMessages, FormNames } from "@/types/types";
+import { ErrorMessages, FormName } from "@/types/types";
 import { z } from "zod";
 
 export function contactSchema(errorMessages: ErrorMessages = null) {
@@ -25,7 +25,6 @@ export function contactSchema(errorMessages: ErrorMessages = null) {
         errorMessages?.phoneNumber?.invalid ||
         "Please enter a valid phone number (e.g., +1234567890 or 1234567890)",
     }),
-
     reason: z.string().min(1, {
       message: errorMessages?.reason?.min || "Please select a reason",
     }),
@@ -42,7 +41,7 @@ export function meetSchema() {
 
 export function buildFormSchema(
   errorMessages: ErrorMessages = null,
-  formName: FormNames
+  formName: FormName
 ) {
   if (formName === "contact") return contactSchema(errorMessages);
 

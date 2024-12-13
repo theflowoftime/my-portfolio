@@ -3,15 +3,14 @@ import axios from "axios";
 import { useRef } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useMutation } from "@tanstack/react-query";
-import type { FormNames } from "@/types/types";
+import type { FormName } from "@/types/types";
 import { FieldValues } from "react-hook-form";
 import useThrottle from "./useThrottle";
 import { API_ENDPOINTS, THROTTLE_DELAY } from "@/lib/constants";
 
-const SendMessage = async <F>(
-  data: F & { recaptchaToken: string },
-  formName: FormNames
-) => {
+type Payload<F> = F & { recaptchaToken: string };
+
+const SendMessage = async <F>(data: Payload<F>, formName: FormName) => {
   const response = await axios.post(API_ENDPOINTS["contact-me"], data, {
     params: { formName },
   });
@@ -21,21 +20,22 @@ const SendMessage = async <F>(
 const useSendMessage = <FormSchema extends FieldValues>(
   onSuccess: () => void, // External success handler
   onError: (errorKey: "recaptcha" | "rateLimit" | "message") => void, // External error handler
-  formName: FormNames
+  formName: FormName
 ) => {
   const recaptchaRef = useRef<ReCAPTCHA | null>(null);
 
   const { mutate, status } = useMutation({
-    mutationFn: (data: FormSchema & { recaptchaToken: string }) =>
+    mutationFn: (data: Payload<FormSchema>) =>
       SendMessage<FormSchema>(data, formName),
     onSuccess,
     onError: (data: any) => onError(data.response.data.message),
   });
 
   const handleRecaptcha = async () => {
-    if (!recaptchaRef.current) return null; // Skip reCAPTCHA if not required
-    const token = await recaptchaRef.current?.executeAsync();
-    recaptchaRef.current?.reset();
+    if (!recaptchaRef.current) return null;
+
+    const token = await recaptchaRef.current.executeAsync();
+    recaptchaRef.current.reset();
 
     return token;
   };

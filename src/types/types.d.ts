@@ -148,7 +148,7 @@ type Contact = {
   toast: Toast;
 };
 
-export type FormNames = "contact" | "meet";
+export type FormName = "contact" | "meet";
 
 // to do types (updated)
 

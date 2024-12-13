@@ -218,13 +218,6 @@ export function ContactForm({ contactData }: { contactData: TContact }) {
             )}
           </Button>
 
-          {/* <div
-            className="before:content[''] before:w-96 before:h-[0.062rem] dark:before:bg-white/10 
-            before:bg-purple-400/30 text-purple-700 dark:text-purple-400 before:absolute before:-translate-y-1/2 after:-translate-y-1/2 before:top-1/2 before:left-[60%] 
-            after:content[''] text-center after:w-96 after:h-[0.062rem]  dark:after:bg-white/10  after:bg-purple-400/30 after:absolute after:top-1/2 after:right-[60%] relative w-full"
-          >
-          </div> */}
-
           <div
             className={cn(
               "text-2xl font-instrument text-purple-400 relative w-full flex items-center justify-center gap-x-8",
@@ -233,7 +226,6 @@ export function ContactForm({ contactData }: { contactData: TContact }) {
           >
             <div className="overflow-hidden h-[1px] relative w-full opacity-50 bg-left" />
             <span className="text-base font-instrument">Or</span>
-
             <div className="overflow-hidden h-[1px] relative w-full opacity-50 bg-right" />
           </div>
         </motion.div>

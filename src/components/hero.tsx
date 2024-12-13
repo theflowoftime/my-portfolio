@@ -163,7 +163,7 @@ function Hero() {
                   )}
 
                   {item.line.highlight?.includes(wordIndex) ? (
-                    <em className="italic px-1.5 dark:text-white text-black -tracking-[0.04em] -z-10">
+                    <em className="italic px-1.5  -tracking-[0.04em] -z-10">
                       {word}
                     </em>
                   ) : (
