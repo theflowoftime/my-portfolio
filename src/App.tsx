@@ -26,6 +26,8 @@ function App() {
   const { data: locationInfo } = useQuery({
     queryFn: async () => {
       const response = await axios.get(`http://ip-api.com/json/${ipData}`);
+      console.log(response);
+
       return response.data; // Assuming the location info is in `response.data`
     },
     queryKey: ["info"],
