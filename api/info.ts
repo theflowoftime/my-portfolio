@@ -8,5 +8,5 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   // Fetch visitor profile
   const info = (await axios.get(`http://ip-api.com/json/${ip}`)).data;
 
-  return res.status(200).json({ info });
+  return res.status(200).send({ info });
 }
