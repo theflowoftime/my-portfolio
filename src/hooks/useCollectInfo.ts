@@ -3,14 +3,12 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect } from "react";
 
+const isIntendedDomain =
+  typeof window !== "undefined" &&
+  window.location.hostname === import.meta.env.VITE_WEBSITE_URL;
+
 export const useCollectInfo = () => {
   const setVisitorInfo = useVisitorStore((state) => state.setVisitorInfo);
-
-  const isIntendedDomain =
-    typeof window !== "undefined" &&
-    window.location.hostname === "yacinekedidi.vercel.app";
-
-  console.log(import.meta.env.VITE_WEBSITE_URL);
 
   // Fetch visitor data and store it in Zustand
   const { data: visitorInfo } = useQuery({
