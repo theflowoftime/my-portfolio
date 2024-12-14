@@ -6,11 +6,18 @@ import Marquee from "@/hooks/useMarquee";
 import { Toaster } from "./ui/toaster";
 import { ContactForm } from "./sub-components/contact/form";
 import ScheduleMeeting from "./sub-components/contact/meeting-scheduling";
+import useVisitorStore from "@/stores/visitor-store";
+import { useEffect } from "react";
 
 function Contact() {
   const { data: contactData, isLoading, isError } = useContact();
   const { navLinks } = useCachedNavLinks();
   const slug = navLinks?.links?.[3].slug || "contact";
+  const userInfo = useVisitorStore((state) => state.visitorInfo);
+
+  useEffect(() => {
+    console.log(userInfo);
+  }, [userInfo]);
 
   if (isLoading || !contactData) return <SectionLayout slug={slug} />;
   if (isError) return <SectionLayout slug={slug}>Oops error..</SectionLayout>;

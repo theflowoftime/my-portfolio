@@ -13,7 +13,7 @@ type Actions = {
 
 type VisitorStore = State & Actions;
 
-const useVisitorStore = create<VisitorStore>((set) => ({
+export const useVisitorStore = create<VisitorStore>((set) => ({
   visitorInfo: null,
   setVisitorInfo: (info) => set({ visitorInfo: info }),
 }));
