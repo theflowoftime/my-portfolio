@@ -19,7 +19,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const { recaptchaToken, ...formData } = req.body;
-  console.log(formData);
 
   const ip = retrieveIp(req);
 

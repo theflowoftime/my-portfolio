@@ -33,9 +33,12 @@ export function contactSchema(errorMessages: ErrorMessages = null) {
 
 export function meetSchema() {
   return z.object({
-    meetingDate: z.date({
-      required_error: "A date of meeting is required.",
-    }),
+    meetingDate: z
+      .union([
+        z.date(),
+        z.string().transform((val) => new Date(val)), // Automatically parse strings into Dates
+      ])
+      .refine((date) => !isNaN(date.getTime()), { message: "Invalid date" }), // Validate the date
     meetingTime: z.string({
       required_error: "A time of meeting is required.",
     }),
