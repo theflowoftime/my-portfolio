@@ -73,7 +73,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       info = await getInfo(ip);
     }
 
-    await sendMessage({ ...formData, info }, FORM_RESPONSES[formName]["_type"]);
+    await sendMessage(
+      { ...formData, userInfo: info },
+      FORM_RESPONSES[formName]["_type"]
+    );
 
     // Success response
     const { status, message } = FORM_RESPONSES[formName]["success"];
