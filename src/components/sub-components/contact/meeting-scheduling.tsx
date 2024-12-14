@@ -85,9 +85,9 @@ function ScheduleMeetingForm() {
     resolver: zodResolver(formSchema),
     // defaultValues,
     defaultValues: {
-      meetingDate: computeDefaultMeetingDate(),
-      meetingTime: "09:00",
-      meetingPlatform: "google meets",
+      date: computeDefaultMeetingDate(),
+      time: "09:00",
+      platform: "google meets",
     },
   });
 
