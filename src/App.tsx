@@ -15,7 +15,14 @@ function App() {
 
   const { data: ipData } = useQuery({
     queryFn: async () => {
-      const response = await axios.get("/api/info");
+      const response = await axios.get(
+        "https://yacinekedidi.vercel.app/api/info"
+      );
+
+      console.log("hello");
+
+      console.log(response);
+
       return response.data.ip; // Assuming the IP is in `response.data.ip`
     },
     queryKey: ["ip"],
@@ -30,7 +37,7 @@ function App() {
       const response = await axios.get(`http://ip-api.com/json/${ipData}`);
       console.log(response);
 
-      return response; // Assuming the location info is in `response.data`
+      return response.data; // Assuming the location info is in `response.data`
     },
     queryKey: ["info"],
     enabled: !!ipData, // Only fetch if IP is available
