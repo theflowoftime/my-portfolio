@@ -5,11 +5,10 @@ import { useEffect } from "react";
 
 const isIntendedDomain =
   typeof window !== "undefined" &&
-  window.location.hostname === import.meta.env.VITE_WEBSITE_URL;
+  window.location.hostname === "https://yacinekedidi.vercel.app";
 
 export const useCollectInfo = () => {
   const setVisitorInfo = useVisitorStore((state) => state.setVisitorInfo);
-  // Detect if we are in the browser (client-side)
 
   // Fetch visitor data and store it in Zustand
   const { data: visitorInfo } = useQuery({
