@@ -89,7 +89,7 @@ export function formatDateForSanity(date: Date) {
 export const decryptData = (encryptedData: any): Info => {
   const bytes = CryptoJS.AES.decrypt(
     encryptedData,
-    import.meta.env.VITE_INFO_SECRET_KEY
+    import.meta.env.INFO_SECRET_KEY
   );
   const decrypted = bytes.toString(CryptoJS.enc.Utf8);
   return JSON.parse(decrypted);

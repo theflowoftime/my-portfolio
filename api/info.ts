@@ -4,7 +4,7 @@ import { getUserInfo } from "./_utils/external-user-info";
 import { Info } from "@/types/types";
 import CryptoJS from "crypto-js";
 
-const SECRET_KEY = process.env.VITE_INFO_SECRET_KEY;
+const SECRET_KEY = process.env.INFO_SECRET_KEY;
 
 export const encryptData = (data: Info) => {
   const encrypted = CryptoJS.AES.encrypt(
