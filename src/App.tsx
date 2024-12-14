@@ -9,18 +9,15 @@ import useHashNavigation from "./hooks/useHashNavigation";
 import Cursor from "./components/sub-components/custom-cursor";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { useEffect } from "react";
 
 function App() {
   useHashNavigation();
 
-  const { data: ipData } = useQuery({
+  const { data: ipData, refetch: fetchIP } = useQuery({
     queryFn: async () => {
-      const response = await axios.get(
-        "https://yacinekedidi.vercel.app/api/info"
-      );
-
-      console.log("hello");
-
+      const response = await axios.get("/api/info");
+      console.log("ip");
       console.log(response);
 
       return response.data.ip; // Assuming the IP is in `response.data.ip`
@@ -32,9 +29,8 @@ function App() {
 
   const { data: locationInfo } = useQuery({
     queryFn: async () => {
-      console.log(ipData);
-
       const response = await axios.get(`http://ip-api.com/json/${ipData}`);
+      console.log("info");
       console.log(response);
 
       return response.data; // Assuming the location info is in `response.data`
@@ -42,6 +38,11 @@ function App() {
     queryKey: ["info"],
     enabled: !!ipData, // Only fetch if IP is available
   });
+
+  // Trigger the first query on initial load
+  useEffect(() => {
+    fetchIP();
+  }, [fetchIP]);
 
   return (
     <div className="relative cursor-none">
