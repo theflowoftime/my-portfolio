@@ -2,22 +2,9 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { buildFormSchema } from "./../src/lib/zod-schemas";
 import { FORM_RESPONSES } from "./_utils/constants";
 import { sendMessage } from "./_utils/sanity-cms";
-import { storeIP, verifyIPRateLimit } from "./_utils/db_redis";
+import { getVisitorInfo, storeIP, verifyIPRateLimit } from "./_utils/db_redis";
 import { verifyCaptcha } from "./_utils/verify-google-recaptcha";
 import { retrieveIp } from "./_utils/network";
-import { Redis } from "@upstash/redis";
-import { Info } from "./types";
-
-const redis = Redis.fromEnv();
-
-export const getInfo = async (ip: string): Promise<Info | null> => {
-  try {
-    return await redis.get(ip);
-  } catch (error) {
-    console.error("Error retrieving the ip from the database:", error);
-    throw new Error("Failed to retrieve the ip from the database");
-  }
-};
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   let formName = req.query?.formName as keyof typeof FORM_RESPONSES;
@@ -70,7 +57,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     let info;
     if (formName === "meet" && ip) {
       // get the info from redis if it can find it
-      info = await getInfo(ip);
+      info = await getVisitorInfo(ip);
     }
 
     await sendMessage(

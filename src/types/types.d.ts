@@ -169,6 +169,7 @@ export type FormName = "contact" | "meet";
 export type InfoVisitor = {
   country: string;
   timezone: string;
+  countryCode: string;
 };
 
 type State = {
