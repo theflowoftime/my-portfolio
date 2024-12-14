@@ -20,7 +20,10 @@ export const PX_REM_ratio = 16;
 export const HERO_AVATAR_SIZES = [120, 80];
 
 export const API_ENDPOINTS = {
-  "contact-me": "/api/contact-me",
+  "contact-me":
+    import.meta.env.MODE === "production"
+      ? "/api/contact-me"
+      : "https://yacinekedidi.vercel.app/api/contact-me",
 };
 
 export const defaultSuccessMessage = "Message submitted successfully!";
