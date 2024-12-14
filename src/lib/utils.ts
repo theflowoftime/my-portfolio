@@ -5,8 +5,6 @@ import { type SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { LOCALES } from "./constants";
-import CryptoJS from "crypto-js";
-import { Info } from "@/types/types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -85,14 +83,3 @@ export function formatDateForSanity(date: Date) {
     throw new Error("Invalid Date");
   }
 }
-
-export const decryptData = (encryptedData: any): Info => {
-  console.log(import.meta.env.INFO_SECRET_KEY);
-
-  const bytes = CryptoJS.AES.decrypt(
-    encryptedData,
-    import.meta.env.INFO_SECRET_KEY
-  );
-  const decrypted = bytes.toString(CryptoJS.enc.Utf8);
-  return JSON.parse(decrypted);
-};
