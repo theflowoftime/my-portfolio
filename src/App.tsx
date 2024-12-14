@@ -20,13 +20,8 @@ function App() {
   const { data: visitorInfo } = useQuery({
     queryKey: ["visitorInfo"],
     queryFn: async () => {
-      // Fetch the IP
       const ipResponse = await axios.get("/api/info");
-      const ip = ipResponse.data.ip;
-
-      // Fetch visitor profile
-      const infoResponse = await axios.get(`http://ip-api.com/json/${ip}`);
-      return infoResponse.data; // Return the visitor info
+      return ipResponse.data.info;
     },
     staleTime: Infinity, // Cache data indefinitely to avoid re-fetching
     gcTime: Infinity, // Keep data in the cache forever
