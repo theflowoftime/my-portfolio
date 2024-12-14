@@ -1,12 +1,24 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { retrieveIp } from "./_utils/network";
-import axios from "axios";
+import { getUserInfo } from "./_utils/external-user-info";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  const ip = retrieveIp(req);
-
-  // Fetch visitor profile
-  const info = (await axios.get(`http://ip-api.com/json/${ip}`)).data;
-
-  return res.status(200).send({ info });
+  try {
+    const ip = retrieveIp(req);
+    if (!ip) {
+      console.error("Unable to retrieve the user's IP address");
+      return res.status(400).json({ error: "Unable to retrieve data." });
+    }
+    // Fetch visitor profile
+    const info = await getUserInfo(ip);
+    return res.status(200).send({ info });
+  } catch (error) {
+    console.error("Error in handler:", error);
+    return res.status(500).json({
+      error:
+        error instanceof Error
+          ? error.message
+          : "An unknown error occurred. Please try again later.",
+    });
+  }
 }

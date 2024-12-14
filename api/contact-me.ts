@@ -53,7 +53,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     // Store IP and send message
     await storeIP(ipKey);
-    await sendMessage(formData);
+    await sendMessage(formData, FORM_RESPONSES[formName]["_type"]);
 
     // Success response
     const { status, message } = FORM_RESPONSES[formName]["success"];

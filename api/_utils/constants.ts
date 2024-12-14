@@ -2,6 +2,7 @@ import { TFORM_RESPONSES } from "../types";
 
 export const FORM_RESPONSES: TFORM_RESPONSES = {
   contact: {
+    _type: "message",
     ip_prefix: "contact-rate-limit:",
     unauthorized: {
       message: "Method not allowed",
@@ -25,6 +26,7 @@ export const FORM_RESPONSES: TFORM_RESPONSES = {
     },
   },
   meet: {
+    _type: "meeting",
     ip_prefix: "meet-rate-limit:",
     unauthorized: {
       message: "Method not allowed",
