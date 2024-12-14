@@ -33,16 +33,16 @@ export function contactSchema(errorMessages: ErrorMessages = null) {
 
 export function meetSchema() {
   return z.object({
-    meetingDate: z
+    date: z
       .union([
         z.date(),
         z.string().transform((val) => new Date(val)), // Automatically parse strings into Dates
       ])
       .refine((date) => !isNaN(date.getTime()), { message: "Invalid date" }), // Validate the date
-    meetingTime: z.string({
+    time: z.string({
       required_error: "A time of meeting is required.",
     }),
-    meetingPlatform: z.string({
+    platform: z.string({
       required_error: "A meeting platform is required.",
     }),
     email: z.string().email({

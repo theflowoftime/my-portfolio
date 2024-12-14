@@ -140,7 +140,7 @@ function ScheduleMeetingForm() {
           <div className="flex flex-col w-full gap-4 lg:flex-row">
             <FormField
               control={form.control}
-              name="meetingDate"
+              name="date"
               render={({ field }) => (
                 <FormItem className="flex flex-col items-center w-full">
                   <FormLabel className="self-start text-xs tracking-wide whitespace-nowrap">
@@ -188,7 +188,7 @@ function ScheduleMeetingForm() {
 
             <FormField
               control={form.control}
-              name="meetingTime"
+              name="time"
               render={({ field }) => (
                 <FormItem className="flex flex-col w-full">
                   <FormLabel className="self-start text-xs tracking-wide whitespace-nowrap">
@@ -224,7 +224,7 @@ function ScheduleMeetingForm() {
           <div className="flex flex-col w-full gap-4 lg:flex-row">
             <FormField
               control={form.control}
-              name="meetingPlatform"
+              name="platform"
               render={({ field }) => (
                 <FormItem className="flex flex-col w-full">
                   <Select
