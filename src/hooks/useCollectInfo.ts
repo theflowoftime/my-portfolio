@@ -8,14 +8,9 @@ export const useCollectInfo = () => {
 
   const isIntendedDomain =
     typeof window !== "undefined" &&
-    window.location.hostname === "https://yacinekedidi.vercel.app";
+    window.location.hostname === "yacinekedidi.vercel.app";
 
-  console.log(window.location.hostname);
-
-  console.log(
-    typeof window !== "undefined" &&
-      window.location.hostname === "https://yacinekedidi.vercel.app"
-  );
+  console.log(import.meta.env.VITE_WEBSITE_URL);
 
   // Fetch visitor data and store it in Zustand
   const { data: visitorInfo } = useQuery({
