@@ -9,40 +9,35 @@ import useHashNavigation from "./hooks/useHashNavigation";
 import Cursor from "./components/sub-components/custom-cursor";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import useVisitorStore from "./stores/visitor-store";
 import { useEffect } from "react";
 
 function App() {
   useHashNavigation();
+  const setVisitorInfo = useVisitorStore((state) => state.setVisitorInfo);
 
-  const { data: ipData, refetch: fetchIP } = useQuery({
+  // Fetch visitor data and store it in Zustand
+  const { data: visitorInfo } = useQuery({
+    queryKey: ["visitorInfo"],
     queryFn: async () => {
-      const response = await axios.get("/api/info");
-      console.log("ip");
-      console.log(response);
+      // Fetch the IP
+      const ipResponse = await axios.get("/api/info");
+      const ip = ipResponse.data.ip;
 
-      return response.data.ip; // Assuming the IP is in `response.data.ip`
+      // Fetch visitor profile
+      const infoResponse = await axios.get(`http://ip-api.com/json/${ip}`);
+      return infoResponse.data; // Return the visitor info
     },
-    queryKey: ["ip"],
-    enabled: false, // Start disabled
-    staleTime: Infinity,
+    staleTime: Infinity, // Cache data indefinitely to avoid re-fetching
+    gcTime: Infinity, // Keep data in the cache forever
   });
 
-  const { data: locationInfo } = useQuery({
-    queryFn: async () => {
-      const response = await axios.get(`http://ip-api.com/json/${ipData}`);
-      console.log("info");
-      console.log(response);
-
-      return response.data; // Assuming the location info is in `response.data`
-    },
-    queryKey: ["info"],
-    enabled: !!ipData, // Only fetch if IP is available
-  });
-
-  // Trigger the first query on initial load
+  // Update Zustand state when visitorInfo changes
   useEffect(() => {
-    fetchIP();
-  }, [fetchIP]);
+    if (visitorInfo) {
+      setVisitorInfo(visitorInfo);
+    }
+  }, [visitorInfo, setVisitorInfo]);
 
   return (
     <div className="relative cursor-none">
