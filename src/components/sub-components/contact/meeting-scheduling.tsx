@@ -26,7 +26,11 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { cn, computeDefaultMeetingDate } from "@/lib/utils";
+import {
+  cn,
+  computeDefaultMeetingDate,
+  formatDateForSanity,
+} from "@/lib/utils";
 import { buildFormSchema } from "@/lib/zod-schemas";
 import { useCursorStore } from "@/stores/cursor-store";
 import { useLanguageStore } from "@/stores/language-store";
@@ -118,6 +122,7 @@ function ScheduleMeetingForm() {
       ...data,
       timezone: visitorInfo?.timezone,
       country: visitorInfo?.country,
+      date: formatDateForSanity(data.date), // Convert to YYYY-MM-DD
       language,
     });
   };

@@ -75,3 +75,11 @@ export function computeDefaultMeetingDate() {
 
   return defaultMeetingDate;
 }
+
+export function formatDateForSanity(date: Date) {
+  try {
+    return date.toISOString().split("T")[0]; // Extract YYYY-MM-DD
+  } catch (error) {
+    throw new Error("Invalid Date");
+  }
+}
