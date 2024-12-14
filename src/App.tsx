@@ -7,7 +7,7 @@ import Projects from "./components/projects";
 import Noise from "./components/sub-components/bg-noise-and-mask";
 import useHashNavigation from "./hooks/useHashNavigation";
 import Cursor from "./components/sub-components/custom-cursor";
-import { useCollectInfo } from "./hooks/collectInfo";
+import { useCollectInfo } from "./hooks/useCollectInfo";
 
 function App() {
   useHashNavigation();

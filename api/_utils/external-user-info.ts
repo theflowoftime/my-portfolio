@@ -1,6 +1,7 @@
+import { Info } from "api/types";
 import axios from "axios";
 
-export async function getUserInfo(ip: string) {
+export async function getUserInfo(ip: string): Promise<Info> {
   try {
     // Use HTTPS for secure communication TODO
     return (await axios.get(`http://ip-api.com/json/${ip}`)).data;

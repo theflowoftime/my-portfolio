@@ -16,3 +16,20 @@ type TFORM_RESPONSES = {
     [R in ResponseTypes]: ResponseType;
   } & { ip_prefix: string; _type: _Type };
 };
+
+export type Info = {
+  status: string;
+  country: string;
+  countryCode: string;
+  region: string;
+  regionName: string;
+  city: string;
+  zip: string;
+  lat: number;
+  lon: number;
+  timezone: string;
+  isp: string;
+  org: string;
+  as: string;
+  query: string;
+};

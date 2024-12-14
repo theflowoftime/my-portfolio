@@ -5,9 +5,22 @@ import { sendMessage } from "./_utils/sanity-cms";
 import { storeIP, verifyIPRateLimit } from "./_utils/db_redis";
 import { verifyCaptcha } from "./_utils/verify-google-recaptcha";
 import { retrieveIp } from "./_utils/network";
+import { Redis } from "@upstash/redis";
+import { Info } from "./types";
+
+const redis = Redis.fromEnv();
+
+export const getInfo = async (ip: string): Promise<Info | null> => {
+  try {
+    return await redis.get(ip);
+  } catch (error) {
+    console.error("Error retrieving the ip from the database:", error);
+    throw new Error("Failed to retrieve the ip from the database");
+  }
+};
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  const formName = req.query?.formName as keyof typeof FORM_RESPONSES;
+  let formName = req.query?.formName as keyof typeof FORM_RESPONSES;
   // Ensure formName is provided and valid
   if (!formName) {
     return res.status(400).json({ message: "Invalid or missing formName" });
@@ -53,7 +66,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     // Store IP and send message
     await storeIP(ipKey);
-    await sendMessage(formData, FORM_RESPONSES[formName]["_type"]);
+
+    let info;
+    if (formName === "meet" && ip) {
+      // get the info from redis if it can find it
+      info = await getInfo(ip);
+    }
+
+    await sendMessage({ ...formData, info }, FORM_RESPONSES[formName]["_type"]);
 
     // Success response
     const { status, message } = FORM_RESPONSES[formName]["success"];

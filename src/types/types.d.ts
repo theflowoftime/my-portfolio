@@ -166,30 +166,17 @@ export type FormName = "contact" | "meet";
 // };
 
 // VisitorInfoStore store
-export type Info = {
-  ip: string;
-  status: string;
+export type InfoVisitor = {
   country: string;
-  countryCode: string;
-  region: string;
-  regionName: string;
-  city: string;
-  zip: string;
-  lat: number;
-  lon: number;
   timezone: string;
-  isp: string;
-  org: string;
-  as: string;
-  query: string;
 };
 
 type State = {
-  visitorInfo: Info | null;
+  visitorInfo: InfoVisitor | null;
 };
 
 type Actions = {
-  setVisitorInfo: (info: Info) => void;
+  setVisitorInfo: (info: InfoVisitor) => void;
 };
 
 export type VisitorInfoStore = State & Actions;
