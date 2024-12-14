@@ -18,6 +18,7 @@ export const useCollectInfo = () => {
       const ipResponse = await axios.get("/api/info");
       return ipResponse.data.info;
     },
+    enabled: isIntendedDomain,
     staleTime: Infinity, // Cache data indefinitely to avoid re-fetching
     gcTime: Infinity, // Keep data in the cache forever
   });
