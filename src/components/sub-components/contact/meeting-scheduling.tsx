@@ -114,8 +114,11 @@ function ScheduleMeetingForm() {
   );
 
   const onSubmit = (data: MeetSchemaType) => {
-    console.log(data);
-    throttledSubmit(data);
+    throttledSubmit({
+      ...data,
+      timezone: visitorInfo?.timezone,
+      country: visitorInfo?.country,
+    });
   };
 
   const onError = () => {};
