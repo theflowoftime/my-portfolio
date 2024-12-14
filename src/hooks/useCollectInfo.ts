@@ -3,7 +3,9 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect } from "react";
 
-const isBrowser = typeof window !== "undefined";
+const isIntendedDomain =
+  typeof window !== "undefined" &&
+  window.location.hostname === import.meta.env.VITE_WEBSITE_URL;
 
 export const useCollectInfo = () => {
   const setVisitorInfo = useVisitorStore((state) => state.setVisitorInfo);
@@ -16,7 +18,6 @@ export const useCollectInfo = () => {
       const ipResponse = await axios.get("/api/info");
       return ipResponse.data.info;
     },
-    enabled: isBrowser,
     staleTime: Infinity, // Cache data indefinitely to avoid re-fetching
     gcTime: Infinity, // Keep data in the cache forever
   });
