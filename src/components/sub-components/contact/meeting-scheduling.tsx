@@ -29,6 +29,7 @@ import {
 import {
   cn,
   computeDefaultMeetingDate,
+  decryptData,
   formatDateForSanity,
 } from "@/lib/utils";
 import { buildFormSchema } from "@/lib/zod-schemas";
@@ -120,8 +121,7 @@ function ScheduleMeetingForm() {
   const onSubmit = (data: MeetSchemaType) => {
     throttledSubmit({
       ...data,
-      timezone: visitorInfo?.timezone,
-      country: visitorInfo?.country,
+      userInfo: visitorInfo,
       date: formatDateForSanity(data.date), // Convert to YYYY-MM-DD
       language,
     });
