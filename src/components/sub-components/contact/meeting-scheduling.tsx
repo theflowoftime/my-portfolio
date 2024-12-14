@@ -118,6 +118,7 @@ function ScheduleMeetingForm() {
       ...data,
       timezone: visitorInfo?.timezone,
       country: visitorInfo?.country,
+      language,
     });
   };
 
