@@ -47,6 +47,7 @@ import {
 } from "@/components/ui/select";
 import useThemeStore from "@/stores/theme-store";
 import { Separator } from "@/components/ui/separator";
+import useVisitorStore from "@/stores/visitor-store";
 
 /**
  * Get client side timezone.
@@ -77,6 +78,7 @@ function ScheduleMeetingForm() {
   const language = useLanguageStore((state) => state.language);
   const theme = useThemeStore((state) => state.theme);
   const animateCursor = useCursorStore((state) => state.animateCursor);
+  const visitorInfo = useVisitorStore((state) => state.visitorInfo);
 
   const formSchema = buildFormSchema(null, "meet"); // will pass in meetData.errorMessages instead of null
   const form = useForm<MeetSchemaType>({
@@ -204,8 +206,7 @@ function ScheduleMeetingForm() {
                       <small className="flex items-center opacity-70 gap-x-2">
                         {/* will be changed to figuring out the user timezone and displaying it in here instead */}
                         <Globe size={16} />
-                        {Intl.DateTimeFormat().resolvedOptions().timeZone}{" "}
-                        {getTimeZoneOffset()}
+                        {visitorInfo?.timezone} {getTimeZoneOffset()}
                       </small>
                     </FormDescription>
                   </div>
