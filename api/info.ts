@@ -17,7 +17,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     const ip = retrieveIp(req);
     if (!ip) {
-      console.error("Unable to retrieve the user's IP address");
+      console.error("Unable to retrieve the user's IP address.");
       return res.status(400).json({ error: "Unable to retrieve data." });
     }
     // Fetch visitor profile
