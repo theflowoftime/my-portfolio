@@ -62,8 +62,8 @@ import useVisitorStore from "@/stores/visitor-store";
  * // '+04:00'
  * getTimeZone()
  */
-const getTimeZoneOffset = () => {
-  const timezoneOffset = new Date().getTimezoneOffset();
+const getTimeZoneOffset = (ApiOffset: number | undefined) => {
+  const timezoneOffset = ApiOffset || new Date().getTimezoneOffset();
   const offset = Math.abs(timezoneOffset);
   const offsetOperator = timezoneOffset < 0 ? "+" : "-";
   const offsetHours = Math.floor(offset / 60)
@@ -217,7 +217,7 @@ function ScheduleMeetingForm() {
                         <Globe size={14} />
                         {visitorInfo?.timezone ||
                           Intl.DateTimeFormat().resolvedOptions().timeZone}{" "}
-                        {getTimeZoneOffset()}
+                        {getTimeZoneOffset(visitorInfo?.offset)}
                       </small>
                     </FormDescription>
                   </div>
