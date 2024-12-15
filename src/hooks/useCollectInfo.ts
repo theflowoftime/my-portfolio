@@ -35,10 +35,10 @@ export const useCollectInfo = () => {
       });
       return response.data;
     },
-    enabled: isIntendedDomain,
+    // enabled: isIntendedDomain,
     // staleTime: Infinity, // Cache data indefinitely to avoid re-fetching
     // gcTime: Infinity, // Keep data in the cache forever
-    staleTime: 3600, // Cache data for an hour to avoid re-fetching
+    staleTime: 1000 * 60 * 60, // Cache data for an hour to avoid re-fetching
   });
 
   // Update Zustand state when visitorInfo changes
