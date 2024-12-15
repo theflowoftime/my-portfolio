@@ -25,8 +25,8 @@ export const useCollectInfo = () => {
   const language = useLanguageStore((state) => state.language);
 
   // Fetch visitor data and store it in Zustand
-  const { data: visitorInfo } = useQuery<VisitorInfoResponse>({
-    queryKey: ["visitorInfo", language],
+  const { data: visitorInfo, refetch } = useQuery<VisitorInfoResponse>({
+    queryKey: ["visitorInfo"],
     queryFn: async () => {
       const response = await axios.get("/api/info", {
         params: {
@@ -35,16 +35,20 @@ export const useCollectInfo = () => {
       });
       return response.data;
     },
-    // enabled: isIntendedDomain,
+    enabled: isIntendedDomain,
     // staleTime: Infinity, // Cache data indefinitely to avoid re-fetching
     // gcTime: Infinity, // Keep data in the cache forever
     staleTime: 1000 * 60 * 60, // Cache data for an hour to avoid re-fetching
   });
+
+  useEffect(() => {
+    refetch();
+  }, [language]);
 
   // Update Zustand state when visitorInfo changes
   useEffect(() => {
     if (visitorInfo) {
       if (visitorInfo.status === "success") setVisitorInfo(visitorInfo.info);
     }
-  }, [visitorInfo, setVisitorInfo, language]);
+  }, [visitorInfo, setVisitorInfo]);
 };
