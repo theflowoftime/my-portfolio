@@ -35,7 +35,6 @@ import { buildFormSchema } from "@/lib/zod-schemas";
 import { useCursorStore } from "@/stores/cursor-store";
 import { useLanguageStore } from "@/stores/language-store";
 import useThemeStore from "@/stores/theme-store";
-import useVisitorStore from "@/stores/visitor-store";
 import type { MeetSchemaType } from "@/types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
@@ -51,7 +50,6 @@ export default function ScheduleMeetingForm() {
   const language = useLanguageStore((state) => state.language);
   const theme = useThemeStore((state) => state.theme);
   const animateCursor = useCursorStore((state) => state.animateCursor);
-  const visitorInfo = useVisitorStore((state) => state.visitorInfo);
 
   const formSchema = buildFormSchema(null, "meet"); // will pass in meetData.errorMessages instead of null
   const form = useForm<MeetSchemaType>({
@@ -89,7 +87,6 @@ export default function ScheduleMeetingForm() {
   const onSubmit = (data: MeetSchemaType) => {
     throttledSubmit({
       ...data,
-      userInfo: visitorInfo,
       date: formatDateForSanity(data.date), // Convert to YYYY-MM-DD
       language,
     });
