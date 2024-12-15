@@ -1,10 +1,9 @@
 import useContact from "@/hooks/useContact";
 import SectionLayout from "@/layouts/section-layout";
-
 import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
 import Marquee from "@/hooks/useMarquee";
 import { Toaster } from "./ui/toaster";
-import { ContactForm } from "./sub-components/contact/form";
+import { ContactForm } from "./sub-components/contact/form-contact";
 import ScheduleMeeting from "./sub-components/contact/meeting-scheduling";
 
 function Contact() {

@@ -83,3 +83,26 @@ export function formatDateForSanity(date: Date) {
     throw new Error("Invalid Date");
   }
 }
+
+/**
+ * Get client side timezone.
+ *
+ * @returns {(+|-)HH:mm} - Where `HH` is 2 digits hours and `mm` 2 digits minutes.
+ * @example
+ * // From Indian/Reunion with UTC+4
+ * // '+04:00'
+ * getTimeZone()
+ */
+export const getTimeZoneOffset = (ApiOffset: number | undefined) => {
+  const timezoneOffset = ApiOffset || new Date().getTimezoneOffset();
+  const offset = Math.abs(timezoneOffset);
+  const offsetOperator = timezoneOffset < 0 ? "+" : "-";
+  const offsetHours = Math.floor(offset / 60)
+    .toString()
+    .padStart(2, "0");
+  const offsetMinutes = Math.floor(offset % 60)
+    .toString()
+    .padStart(2, "0");
+
+  return `UTC ${offsetOperator}${offsetHours}:${offsetMinutes}`;
+};
