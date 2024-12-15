@@ -5,6 +5,7 @@ import { sendMessage } from "./_utils/sanity-cms";
 import { getVisitorInfo, storeIP, verifyIPRateLimit } from "./_utils/db_redis";
 import { verifyCaptcha } from "./_utils/verify-google-recaptcha";
 import { retrieveIp } from "./_utils/network";
+import { MeetingPlatformFactory } from "./_utils/platforms";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   let formName = req.query?.formName as keyof typeof FORM_RESPONSES;
@@ -55,13 +56,30 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     await storeIP(ipKey);
 
     let info;
+    let joinUrl;
     if (formName === "meet" && ip) {
       // get the info from redis if it can find it
       info = await getVisitorInfo(ip);
+
+      if (formData.platform) {
+        try {
+          const platformHandler = MeetingPlatformFactory.getPlatform(
+            formData.platform
+          );
+          joinUrl = platformHandler.generateJoinUrl(formData);
+          console.log(`Generated join URL: ${joinUrl}`);
+          // Use the joinUrl (e.g., store it, send it in the response, etc.)
+        } catch (err) {
+          if (err instanceof Error) {
+            console.error(err.message);
+            return res.status(400).json({ message: err.message });
+          }
+        }
+      }
     }
 
     await sendMessage(
-      { ...formData, userInfo: info },
+      { ...formData, userInfo: info, link: joinUrl },
       FORM_RESPONSES[formName]["_type"]
     );
 
