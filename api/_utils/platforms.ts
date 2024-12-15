@@ -1,8 +1,8 @@
 import { MeetSchemaType } from "@/types/types";
 import axios from "axios";
+import { tokenCheck } from "./zoom/token";
 
-const ZOOM_SECRET_TOKEN = process.env.ZOOM_SECRET_TOKEN;
-const email = "daflowoftime@outlook.com";
+const EMAIL = "daflowoftime@outlook.com";
 
 type Data = Partial<MeetSchemaType>;
 
@@ -15,16 +15,13 @@ class ZoomPlatform implements MeetingPlatform {
     { email, date, time }: Data,
     timezone: string
   ): Promise<string | null> {
-    console.log(ZOOM_SECRET_TOKEN);
+    const headers = await tokenCheck();
 
     // Logic to generate a Zoom join URL
     const options = {
       method: "POST",
-      url: `https://api.zoom.us/v2/users/${email}/meetings`,
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer emOxFCSuT1Oo_hIQJOjpzQ`,
-      },
+      url: `https://api.zoom.us/v2/users/${EMAIL}/meetings`,
+      headers,
       data: {
         agenda: "My Meeting",
         default_password: false,
