@@ -14,6 +14,8 @@ class ZoomPlatform implements MeetingPlatform {
     { email, date, time }: Data,
     timezone: string
   ): Promise<string | null> {
+    console.log(ZOOM_SECRET_TOKEN);
+
     // Logic to generate a Zoom join URL
     const options = {
       method: "POST",
