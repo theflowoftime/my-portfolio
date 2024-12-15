@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 import { ZOOM_OAUTH_ENDPOINT } from "../constants";
 import { Redis } from "@upstash/redis";
 
@@ -10,20 +10,28 @@ const getToken = async () => {
 
     const request = await axios.post(
       ZOOM_OAUTH_ENDPOINT,
-      { grant_type: "account_credentials", account_id: ZOOM_ACCOUNT_ID },
+      new URLSearchParams({
+        grant_type: "account_credentials",
+        account_id: ZOOM_ACCOUNT_ID,
+      }),
       {
         headers: {
           Authorization: `Basic ${Buffer.from(
             `${ZOOM_CLIENT_ID}:${ZOOM_CLIENT_SECRET}`
           ).toString("base64")}`,
+          "Content-Type": "application/x-www-form-urlencoded",
         },
       }
     );
 
-    const { access_token, expires_in } = await request.data;
-
+    const { access_token, expires_in } = request.data;
     return { access_token, expires_in, error: null };
   } catch (error) {
+    if (isAxiosError(error))
+      console.error(
+        "Error generating Zoom token:",
+        error.response?.data || error.message
+      );
     return { access_token: null, expires_in: null, error };
   }
 };
@@ -70,8 +78,6 @@ export const tokenCheck = async () => {
 
     token = access_token;
   }
-
-  console.log(token);
 
   return {
     Authorization: `Bearer ${token}`,
