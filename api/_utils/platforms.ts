@@ -11,7 +11,7 @@ interface MeetingPlatform {
 
 class ZoomPlatform implements MeetingPlatform {
   async generateJoinUrl(
-    { email, date, time }: Data,
+    { date, time }: Data,
     timezone: string
   ): Promise<string | null> {
     console.log(ZOOM_SECRET_TOKEN);
