@@ -24,6 +24,10 @@ export const API_ENDPOINTS = {
     import.meta.env.MODE === "production"
       ? "/api/contact-me"
       : "https://yacinekedidi.vercel.app/api/contact-me",
+  info:
+    import.meta.env.MODE === "production"
+      ? "/api/info"
+      : "https://yacinekedidi.vercel.app/api/info",
 };
 
 export const defaultSuccessMessage = "Message submitted successfully!";

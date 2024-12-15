@@ -1,3 +1,4 @@
+import { API_ENDPOINTS } from "@/lib/constants";
 import { useLanguageStore } from "@/stores/language-store";
 import useVisitorStore from "@/stores/visitor-store";
 import { InfoVisitor } from "@/types/types";
@@ -29,7 +30,9 @@ export const useCollectInfo = () => {
     queryKey: ["visitorInfo", language],
     queryFn: async () => {
       try {
-        const response = await axios.get("/api/info", {
+        console.log(API_ENDPOINTS["info"]);
+
+        const response = await axios.get(API_ENDPOINTS["info"], {
           params: {
             lang: language,
           },
