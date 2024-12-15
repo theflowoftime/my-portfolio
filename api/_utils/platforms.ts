@@ -27,7 +27,7 @@ class ZoomPlatform implements MeetingPlatform {
         default_password: false,
         duration: 60,
         pre_schedule: true,
-        schedule_for: email,
+        // schedule_for: email,
         start_time: `${date}T${time}`, // yyyy-MM-ddTHH:mm:ss
         timezone,
         topic: "My Meeting",
@@ -37,12 +37,16 @@ class ZoomPlatform implements MeetingPlatform {
 
     try {
       const { data } = await axios.request(options);
-      console.log(data);
+      console.log("Meeting Created:", data);
       return data.join_url;
     } catch (error) {
-      console.error(error);
+      if (axios.isAxiosError(error)) {
+        console.error("Zoom API Error:", error.response?.data || error.message);
+      } else {
+        console.error("Unexpected Error:", error);
+      }
+      return null;
     }
-    return null;
   }
 }
 
