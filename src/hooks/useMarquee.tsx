@@ -83,7 +83,7 @@ export default function Marquee({ contactData }: { contactData: Contact }) {
       )}
     >
       {[...Array(repeatCount)].map((_, index) => (
-        <span ref={index === 0 ? textRef : undefined}>
+        <span key={index} ref={index === 0 ? textRef : undefined}>
           {contactData?.HeaderWords?.map(({ word, isHighlighted }) => (
             <span
               key={word}

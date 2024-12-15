@@ -93,16 +93,36 @@ export function formatDateForSanity(date: Date) {
  * // '+04:00'
  * getTimeZone()
  */
-export const getTimeZoneOffset = (ApiOffset: number | undefined) => {
-  const timezoneOffset = ApiOffset || new Date().getTimezoneOffset();
-  const offset = Math.abs(timezoneOffset);
-  const offsetOperator = timezoneOffset < 0 ? "+" : "-";
-  const offsetHours = Math.floor(offset / 60)
-    .toString()
-    .padStart(2, "0");
-  const offsetMinutes = Math.floor(offset % 60)
+export const getTimeZoneOffset = (apiOffset: number | undefined) => {
+  let offsetInHours: number | null = null;
+
+  // Use `apiOffset` if provided
+  if (apiOffset !== undefined) {
+    offsetInHours = apiOffset / 3600; // Convert seconds to hours
+  }
+
+  // Calculate local timezone offset if `apiOffset` is not provided
+  const timezoneOffset = new Date().getTimezoneOffset(); // Local timezone offset in minutes
+  const localOffsetInHours = timezoneOffset / -60; // Convert minutes to hours, invert sign for UTC
+
+  // Use `apiOffset` if available, otherwise use local offset
+  const finalOffset =
+    offsetInHours !== null ? offsetInHours : localOffsetInHours;
+
+  // Build the UTC offset string
+  const offsetOperator = finalOffset >= 0 ? "+" : "-";
+  const absoluteOffset = Math.abs(finalOffset);
+  const offsetHours = Math.floor(absoluteOffset).toString().padStart(2, "0");
+  const offsetMinutes = Math.floor((absoluteOffset % 1) * 60)
     .toString()
     .padStart(2, "0");
 
   return `UTC ${offsetOperator}${offsetHours}:${offsetMinutes}`;
 };
+
+export const isIntendedDomain =
+  typeof window !== "undefined" &&
+  window.location.hostname ===
+    (import.meta.env.PROD
+      ? import.meta.env.VITE_WEBSITE_URL
+      : import.meta.env.VITE_DEV_WEBSITE_URL);

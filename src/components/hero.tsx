@@ -12,7 +12,6 @@ import { useCursorStore } from "@/stores/cursor-store";
 import Autoplay from "embla-carousel-autoplay";
 import { Carousel, CarouselContent, CarouselItem } from "./ui/carousel";
 import { useLanguageStore } from "@/stores/language-store";
-import useVisitorStore from "@/stores/visitor-store";
 
 function Hero() {
   const { data: heroData, isLoading } = useHero();
@@ -20,7 +19,6 @@ function Hero() {
   const animateCursor = useCursorStore((state) => state.animateCursor);
   const language = useLanguageStore((state) => state.language);
   const [areFontsLoaded, setAreFontsLoaded] = useState(false);
-  const visitorInfo = useVisitorStore((state) => state.visitorInfo);
 
   const plugin = React.useRef(
     Autoplay({ delay: 1500, stopOnInteraction: true })

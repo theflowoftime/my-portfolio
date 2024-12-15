@@ -1,4 +1,5 @@
 import { API_ENDPOINTS } from "@/lib/constants";
+import { isIntendedDomain } from "@/lib/utils";
 import { useLanguageStore } from "@/stores/language-store";
 import useVisitorStore from "@/stores/visitor-store";
 import { InfoVisitor } from "@/types/types";
@@ -17,10 +18,6 @@ type VisitorInfoResponse =
       error: { message: MessageError };
     };
 
-const isIntendedDomain =
-  typeof window !== "undefined" &&
-  window.location.hostname === import.meta.env.VITE_WEBSITE_URL;
-
 export const useCollectInfo = () => {
   const setVisitorInfo = useVisitorStore((state) => state.setVisitorInfo);
   const language = useLanguageStore((state) => state.language);
@@ -30,8 +27,6 @@ export const useCollectInfo = () => {
     queryKey: ["visitorInfo", language],
     queryFn: async () => {
       try {
-        console.log(API_ENDPOINTS["info"]);
-
         const response = await axios.get(API_ENDPOINTS["info"], {
           params: {
             lang: language,

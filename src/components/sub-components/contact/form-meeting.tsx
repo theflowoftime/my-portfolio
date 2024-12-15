@@ -194,7 +194,7 @@ export default function ScheduleMeetingForm() {
             />
           </div>
 
-          <Separator className="bg-input" />
+          <Separator className="bg-input/40" />
 
           <div className="flex flex-col w-full gap-4 lg:flex-row">
             <FormField
@@ -263,8 +263,6 @@ export default function ScheduleMeetingForm() {
             />
           </div>
 
-          <Separator className="bg-input" />
-
           <ReCAPTCHA
             className="hidden"
             ref={recaptchaRef}
@@ -291,11 +289,8 @@ export default function ScheduleMeetingForm() {
               )}
             </Button>
             {/* <Separator className="bg-input" /> */}
-
-            <DrawerClose className="w-full">
-              <Button className="w-full font-unbounded" variant="outline">
-                cancel
-              </Button>
+            <DrawerClose className="w-full border rounded-lg font-unbounded outline-1 outline-input border-input bg-background hover:bg-accent hover:text-accent-foreground">
+              cancel
             </DrawerClose>
           </div>
         </div>
