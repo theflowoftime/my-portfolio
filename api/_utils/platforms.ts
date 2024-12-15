@@ -24,7 +24,6 @@ class ZoomPlatform implements MeetingPlatform {
       headers,
       data: {
         agenda: "My Meeting",
-        default_password: false,
         duration: 60,
         pre_schedule: true,
         // schedule_for: email,

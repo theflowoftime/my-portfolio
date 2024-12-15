@@ -71,6 +71,8 @@ export const tokenCheck = async () => {
     token = access_token;
   }
 
+  console.log(token);
+
   return {
     Authorization: `Bearer ${token}`,
   };
