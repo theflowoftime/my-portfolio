@@ -170,6 +170,9 @@ export type InfoVisitor = {
   country: string;
   timezone: string;
   countryCode: string;
+  offset: number;
+  mobile: boolean;
+  proxy: boolean;
 };
 
 type State = {

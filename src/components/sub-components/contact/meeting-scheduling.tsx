@@ -211,10 +211,13 @@ function ScheduleMeetingForm() {
                       />
                     </FormControl>
                     <FormDescription>
+                      {/* <UserLocalTimeSetups /> */}
                       <small className="flex items-center opacity-70 gap-x-2">
                         {/* will be changed to figuring out the user timezone and displaying it in here instead */}
-                        <Globe size={16} />
-                        {visitorInfo?.timezone} {getTimeZoneOffset()}
+                        <Globe size={14} />
+                        {visitorInfo?.timezone ||
+                          Intl.DateTimeFormat().resolvedOptions().timeZone}{" "}
+                        {getTimeZoneOffset()}
                       </small>
                     </FormDescription>
                   </div>

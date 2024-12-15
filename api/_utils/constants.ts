@@ -50,3 +50,6 @@ export const FORM_RESPONSES: TFORM_RESPONSES = {
     },
   },
 };
+
+export const FIELDS_NUMERIC = 60551167;
+export const DEFAULT_LANG = "EN";
