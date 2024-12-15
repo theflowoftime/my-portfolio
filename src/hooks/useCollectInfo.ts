@@ -26,7 +26,7 @@ export const useCollectInfo = () => {
 
   // Fetch visitor data and store it in Zustand
   const { data: visitorInfo } = useQuery<VisitorInfoResponse>({
-    queryKey: ["visitorInfo"],
+    queryKey: ["visitorInfo", language],
     queryFn: async () => {
       const response = await axios.get("/api/info", {
         params: {
