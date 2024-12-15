@@ -23,7 +23,7 @@ class ZoomPlatform implements MeetingPlatform {
       url: `https://api.zoom.us/v2/users/${email}/meetings`,
       headers: {
         "Content-Type": "application/json",
-        Authorization: "Bearer lod6hfw0Q0yHvwoFrJ01BQ",
+        Authorization: `Bearer emOxFCSuT1Oo_hIQJOjpzQ`,
       },
       data: {
         agenda: "My Meeting",
