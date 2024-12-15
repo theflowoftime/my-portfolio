@@ -14,8 +14,6 @@ class ZoomPlatform implements MeetingPlatform {
     { email, date, time }: Data,
     timezone: string
   ): Promise<string | null> {
-    console.log(ZOOM_SECRET_TOKEN);
-
     // Logic to generate a Zoom join URL
     const options = {
       method: "POST",
@@ -31,7 +29,7 @@ class ZoomPlatform implements MeetingPlatform {
         pre_schedule: true,
         schedule_for: email,
         start_time: `${date}T${time}`, // yyyy-MM-ddTHH:mm:ss
-        timezone: timezone,
+        timezone,
         topic: "My Meeting",
         type: 2,
       },

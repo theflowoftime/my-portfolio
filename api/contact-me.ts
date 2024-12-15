@@ -52,9 +52,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(status).json({ message });
     }
 
-    // Store IP and send message
-    await storeIP(ipKey);
-
     let info;
     let joinUrl;
     if (formName === "meet" && ip) {
@@ -66,7 +63,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           const platformHandler = MeetingPlatformFactory.getPlatform(
             formData.platform
           );
-          joinUrl = platformHandler.generateJoinUrl(formData);
+          joinUrl = await platformHandler.generateJoinUrl(
+            formData,
+            info?.timezone
+          );
           console.log(`Generated join URL: ${joinUrl}`);
           // Use the joinUrl (e.g., store it, send it in the response, etc.)
         } catch (err) {
@@ -78,6 +78,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
     }
 
+    // Store IP and send message
+    await storeIP(ipKey);
     await sendMessage(
       { ...formData, userInfo: info, link: joinUrl },
       FORM_RESPONSES[formName]["_type"]
