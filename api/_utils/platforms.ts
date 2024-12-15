@@ -3,19 +3,17 @@ import axios from "axios";
 
 const ZOOM_SECRET_TOKEN = process.env.ZOOM_SECRET_TOKEN;
 
-type Payload = Partial<MeetSchemaType> & { timezone: string };
+type Data = Partial<MeetSchemaType>;
 
 interface MeetingPlatform {
-  generateJoinUrl(payload: Payload): Promise<string | null>;
+  generateJoinUrl(data: Data, timezone?: string): Promise<string | null>;
 }
 
 class ZoomPlatform implements MeetingPlatform {
-  async generateJoinUrl({
-    email,
-    date,
-    time,
-    timezone,
-  }: Payload): Promise<string | null> {
+  async generateJoinUrl(
+    { email, date, time }: Data,
+    timezone: string
+  ): Promise<string | null> {
     // Logic to generate a Zoom join URL
     const options = {
       method: "POST",
@@ -24,7 +22,7 @@ class ZoomPlatform implements MeetingPlatform {
         "Content-Type": "application/json",
         Authorization: `Bearer ${ZOOM_SECRET_TOKEN}`,
       },
-      payload: {
+      data: {
         agenda: "My Meeting",
         default_password: false,
         duration: 60,
@@ -49,14 +47,14 @@ class ZoomPlatform implements MeetingPlatform {
 }
 
 class GoogleMeetPlatform implements MeetingPlatform {
-  generateJoinUrl(payload: Payload): Promise<string> {
+  generateJoinUrl(data: Data): Promise<string> {
     // Logic to generate a Google Meet join URL
     return new Promise(() => {});
   }
 }
 
 class MicrosoftTeamsPlatform implements MeetingPlatform {
-  generateJoinUrl(payload: Payload): Promise<string> {
+  generateJoinUrl(data: Data): Promise<string> {
     // Logic to generate a Microsoft Teams join URL
     return new Promise(() => {});
   }
