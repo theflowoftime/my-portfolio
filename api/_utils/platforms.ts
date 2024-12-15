@@ -12,7 +12,7 @@ interface MeetingPlatform {
 
 class ZoomPlatform implements MeetingPlatform {
   async generateJoinUrl(
-    { date, time }: Data,
+    { email, date, time }: Data,
     timezone: string
   ): Promise<string | null> {
     console.log(ZOOM_SECRET_TOKEN);
@@ -23,7 +23,7 @@ class ZoomPlatform implements MeetingPlatform {
       url: `https://api.zoom.us/v2/users/${email}/meetings`,
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${ZOOM_SECRET_TOKEN}`,
+        Authorization: "Bearer lod6hfw0Q0yHvwoFrJ01BQ",
       },
       data: {
         agenda: "My Meeting",
@@ -35,6 +35,12 @@ class ZoomPlatform implements MeetingPlatform {
         timezone,
         topic: "My Meeting",
         type: 2,
+        meeting_invitees: [
+          {
+            email,
+            registrants_confirmation_email: true,
+          },
+        ],
       },
     };
 
