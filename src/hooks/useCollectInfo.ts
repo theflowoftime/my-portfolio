@@ -25,30 +25,38 @@ export const useCollectInfo = () => {
   const language = useLanguageStore((state) => state.language);
 
   // Fetch visitor data and store it in Zustand
-  const { data: visitorInfo, refetch } = useQuery<VisitorInfoResponse>({
-    queryKey: ["visitorInfo"],
+  const { data: visitorInfo, error } = useQuery<VisitorInfoResponse>({
+    queryKey: ["visitorInfo", language],
     queryFn: async () => {
-      const response = await axios.get("/api/info", {
-        params: {
-          lang: language,
-        },
-      });
-      return response.data;
+      try {
+        const response = await axios.get("/api/info", {
+          params: {
+            lang: language,
+          },
+        });
+        return response.data;
+      } catch (err) {
+        console.error("Error fetching visitor info:", err);
+        throw err;
+      }
     },
-    enabled: isIntendedDomain,
     // staleTime: Infinity, // Cache data indefinitely to avoid re-fetching
     // gcTime: Infinity, // Keep data in the cache forever
-    staleTime: 1000 * 60 * 60, // Cache data for an hour to avoid re-fetching
+    enabled: isIntendedDomain && !!language, // Ensure correct domain and valid language
+    staleTime: 1000 * 60 * 60, // Cache data for an hour
+    gcTime: 1000 * 60 * 60, // Keep data in cache for an hour
+    retry: 1, // Retry once if the request fails
   });
-
-  useEffect(() => {
-    refetch();
-  }, [language]);
 
   // Update Zustand state when visitorInfo changes
   useEffect(() => {
-    if (visitorInfo) {
-      if (visitorInfo.status === "success") setVisitorInfo(visitorInfo.info);
-    }
+    if (visitorInfo?.status === "success") setVisitorInfo(visitorInfo.info);
   }, [visitorInfo, setVisitorInfo]);
+
+  // Optionally handle errors (e.g., log or show UI feedback)
+  useEffect(() => {
+    if (error) {
+      console.error("Failed to fetch visitor information:", error);
+    }
+  }, [error]);
 };
