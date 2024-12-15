@@ -67,7 +67,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             formData,
             info?.timezone
           );
-          console.log(`Generated join URL: ${joinUrl}`);
+          console.log(`Generated join URL:: ${joinUrl}`);
           // Use the joinUrl (e.g., store it, send it in the response, etc.)
         } catch (err) {
           if (err instanceof Error) {
