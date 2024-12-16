@@ -107,7 +107,8 @@ class ZoomPlatform implements MeetingPlatform {
         from: EMAIL,
         to: email,
         subject: "Your Meeting Confirmation",
-        html: emailHtml,
+        // html: "<strong>works</strong>",
+        react: emailHtml,
       });
       console.info("Email sent", { recipient: email, joinUrl: join_url });
     } catch (error) {
