@@ -3,6 +3,7 @@ import { tokenCheck } from "./zoom/token";
 import { ZOOM_API_BASE_URL } from "./constants";
 import { Data } from "api/types";
 import { formatStartTime } from "./utils";
+import { Resend } from "resend";
 
 const EMAIL = "daflowoftime@outlook.com";
 const LOCALE = "en-US";
@@ -19,6 +20,8 @@ interface MeetingPlatform {
 }
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY!;
+
+const resend = new Resend(RESEND_API_KEY);
 
 class ZoomPlatform implements MeetingPlatform {
   async createMeeting(
@@ -112,11 +115,13 @@ class ZoomPlatform implements MeetingPlatform {
     console.log(RESEND_API_KEY);
 
     try {
+      const api_key = await resend.apiKeys.create({ name: "production" });
+
       const response = await axios.post("https://api.resend.com/emails", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${RESEND_API_KEY}`,
+          Authorization: `Bearer ${api_key}`,
         },
         body: {
           from: EMAIL,
