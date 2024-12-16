@@ -102,21 +102,42 @@ class ZoomPlatform implements MeetingPlatform {
     //   />
     // );
     try {
-      await resend.emails.send({
-        from: EMAIL,
-        to: email,
-        subject: "Your Meeting Confirmation",
-        // html: "<strong>works</strong>",
-        react: EmailTemplate({
-          joinUrl: join_url,
-          startTime: new Date(start_time).toLocaleString(LOCALE, {
-            timeZone: timeZone || "UTC",
-          }),
-          password,
-          timeZone: timeZone || "UTC",
-        }),
+      const response = await axios.post("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${RESEND_API_KEY}`,
+        },
+        body: {
+          from: EMAIL,
+          to: [email],
+          subject: "Your Meeting Confirmation",
+          html: "<strong>it works!</strong>",
+        },
       });
-      console.info("Email sent", { recipient: email, joinUrl: join_url });
+
+      // const { data, error } = await resend.emails.send({
+      //   from: EMAIL,
+      //   to: [email],
+      //   subject: "Your Meeting Confirmation",
+      //   // html: "<strong>works</strong>",
+      //   react: EmailTemplate({
+      //     joinUrl: join_url,
+      //     startTime: new Date(start_time).toLocaleString(LOCALE, {
+      //       timeZone: timeZone || "UTC",
+      //     }),
+      //     password,
+      //     timeZone: timeZone || "UTC",
+      //   }),
+      // });
+      // console.info("Email sent", { recipient: email, joinUrl: join_url });
+
+      // if (error) {
+      //   console.error(error);
+      //   throw error;
+      // }
+
+      console.log(response.data);
     } catch (error) {
       console.error("Error sending email:", error);
       throw new Error("Failed to send confirmation email.");
