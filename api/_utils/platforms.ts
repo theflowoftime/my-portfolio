@@ -1,10 +1,24 @@
-import { MeetSchemaType } from "@/types/types";
 import axios from "axios";
 import { tokenCheck } from "./zoom/token";
+import { ZOOM_API_BASE_URL } from "./constants";
+import { isValid } from "date-fns";
+import { Data } from "api/types";
 
 const EMAIL = "daflowoftime@outlook.com";
 
-type Data = Partial<MeetSchemaType>;
+function formatStartTime(date: Date | undefined, time: string | undefined) {
+  if (!date || !time) return null;
+  // Combine date and time into a full ISO 8601 string
+  const startDateTime = new Date(`${date}T${time}:00`);
+
+  if (!isValid(startDateTime)) {
+    throw new Error(
+      "Invalid date or time format. Please use yyyy-MM-dd for date and HH:mm for time."
+    );
+  }
+
+  return startDateTime.toISOString(); // Ensures it is in UTC
+}
 
 interface MeetingPlatform {
   generateJoinUrl(data: Data, timezone?: string): Promise<string | null>;
@@ -20,23 +34,26 @@ class ZoomPlatform implements MeetingPlatform {
     // Logic to generate a Zoom join URL
     const options = {
       method: "POST",
-      url: `https://api.zoom.us/v2/users/${EMAIL}/meetings`,
+      url: `${ZOOM_API_BASE_URL}/users/${EMAIL}/meetings`,
       headers,
       data: {
         agenda: "My Meeting",
         duration: 60,
         pre_schedule: true,
         // schedule_for: email,
-        start_time: `${date}T${time}`, // yyyy-MM-ddTHH:mm:ss
+        start_time: formatStartTime(date, time), // yyyy-MM-ddTHH:mm:ss
         timezone,
         topic: "My Meeting",
         type: 2,
-        meeting_invitees: [
-          {
-            email,
-            registrants_confirmation_email: true,
-          },
-        ],
+        settings: {
+          meeting_invitees: [
+            {
+              email,
+              registrants_confirmation_email: true,
+              registrants_email_notification: true,
+            },
+          ],
+        },
       },
     };
 

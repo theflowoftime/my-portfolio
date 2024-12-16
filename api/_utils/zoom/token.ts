@@ -12,7 +12,7 @@ const getToken = async () => {
       ZOOM_OAUTH_ENDPOINT,
       new URLSearchParams({
         grant_type: "account_credentials",
-        account_id: ZOOM_ACCOUNT_ID,
+        account_id: ZOOM_ACCOUNT_ID!,
       }),
       {
         headers: {

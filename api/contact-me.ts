@@ -6,58 +6,54 @@ import { getVisitorInfo, storeIP, verifyIPRateLimit } from "./_utils/db_redis";
 import { verifyCaptcha } from "./_utils/verify-google-recaptcha";
 import { retrieveIp } from "./_utils/network";
 import { MeetingPlatformFactory } from "./_utils/platforms";
+import { errorHandler } from "./_utils/error";
+import { isAxiosError } from "axios";
+
+function getErrorMessage(err: unknown): string {
+  if (isAxiosError(err)) return err.message;
+  if (err instanceof Error) return err.message;
+  return "An unknown error occurred";
+}
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  let formName = req.query?.formName as keyof typeof FORM_RESPONSES;
-  // Ensure formName is provided and valid
-  if (!formName) {
-    return res.status(400).json({ message: "Invalid or missing formName" });
+  const formName = req.query?.formName as keyof typeof FORM_RESPONSES;
+
+  if (!formName || !(formName in FORM_RESPONSES)) {
+    return errorHandler(res, "Invalid or missing formName", "error", "contact");
   }
 
   if (req.method !== "POST") {
-    const { status, message } = FORM_RESPONSES[formName]["unauthorized"];
-    return res.status(status).json({ message });
+    return errorHandler(res, null, "unauthorized", formName);
   }
 
   const { recaptchaToken, ...formData } = req.body;
-
   const ip = retrieveIp(req);
 
   const verifySchema = buildFormSchema(null, formName).safeParse(formData);
 
   try {
-    // Ensure formData matches schema
     if (verifySchema.error) throw verifySchema.error;
 
-    // Ensure recaptchaToken exists
     if (!recaptchaToken) {
-      const { status, message } = FORM_RESPONSES[formName]["recaptcha"];
-      return res.status(status).json({ message });
+      return errorHandler(res, null, "recaptcha", formName);
     }
 
-    // Verify reCAPTCHA
     const { success, score } = await verifyCaptcha(recaptchaToken);
 
     if (!success || score < 0.5) {
-      const { status, message } = FORM_RESPONSES[formName]["recaptcha"];
-      return res.status(status).json({ message });
+      return errorHandler(res, null, "recaptcha", formName);
     }
 
-    // Rate limit check
-    const ipKey = `${FORM_RESPONSES[formName]["ip_prefix"]}${ip}`;
+    const ipKey = `${FORM_RESPONSES[formName].ip_prefix}${ip}`;
     const lastMessageTimestamp = await verifyIPRateLimit(ipKey);
 
     if (lastMessageTimestamp) {
-      const { status, message } = FORM_RESPONSES[formName]["rateLimit"];
-      return res.status(status).json({ message });
+      return errorHandler(res, null, "rateLimit", formName);
     }
 
-    let info;
-    let joinUrl;
+    let info, joinUrl;
     if (formName === "meet" && ip) {
-      // get the info from redis if it can find it
       info = await getVisitorInfo(ip);
-
       if (formData.platform) {
         try {
           const platformHandler = MeetingPlatformFactory.getPlatform(
@@ -67,33 +63,26 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             formData,
             info?.timezone
           );
-          console.log(`Generated join URL:: ${joinUrl}`);
-          // Use the joinUrl (e.g., store it, send it in the response, etc.)
         } catch (err) {
-          if (err instanceof Error) {
-            console.error(err.message);
-            return res.status(400).json({ message: err.message });
-          }
+          const errorMessage = getErrorMessage(err);
+          console.error(`Error generating join URL: ${errorMessage}`, {
+            formData,
+            error: err,
+          });
+          return errorHandler(res, errorMessage, "error", formName);
         }
       }
     }
 
-    // Store IP and send message
     await storeIP(ipKey);
     await sendMessage(
       { ...formData, userInfo: info, link: joinUrl },
-      FORM_RESPONSES[formName]["_type"]
+      FORM_RESPONSES[formName]._type
     );
 
-    // Success response
-    const { status, message } = FORM_RESPONSES[formName]["success"];
-    return res.status(status).json({ message });
+    return errorHandler(res, null, "success", formName);
   } catch (error) {
-    const { status, message } = FORM_RESPONSES[formName]["error"];
-    return res.status(status).json({
-      message,
-      error:
-        error instanceof Error ? error.message : "An unknown error occurred",
-    });
+    console.error("Unhandled error occurred", error);
+    return errorHandler(res, null, "error", formName);
   }
 }
