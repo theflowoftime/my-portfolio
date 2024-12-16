@@ -139,7 +139,7 @@ class ZoomPlatform implements MeetingPlatform {
         subject: "Your Meeting Confirmation",
         html: emailHtml,
       });
-      console.info(`Confirmation email sent successfully to ${email}`);
+      console.info("Email sent", { recipient: email, joinUrl: join_url });
     } catch (error) {
       console.error("Error sending email:", error);
       throw new Error("Failed to send confirmation email.");
