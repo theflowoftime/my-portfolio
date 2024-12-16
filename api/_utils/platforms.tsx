@@ -3,9 +3,6 @@ import { tokenCheck } from "./zoom/token";
 import { ZOOM_API_BASE_URL } from "./constants";
 import { Data } from "api/types";
 import { formatStartTime } from "./utils";
-import { Resend } from "resend";
-import { render } from "@react-email/components";
-import EmailTemplate from "./zoom/confirmation-email";
 
 const EMAIL = "daflowoftime@outlook.com";
 const LOCALE = "en-US";
@@ -22,8 +19,6 @@ interface MeetingPlatform {
 }
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY!;
-
-const resend = new Resend(RESEND_API_KEY);
 
 class ZoomPlatform implements MeetingPlatform {
   async createMeeting(
@@ -101,6 +96,21 @@ class ZoomPlatform implements MeetingPlatform {
     //     timeZone={timeZone || "UTC"}
     //   />
     // );
+
+    // Prepare the email template
+    const emailHtml = `
+  <html>
+    <body>
+      <p>Hi,</p>
+      <p>Your meeting is scheduled for ${new Date(start_time).toLocaleString()}</p>
+      <p>Your password: ${password}</p>
+      <p><a href="${join_url}">Join the Meeting</a></p>
+    </body>
+  </html>
+`;
+
+    console.log(RESEND_API_KEY);
+
     try {
       const response = await axios.post("https://api.resend.com/emails", {
         method: "POST",
@@ -112,7 +122,7 @@ class ZoomPlatform implements MeetingPlatform {
           from: `YK <${EMAIL}>`,
           to: email,
           subject: "Your Meeting Confirmation",
-          html: "<strong>it works!</strong>",
+          html: emailHtml,
         },
       });
 
