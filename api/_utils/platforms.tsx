@@ -4,50 +4,13 @@ import { ZOOM_API_BASE_URL } from "./constants";
 import { Data } from "api/types";
 import { formatStartTime } from "./utils";
 import { Resend } from "resend";
-import {
-  Button,
-  Container,
-  Html,
-  render,
-  Section,
-  Text,
-} from "@react-email/components";
+import { render } from "@react-email/components";
+import EmailTemplate from "./zoom/confirmation-email";
 
 const EMAIL = "daflowoftime@outlook.com";
 const LOCALE = "en-US";
 
 type Meeting = any; // zoom meeting response
-
-// Define the email template
-function EmailTemplate(props: {
-  joinUrl: string;
-  startTime: string;
-  password: string;
-  timeZone: string;
-}) {
-  return (
-    <Html lang="en">
-      <Container>
-        <Section>
-          <Text>Hi,</Text>
-          <Text>Your meeting has been scheduled. Here are the details:</Text>
-          <Text>
-            <strong>Start Time:</strong> {props.startTime}
-          </Text>
-          <Text>
-            <strong>Time Zone:</strong> {props.timeZone}
-          </Text>
-          <Text>
-            <strong>Password:</strong> {props.password}
-          </Text>
-          <Button href={props.joinUrl} style={{ marginTop: "10px" }}>
-            Join the Meeting
-          </Button>
-        </Section>
-      </Container>
-    </Html>
-  );
-}
 
 interface MeetingPlatform {
   createMeeting(data: Data, timezone?: string): Promise<Meeting | null>;
@@ -119,6 +82,11 @@ class ZoomPlatform implements MeetingPlatform {
     timeZone: string
   ) {
     if (!join_url || !start_time || !password) {
+      console.error("Missing email details", {
+        join_url,
+        start_time,
+        password,
+      });
       throw new Error("Required email details are missing.");
     }
 
@@ -126,9 +94,11 @@ class ZoomPlatform implements MeetingPlatform {
     const emailHtml = await render(
       <EmailTemplate
         joinUrl={join_url}
-        startTime={new Date(start_time).toLocaleString(LOCALE, { timeZone })}
+        startTime={new Date(start_time).toLocaleString(LOCALE, {
+          timeZone: timeZone || "UTC",
+        })}
         password={password}
-        timeZone={timeZone}
+        timeZone={timeZone || "UTC"}
       />
     );
 
