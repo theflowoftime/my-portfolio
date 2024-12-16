@@ -6,7 +6,7 @@ import { ResponseTypes } from "api/types";
 export const errorHandler = (
   res: VercelResponse,
   customMessage: string | null,
-  messageKey: ResponseTypes | null,
+  messageKey: ResponseTypes,
   name: FormName
 ) => {
   if (!res) return null;

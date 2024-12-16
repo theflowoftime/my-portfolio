@@ -51,7 +51,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return errorHandler(res, null, "rateLimit", formName);
     }
 
-    let info, meeting, joinUrl;
+    let info, meeting, link, password;
     if (formName === "meet" && ip) {
       info = await getVisitorInfo(ip);
       if (formData.platform) {
@@ -63,12 +63,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             formData,
             info?.timezone
           );
-          joinUrl = meeting.join_url;
-          await platformHandler.sendConfirmationEmail(
-            meeting,
-            formData.email,
-            info?.timezone
-          );
+          link = meeting.join_url;
+          password = meeting.password;
         } catch (err) {
           const errorMessage = getErrorMessage(err);
           console.error(`Error generating join URL: ${errorMessage}`, {
@@ -82,7 +78,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     await storeIP(ipKey);
     await sendMessage(
-      { ...formData, userInfo: info, link: joinUrl },
+      { ...formData, userInfo: info, link, password },
       FORM_RESPONSES[formName]._type
     );
 

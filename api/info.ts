@@ -1,6 +1,6 @@
 import { VercelRequest, VercelResponse } from "@vercel/node";
 import { retrieveIp } from "./_utils/network";
-import { getUserInfo } from "./_utils/external-user-info";
+import { getUserInfo } from "./_utils/user-info";
 import { storeVisitorInfo } from "./_utils/db_redis";
 import { Language } from "@/types/types";
 import { DEFAULT_LANG } from "./_utils/constants";

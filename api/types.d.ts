@@ -44,5 +44,3 @@ export type Info = {
   hosting: boolean;
   query: string;
 };
-
-type Data = Partial<MeetSchemaType>;

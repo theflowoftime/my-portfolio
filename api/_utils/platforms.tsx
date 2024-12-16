@@ -3,25 +3,18 @@ import { tokenCheck } from "./zoom/token";
 import { ZOOM_API_BASE_URL } from "./constants";
 import { Data } from "api/types";
 import { formatStartTime } from "./utils";
-import { Resend } from "resend";
 
 const EMAIL = "daflowoftime@outlook.com";
-const LOCALE = "en-US";
-
 type Meeting = any; // zoom meeting response
 
 interface MeetingPlatform {
   createMeeting(data: Data, timezone?: string): Promise<Meeting | null>;
-  sendConfirmationEmail(
+  generateConfirmationEmailData(
     data: Meeting,
     email: string,
     timeZone: string | undefined
   ): void;
 }
-
-const RESEND_API_KEY = process.env.RESEND_API_KEY!;
-
-const resend = new Resend(RESEND_API_KEY);
 
 class ZoomPlatform implements MeetingPlatform {
   async createMeeting(
@@ -65,17 +58,8 @@ class ZoomPlatform implements MeetingPlatform {
     }
   }
 
-  async sendConfirmationEmail(
-    {
-      join_url,
-      start_url,
-      status,
-      password,
-      encrypted_password,
-      pstn_password,
-      h323_password,
-      start_time,
-    }: Meeting,
+  generateConfirmationEmailData(
+    { join_url, start_url, password, start_time }: Meeting,
     email: string,
     timeZone: string
   ) {
@@ -88,75 +72,19 @@ class ZoomPlatform implements MeetingPlatform {
       throw new Error("Required email details are missing.");
     }
 
-    // Render the email HTML
-    // const emailtemplate = (
-    //   <EmailTemplate
-    //     joinUrl={join_url}
-    //     startTime={new Date(start_time).toLocaleString(LOCALE, {
-    //       timeZone: timeZone || "UTC",
-    //     })}
-    //     password={password}
-    //     timeZone={timeZone || "UTC"}
-    //   />
-    // );
-
     // Prepare the email template
     const emailHtml = `
   <html>
     <body>
       <p>Hi,</p>
-      <p>Your meeting is scheduled for ${new Date(start_time).toLocaleString()}</p>
+      <p>Your meeting is scheduled for ${new Date(
+        start_time
+      ).toLocaleString()}</p>
       <p>Your password: ${password}</p>
       <p><a href="${join_url}">Join the Meeting</a></p>
     </body>
   </html>
 `;
-
-    console.log(RESEND_API_KEY);
-
-    try {
-      const api_key = await resend.apiKeys.create({ name: "production" });
-
-      const response = await axios.post("https://api.resend.com/emails", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${api_key}`,
-        },
-        body: {
-          from: EMAIL,
-          to: email,
-          subject: "Your Meeting Confirmation",
-          html: "<strong>It works!</strong>",
-        },
-      });
-
-      // const { data, error } = await resend.emails.send({
-      //   from: EMAIL,
-      //   to: [email],
-      //   subject: "Your Meeting Confirmation",
-      //   // html: "<strong>works</strong>",
-      //   react: EmailTemplate({
-      //     joinUrl: join_url,
-      //     startTime: new Date(start_time).toLocaleString(LOCALE, {
-      //       timeZone: timeZone || "UTC",
-      //     }),
-      //     password,
-      //     timeZone: timeZone || "UTC",
-      //   }),
-      // });
-      // console.info("Email sent", { recipient: email, joinUrl: join_url });
-
-      // if (error) {
-      //   console.error(error);
-      //   throw error;
-      // }
-
-      console.log(response.data);
-    } catch (error) {
-      console.error("Error sending email:", error);
-      throw new Error("Failed to send confirmation email.");
-    }
   }
 }
 
@@ -165,7 +93,7 @@ class GoogleMeetPlatform implements MeetingPlatform {
     // Logic to generate a Google Meet join URL
     return new Promise(() => {});
   }
-  async sendConfirmationEmail() {}
+  generateConfirmationEmailData() {}
 }
 
 class MicrosoftTeamsPlatform implements MeetingPlatform {
@@ -174,7 +102,7 @@ class MicrosoftTeamsPlatform implements MeetingPlatform {
     return new Promise(() => {});
   }
 
-  async sendConfirmationEmail() {}
+  generateConfirmationEmailData() {}
 }
 
 export class MeetingPlatformFactory {
@@ -182,9 +110,9 @@ export class MeetingPlatformFactory {
     switch (platform) {
       case "zoom":
         return new ZoomPlatform();
-      case "google-meet":
+      case "google meet":
         return new GoogleMeetPlatform();
-      case "microsoft-teams":
+      case "microsoft teams":
         return new MicrosoftTeamsPlatform();
       default:
         throw new Error(`Unsupported platform: ${platform}`);
