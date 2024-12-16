@@ -51,7 +51,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return errorHandler(res, null, "rateLimit", formName);
     }
 
-    let info, joinUrl;
+    let info, meeting, joinUrl;
     if (formName === "meet" && ip) {
       info = await getVisitorInfo(ip);
       if (formData.platform) {
@@ -59,8 +59,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           const platformHandler = MeetingPlatformFactory.getPlatform(
             formData.platform
           );
-          joinUrl = await platformHandler.generateJoinUrl(
+          meeting = await platformHandler.createMeeting(
             formData,
+            info?.timezone
+          );
+          joinUrl = meeting.join_url;
+          await platformHandler.sendConfirmationEmail(
+            meeting,
+            formData.email,
             info?.timezone
           );
         } catch (err) {

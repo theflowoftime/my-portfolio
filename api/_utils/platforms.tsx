@@ -1,0 +1,180 @@
+import axios from "axios";
+import { tokenCheck } from "./zoom/token";
+import { ZOOM_API_BASE_URL } from "./constants";
+import { Data } from "api/types";
+import { formatStartTime } from "./utils";
+import { Resend } from "resend";
+import {
+  Button,
+  Container,
+  Html,
+  render,
+  Section,
+  Text,
+} from "@react-email/components";
+
+const EMAIL = "daflowoftime@outlook.com";
+const LOCALE = "en-US";
+
+type Meeting = any; // zoom meeting response
+
+// Define the email template
+function EmailTemplate(props: {
+  joinUrl: string;
+  startTime: string;
+  password: string;
+  timeZone: string;
+}) {
+  return (
+    <Html lang="en">
+      <Container>
+        <Section>
+          <Text>Hi,</Text>
+          <Text>Your meeting has been scheduled. Here are the details:</Text>
+          <Text>
+            <strong>Start Time:</strong> {props.startTime}
+          </Text>
+          <Text>
+            <strong>Time Zone:</strong> {props.timeZone}
+          </Text>
+          <Text>
+            <strong>Password:</strong> {props.password}
+          </Text>
+          <Button href={props.joinUrl} style={{ marginTop: "10px" }}>
+            Join the Meeting
+          </Button>
+        </Section>
+      </Container>
+    </Html>
+  );
+}
+
+interface MeetingPlatform {
+  createMeeting(data: Data, timezone?: string): Promise<Meeting | null>;
+  sendConfirmationEmail(
+    data: Meeting,
+    email: string,
+    timeZone: string | undefined
+  ): void;
+}
+
+const RESEND_API_KEY = process.env.RESEND_API_KEY!;
+
+const resend = new Resend(RESEND_API_KEY);
+
+class ZoomPlatform implements MeetingPlatform {
+  async createMeeting(
+    { email, date, time }: Data,
+    timezone: string
+  ): Promise<any | null> {
+    const headers = await tokenCheck();
+
+    // Logic to generate a Zoom join URL
+    const options = {
+      method: "POST",
+      url: `${ZOOM_API_BASE_URL}/users/${EMAIL}/meetings`,
+      headers,
+      data: {
+        agenda: "My Meeting",
+        duration: 40,
+        pre_schedule: true,
+        // schedule_for: email,
+        start_time: formatStartTime(date, time), // yyyy-MM-ddTHH:mm:ss
+        timezone,
+        topic: "My Meeting",
+        type: 2,
+        settings: {
+          host_video: true,
+          participant_video: true,
+        },
+      },
+    };
+
+    try {
+      const response = await axios.request(options);
+      console.log("Meeting Created:", response.data);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error("Zoom API Error:", error.response?.data || error.message);
+      } else {
+        console.error("Unexpected Error:", error);
+      }
+      return null;
+    }
+  }
+
+  async sendConfirmationEmail(
+    {
+      join_url,
+      start_url,
+      status,
+      password,
+      encrypted_password,
+      pstn_password,
+      h323_password,
+      start_time,
+    }: Meeting,
+    email: string,
+    timeZone: string
+  ) {
+    if (!join_url || !start_time || !password) {
+      throw new Error("Required email details are missing.");
+    }
+
+    // Render the email HTML
+    const emailHtml = await render(
+      <EmailTemplate
+        joinUrl={join_url}
+        startTime={new Date(start_time).toLocaleString(LOCALE, { timeZone })}
+        password={password}
+        timeZone={timeZone}
+      />
+    );
+
+    try {
+      await resend.emails.send({
+        from: EMAIL,
+        to: email,
+        subject: "Your Meeting Confirmation",
+        html: emailHtml,
+      });
+      console.info(`Confirmation email sent successfully to ${email}`);
+    } catch (error) {
+      console.error("Error sending email:", error);
+      throw new Error("Failed to send confirmation email.");
+    }
+  }
+}
+
+class GoogleMeetPlatform implements MeetingPlatform {
+  createMeeting(data: Data): Promise<string> {
+    // Logic to generate a Google Meet join URL
+    return new Promise(() => {});
+  }
+  async sendConfirmationEmail() {}
+}
+
+class MicrosoftTeamsPlatform implements MeetingPlatform {
+  createMeeting(data: Data): Promise<string> {
+    // Logic to generate a Microsoft Teams join URL
+    return new Promise(() => {});
+  }
+
+  async sendConfirmationEmail() {}
+}
+
+export class MeetingPlatformFactory {
+  static getPlatform(platform: string): MeetingPlatform {
+    switch (platform) {
+      case "zoom":
+        return new ZoomPlatform();
+      case "google-meet":
+        return new GoogleMeetPlatform();
+      case "microsoft-teams":
+        return new MicrosoftTeamsPlatform();
+      default:
+        throw new Error(`Unsupported platform: ${platform}`);
+    }
+  }
+}
