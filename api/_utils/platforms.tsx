@@ -109,8 +109,8 @@ class ZoomPlatform implements MeetingPlatform {
           Authorization: `Bearer ${RESEND_API_KEY}`,
         },
         body: {
-          from: EMAIL,
-          to: [email],
+          from: `YK <${EMAIL}>`,
+          to: email,
           subject: "Your Meeting Confirmation",
           html: "<strong>it works!</strong>",
         },
