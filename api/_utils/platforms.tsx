@@ -91,24 +91,30 @@ class ZoomPlatform implements MeetingPlatform {
     }
 
     // Render the email HTML
-    const emailHtml = await render(
-      <EmailTemplate
-        joinUrl={join_url}
-        startTime={new Date(start_time).toLocaleString(LOCALE, {
-          timeZone: timeZone || "UTC",
-        })}
-        password={password}
-        timeZone={timeZone || "UTC"}
-      />
-    );
-
+    // const emailtemplate = (
+    //   <EmailTemplate
+    //     joinUrl={join_url}
+    //     startTime={new Date(start_time).toLocaleString(LOCALE, {
+    //       timeZone: timeZone || "UTC",
+    //     })}
+    //     password={password}
+    //     timeZone={timeZone || "UTC"}
+    //   />
+    // );
     try {
       await resend.emails.send({
         from: EMAIL,
         to: email,
         subject: "Your Meeting Confirmation",
         // html: "<strong>works</strong>",
-        react: emailHtml,
+        react: EmailTemplate({
+          joinUrl: join_url,
+          startTime: new Date(start_time).toLocaleString(LOCALE, {
+            timeZone: timeZone || "UTC",
+          }),
+          password,
+          timeZone: timeZone || "UTC",
+        }),
       });
       console.info("Email sent", { recipient: email, joinUrl: join_url });
     } catch (error) {
