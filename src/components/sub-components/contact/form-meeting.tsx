@@ -103,7 +103,7 @@ export default function ScheduleMeetingForm() {
     form.reset();
   }, [language]);
 
-  if (form.formState.isSubmitSuccessful) {
+  if (status === "success" && form.formState.isSubmitSuccessful) {
     return (
       <SuccessMeeting
         email={form.getValues("email")}
