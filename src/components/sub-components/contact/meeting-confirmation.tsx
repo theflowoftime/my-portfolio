@@ -24,6 +24,7 @@ type SuccessMeetingProps = {
   start_time: Date;
   password: string;
   email: string;
+  time: string;
 };
 
 const successMessage = "success";
@@ -34,12 +35,10 @@ export function SuccessMeeting({
   start_time,
   password,
   email,
+  time,
   ...props
 }: SuccessMeetingProps & ComponentProps<"div">) {
   const linkTextElRef = useRef<HTMLInputElement>(null);
-
-  console.log(start_time);
-  console.log(password);
 
   return (
     <div

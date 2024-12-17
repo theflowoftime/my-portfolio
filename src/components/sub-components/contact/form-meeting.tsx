@@ -52,7 +52,7 @@ export default function ScheduleMeetingForm() {
   const theme = useThemeStore((state) => state.theme);
   const animateCursor = useCursorStore((state) => state.animateCursor);
 
-  const [data, setData] = useState({ link: "", password: "" });
+  const [data, setData] = useState({ link: "", password: "", start_time: "" });
 
   const formSchema = buildFormSchema(null, "meet"); // will pass in meetData.errorMessages instead of null
   const form = useForm<MeetSchemaType>({
@@ -65,9 +65,7 @@ export default function ScheduleMeetingForm() {
   });
 
   const handleSuccess = (data: any) => {
-    console.log(data);
     setData(data.data);
-
     // form.reset();
     // toast({
     //   description: meetData?.toast.success.message || defaultSuccessMessage,
@@ -104,10 +102,13 @@ export default function ScheduleMeetingForm() {
   }, [language]);
 
   if (status === "success" && form.formState.isSubmitSuccessful) {
+    console.log(form.getValues());
+
     return (
       <SuccessMeeting
         email={form.getValues("email")}
         start_time={form.getValues("date")}
+        time={form.getValues("time")}
         join_url={data.link}
         password={data.password}
       />

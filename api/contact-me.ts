@@ -87,6 +87,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return errorHandler(res, null, "success", formName, {
       link,
       password,
+      start_time,
     });
   } catch (error) {
     console.error("Unhandled error occurred", error);
