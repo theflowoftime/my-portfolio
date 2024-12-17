@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import client from "@/sanity/lib/client";
 import { useLanguageStore } from "@/stores/language-store";
 import imageUrlBuilder from "@sanity/image-url";
@@ -76,9 +77,16 @@ export function computeDefaultMeetingDate() {
   return defaultMeetingDate;
 }
 
-export function formatDateForSanity(date: Date) {
+/**
+ * Formats a Date object to a YYYY-MM-DD string without timezone shift.
+ *
+ * @param {Date} date - The date to format.
+ * @returns {string} - The formatted date string in YYYY-MM-DD format.
+ */
+export function formatDateForSanity(date: Date): string {
   try {
-    return date.toISOString().split("T")[0]; // Extract YYYY-MM-DD
+    // Format the date in the local timezone
+    return format(date, "yyyy-MM-dd");
   } catch (error) {
     throw new Error("Invalid Date");
   }
