@@ -26,24 +26,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import {
-  cn,
-  computeDefaultMeetingDate,
-  formatDateForSanity,
-} from "@/lib/utils";
-import { buildFormSchema } from "@/lib/zod-schemas";
+import { cn, formatDateForSanity } from "@/lib/utils";
 import { useCursorStore } from "@/stores/cursor-store";
 import { useLanguageStore } from "@/stores/language-store";
 import useThemeStore from "@/stores/theme-store";
 import type { MeetSchemaType } from "@/types/types";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon, Globe, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
-import { useForm } from "react-hook-form";
-import { VisitorTimezoneAndOffset } from "./visitor-timezone-offset";
+import { UseFormReturn } from "react-hook-form";
 import { SuccessMeetingScheduling } from "./meeting-confirmation";
+import { VisitorTimezoneAndOffset } from "./visitor-timezone-offset";
 
 const meetingOptions = ["google meets", "zoom", "microsoft teams", "other"]; // will be replaced to be dynamic
 
@@ -52,22 +46,16 @@ type Data = {
   password: string;
 };
 
-export default function ScheduleMeetingForm() {
+export default function ScheduleMeetingForm({
+  form,
+}: {
+  form: UseFormReturn<MeetSchemaType>;
+}) {
   const language = useLanguageStore((state) => state.language);
   const theme = useThemeStore((state) => state.theme);
   const animateCursor = useCursorStore((state) => state.animateCursor);
 
   const [data, setData] = useState<Data | null>(null);
-
-  const formSchema = buildFormSchema(null, "meet"); // will pass in meetData.errorMessages instead of null
-  const form = useForm<MeetSchemaType>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      date: computeDefaultMeetingDate(),
-      time: "09:00",
-      platform: "zoom",
-    },
-  });
 
   const handleSuccess = (data: any) => {
     if (data) setData(data.data);
