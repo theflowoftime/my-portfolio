@@ -5,8 +5,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useLocale } from "@/hooks/useLocale";
 import { cn } from "@/lib/utils";
 import { Meeting } from "api/_utils/platforms";
+import { format, setHours, setMinutes } from "date-fns";
 import { motion } from "framer-motion";
 import { CopyCheckIcon, Link, LucideCopy } from "lucide-react";
 import {
@@ -18,6 +20,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { enUS, fr, ar } from "date-fns/locale";
 
 type SuccessMeetingProps = {
   join_url: string;
@@ -29,7 +32,38 @@ type SuccessMeetingProps = {
 
 const successMessage = "success";
 
-export function SuccessMeeting({
+function computeDatefnsLocale() {
+  const currentLocale = useLocale();
+
+  switch (currentLocale) {
+    case "en-US":
+      return enUS;
+      break;
+
+    case "fr-FR":
+      return fr;
+      break;
+
+    case "ar":
+      return ar;
+      break;
+    default:
+      break;
+  }
+}
+
+function combineAndFormat(start_time: Date, time: string) {
+  // Split the time string into hours and minutes
+  const [hours, minutes] = time.split(":").map(Number);
+
+  // Combine the date and time
+  const datetime = setMinutes(setHours(start_time, hours), minutes);
+
+  // Format the combined datetime
+  return format(datetime, "PPPPp", { locale: computeDatefnsLocale() });
+}
+
+export function SuccessMeetingScheduling({
   className: containerClassName,
   join_url,
   start_time,
@@ -55,7 +89,7 @@ export function SuccessMeeting({
       />
 
       {/* Parent Container for message */}
-      <div className="flex flex-col items-center h-64 max-w-lg">
+      <div className="flex flex-col items-center h-64 max-w-lg gap-y-4">
         <div className="flex overflow-hidden bg-green-800 rounded-full h-14">
           {/* Checkmark */}
 
@@ -86,7 +120,12 @@ export function SuccessMeeting({
           </motion.div>
         </div>
 
-        <CopyJoinUrl linkTextElRef={linkTextElRef} join_url={join_url} />
+        <div className="flex flex-col items-center gap-y-2">
+          <CopyJoinUrl linkTextElRef={linkTextElRef} join_url={join_url} />
+          <div className="w-full text-lg tracking-wide text-center text-black font-fira">
+            <small>{combineAndFormat(start_time, time)}</small>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -100,8 +139,6 @@ function CopyJoinUrl({
   join_url: string;
 }) {
   const [isCopied, setIsCopied] = useState(false);
-
-  const handleCopying = () => {};
 
   return (
     <motion.div

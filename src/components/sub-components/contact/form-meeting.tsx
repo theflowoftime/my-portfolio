@@ -43,16 +43,21 @@ import { useEffect, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useForm } from "react-hook-form";
 import { VisitorTimezoneAndOffset } from "./visitor-timezone-offset";
-import { SuccessMeeting } from "./meeting-confirmation";
+import { SuccessMeetingScheduling } from "./meeting-confirmation";
 
 const meetingOptions = ["google meets", "zoom", "microsoft teams", "other"]; // will be replaced to be dynamic
+
+type Data = {
+  link: string;
+  password: string;
+};
 
 export default function ScheduleMeetingForm() {
   const language = useLanguageStore((state) => state.language);
   const theme = useThemeStore((state) => state.theme);
   const animateCursor = useCursorStore((state) => state.animateCursor);
 
-  const [data, setData] = useState({ link: "", password: "", start_time: "" });
+  const [data, setData] = useState<Data | null>(null);
 
   const formSchema = buildFormSchema(null, "meet"); // will pass in meetData.errorMessages instead of null
   const form = useForm<MeetSchemaType>({
@@ -65,7 +70,7 @@ export default function ScheduleMeetingForm() {
   });
 
   const handleSuccess = (data: any) => {
-    setData(data.data);
+    if (data) setData(data.data);
     // form.reset();
     // toast({
     //   description: meetData?.toast.success.message || defaultSuccessMessage,
@@ -101,19 +106,19 @@ export default function ScheduleMeetingForm() {
     form.reset();
   }, [language]);
 
-  if (status === "success" && form.formState.isSubmitSuccessful) {
-    console.log(form.getValues());
-
-    return (
-      <SuccessMeeting
-        email={form.getValues("email")}
-        start_time={form.getValues("date")}
-        time={form.getValues("time")}
-        join_url={data.link}
-        password={data.password}
-      />
-    );
-  }
+  // if (status === "success" && form.formState.isSubmitSuccessful && data) {
+  return (
+    <SuccessMeetingScheduling
+      email={form.getValues("email")}
+      start_time={form.getValues("date")}
+      time={form.getValues("time")}
+      // join_url={data.link}
+      join_url={"https:example.com/doerihvnerv4151581481581"}
+      password="1234"
+      // password={data.password}
+    />
+  );
+  // }
 
   return (
     <Form {...form}>
