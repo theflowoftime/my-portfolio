@@ -39,17 +39,20 @@ import type { MeetSchemaType } from "@/types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { CalendarIcon, Globe, Loader2 } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { useForm } from "react-hook-form";
 import { VisitorTimezoneAndOffset } from "./visitor-timezone-offset";
+import { SuccessMeeting } from "./meeting-confirmation";
 
-const meetingOptions = ["google meets", "zoom", "slack", "other"]; // will be replaced to be dynamic
+const meetingOptions = ["google meets", "zoom", "microsoft teams", "other"]; // will be replaced to be dynamic
 
 export default function ScheduleMeetingForm() {
   const language = useLanguageStore((state) => state.language);
   const theme = useThemeStore((state) => state.theme);
   const animateCursor = useCursorStore((state) => state.animateCursor);
+
+  const [data, setData] = useState({ link: "", password: "" });
 
   const formSchema = buildFormSchema(null, "meet"); // will pass in meetData.errorMessages instead of null
   const form = useForm<MeetSchemaType>({
@@ -61,8 +64,11 @@ export default function ScheduleMeetingForm() {
     },
   });
 
-  const handleSuccess = () => {
-    form.reset();
+  const handleSuccess = (data: any) => {
+    console.log(data);
+    setData(data.data);
+
+    // form.reset();
     // toast({
     //   description: meetData?.toast.success.message || defaultSuccessMessage,
     // });
@@ -96,6 +102,17 @@ export default function ScheduleMeetingForm() {
   useEffect(() => {
     form.reset();
   }, [language]);
+
+  if (form.formState.isSubmitSuccessful) {
+    return (
+      <SuccessMeeting
+        email={form.getValues("email")}
+        start_time={form.getValues("date")}
+        join_url={data.link}
+        password={data.password}
+      />
+    );
+  }
 
   return (
     <Form {...form}>

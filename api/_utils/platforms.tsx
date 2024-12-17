@@ -5,7 +5,7 @@ import { Data } from "api/types";
 import { formatStartTime } from "./utils";
 
 const EMAIL = "daflowoftime@outlook.com"; // add as env
-type Meeting = any; // zoom meeting response
+export type Meeting = any; // zoom meeting response
 
 interface MeetingPlatform {
   createMeeting(data: Data, timezone?: string): Promise<Meeting | null>;
@@ -71,20 +71,6 @@ class ZoomPlatform implements MeetingPlatform {
       });
       throw new Error("Required email details are missing.");
     }
-
-    // Prepare the email template
-    const emailHtml = `
-  <html>
-    <body>
-      <p>Hi,</p>
-      <p>Your meeting is scheduled for ${new Date(
-        start_time
-      ).toLocaleString()}</p>
-      <p>Your password: ${password}</p>
-      <p><a href="${join_url}">Join the Meeting</a></p>
-    </body>
-  </html>
-`;
   }
 }
 

@@ -5,9 +5,9 @@ import Header from "./components/header";
 import Hero from "./components/hero";
 import Projects from "./components/projects";
 import Noise from "./components/sub-components/bg-noise-and-mask";
-import useHashNavigation from "./hooks/useHashNavigation";
 import Cursor from "./components/sub-components/custom-cursor";
 import { useCollectInfo } from "./hooks/useCollectInfo";
+import useHashNavigation from "./hooks/useHashNavigation";
 
 function App() {
   useHashNavigation();

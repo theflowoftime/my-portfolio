@@ -39,6 +39,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         countryCode: info.countryCode,
         mobile: info.mobile,
         proxy: info.proxy,
+        region: info.region,
       },
     });
   } catch (error) {

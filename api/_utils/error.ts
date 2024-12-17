@@ -7,7 +7,8 @@ export const errorHandler = (
   res: VercelResponse,
   customMessage: string | null,
   messageKey: ResponseTypes,
-  name: FormName
+  name: FormName,
+  data?: any
 ) => {
   if (!res) return null;
 
@@ -18,5 +19,5 @@ export const errorHandler = (
 
   return res
     .status(response.status)
-    .json({ message: customMessage || response.message });
+    .json({ message: customMessage || response.message, data });
 };

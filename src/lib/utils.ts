@@ -41,7 +41,7 @@ function getCanonicalLocale(locale: string): string | undefined {
   return canonicalLocale;
 }
 
-const findLocale = (): string => {
+export const findLocale = (): string => {
   const language = useLanguageStore((state) => state.language);
 
   // Find matching browser language from user's preferences

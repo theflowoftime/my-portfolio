@@ -9,11 +9,11 @@ export const defaultValues: FormSchemaType = {
 };
 
 // Ensure Locales keys are strictly tied to the Language type
-export const LOCALES: Record<Language, string> = {
-  EN: "en_US",
-  FR: "fr",
+export const LOCALES = {
+  EN: "en-US",
+  FR: "fr-FR",
   AR: "ar",
-};
+} as const;
 
 // This is for consistency in image size
 export const PX_REM_ratio = 16;

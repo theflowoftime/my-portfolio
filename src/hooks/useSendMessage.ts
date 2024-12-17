@@ -18,7 +18,7 @@ const SendMessage = async <F>(data: Payload<F>, formName: FormName) => {
 };
 
 const useSendMessage = <FormSchema extends FieldValues>(
-  onSuccess: () => void, // External success handler
+  onSuccess: (data: any) => void, // External success handler
   onError: (errorKey: "recaptcha" | "rateLimit" | "message") => void, // External error handler
   formName: FormName
 ) => {
@@ -27,7 +27,7 @@ const useSendMessage = <FormSchema extends FieldValues>(
   const { mutate, status } = useMutation({
     mutationFn: (data: Payload<FormSchema>) =>
       SendMessage<FormSchema>(data, formName),
-    onSuccess,
+    onSuccess: (data: any) => onSuccess(data),
     onError: (data: any) => onError(data.response.data.message),
   });
 

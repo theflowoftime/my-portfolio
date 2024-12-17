@@ -14,11 +14,6 @@ export function formatStartTime(date: string, time: string): string {
 
     // Format the date-time in Zoom's required format
     const start_time = format(combinedDateTime, "yyyy-MM-dd'T'HH:mm:ss");
-    // const start_time = format(combinedDateTime, "yyyy-MM-dd'T'HH:mm:ss", {
-    //   locale,
-    // });
-
-    console.log(start_time);
 
     return start_time;
   } catch (error) {
