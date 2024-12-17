@@ -54,11 +54,11 @@ export default function ScheduleMeetingForm() {
   const formSchema = buildFormSchema(null, "meet"); // will pass in meetData.errorMessages instead of null
   const form = useForm<MeetSchemaType>({
     resolver: zodResolver(formSchema),
-    // defaultValues,
     defaultValues: {
-      date: computeDefaultMeetingDate(),
+      // date: computeDefaultMeetingDate(),
+      date: new Date(),
       time: "09:00",
-      platform: "google meets",
+      platform: "zoom",
     },
   });
 
@@ -85,6 +85,8 @@ export default function ScheduleMeetingForm() {
   );
 
   const onSubmit = (data: MeetSchemaType) => {
+    console.log(data);
+
     throttledSubmit({
       ...data,
       date: formatDateForSanity(data.date), // Convert to YYYY-MM-DD

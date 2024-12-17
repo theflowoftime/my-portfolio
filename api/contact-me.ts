@@ -29,7 +29,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const { recaptchaToken, ...formData } = req.body;
   const ip = retrieveIp(req);
 
+  console.info({ before: formData.date });
+  console.info({ before: typeof formData.date });
+
   const verifySchema = buildFormSchema(null, formName).safeParse(formData);
+
+  console.info({ after: formData.date });
+  console.info({ after: typeof formData.date });
 
   try {
     if (verifySchema.error) throw verifySchema.error;
