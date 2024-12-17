@@ -73,10 +73,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             formData,
             error: err,
           });
-          return errorHandler(res, errorMessage, "error", formName, {
-            link,
-            password,
-          });
+          return errorHandler(res, errorMessage, "error", formName);
         }
       }
     }
@@ -87,7 +84,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       FORM_RESPONSES[formName]._type
     );
 
-    return errorHandler(res, null, "success", formName);
+    return errorHandler(res, null, "success", formName, {
+      link,
+      password,
+    });
   } catch (error) {
     console.error("Unhandled error occurred", error);
     return errorHandler(res, null, "error", formName);
