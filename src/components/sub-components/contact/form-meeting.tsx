@@ -71,10 +71,6 @@ export default function ScheduleMeetingForm() {
 
   const handleSuccess = (data: any) => {
     if (data) setData(data.data);
-    // form.reset();
-    // toast({
-    //   description: meetData?.toast.success.message || defaultSuccessMessage,
-    // });
   };
 
   const handleError = (errorKey: "recaptcha" | "rateLimit" | "message") => {
@@ -95,7 +91,7 @@ export default function ScheduleMeetingForm() {
   const onSubmit = (data: MeetSchemaType) => {
     throttledSubmit({
       ...data,
-      date: formatDateForSanity(data.date), // Convert to YYYY-MM-DD
+      date: formatDateForSanity(data.date), // Converts to YYYY-MM-DD
       language,
     });
   };
@@ -106,19 +102,17 @@ export default function ScheduleMeetingForm() {
     form.reset();
   }, [language]);
 
-  // if (status === "success" && form.formState.isSubmitSuccessful && data) {
-  return (
-    <SuccessMeetingScheduling
-      email={form.getValues("email")}
-      start_time={form.getValues("date")}
-      time={form.getValues("time")}
-      // join_url={data.link}
-      join_url={"https:example.com/doerihvnerv4151581481581"}
-      password="1234"
-      // password={data.password}
-    />
-  );
-  // }
+  if (status === "success" && form.formState.isSubmitSuccessful && data) {
+    return (
+      <SuccessMeetingScheduling
+        email={form.getValues("email")}
+        start_time={form.getValues("date")}
+        time={form.getValues("time")}
+        join_url={data.link}
+        password={data.password}
+      />
+    );
+  }
 
   return (
     <Form {...form}>
