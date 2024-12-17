@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { format, setHours, setMinutes } from "date-fns";
 import client from "@/sanity/lib/client";
 import { useLanguageStore } from "@/stores/language-store";
 import imageUrlBuilder from "@sanity/image-url";
@@ -6,6 +6,8 @@ import { type SanityImageSource } from "@sanity/image-url/lib/types/types";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { LOCALES } from "./constants";
+import { useLocale } from "@/hooks/useLocale";
+import { ar, enUS, fr } from "date-fns/locale";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -134,3 +136,34 @@ export const isIntendedDomain =
     (import.meta.env.PROD
       ? import.meta.env.VITE_WEBSITE_URL
       : import.meta.env.VITE_DEV_WEBSITE_URL);
+
+export function computeDatefnsLocale() {
+  const currentLocale = useLocale();
+
+  switch (currentLocale) {
+    case "en-US":
+      return enUS;
+      break;
+
+    case "fr-FR":
+      return fr;
+      break;
+
+    case "ar":
+      return ar;
+      break;
+    default:
+      break;
+  }
+}
+
+export function combineAndFormat(start_time: Date, time: string) {
+  // Split the time string into hours and minutes
+  const [hours, minutes] = time.split(":").map(Number);
+
+  // Combine the date and time
+  const datetime = setMinutes(setHours(start_time, hours), minutes);
+
+  // Format the combined datetime
+  return format(datetime, "PPPPp OOOO", { locale: computeDatefnsLocale() });
+}

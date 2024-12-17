@@ -5,10 +5,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useLocale } from "@/hooks/useLocale";
-import { cn } from "@/lib/utils";
-import { Meeting } from "api/_utils/platforms";
-import { format, setHours, setMinutes } from "date-fns";
+import { cn, combineAndFormat } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { CopyCheckIcon, Link, LucideCopy } from "lucide-react";
 import {
@@ -20,7 +17,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { enUS, fr, ar } from "date-fns/locale";
 
 type SuccessMeetingProps = {
   join_url: string;
@@ -31,37 +27,6 @@ type SuccessMeetingProps = {
 };
 
 const successMessage = "success";
-
-function computeDatefnsLocale() {
-  const currentLocale = useLocale();
-
-  switch (currentLocale) {
-    case "en-US":
-      return enUS;
-      break;
-
-    case "fr-FR":
-      return fr;
-      break;
-
-    case "ar":
-      return ar;
-      break;
-    default:
-      break;
-  }
-}
-
-function combineAndFormat(start_time: Date, time: string) {
-  // Split the time string into hours and minutes
-  const [hours, minutes] = time.split(":").map(Number);
-
-  // Combine the date and time
-  const datetime = setMinutes(setHours(start_time, hours), minutes);
-
-  // Format the combined datetime
-  return format(datetime, "PPPPp", { locale: computeDatefnsLocale() });
-}
 
 export function SuccessMeetingScheduling({
   className: containerClassName,
