@@ -4,7 +4,7 @@ import { ZOOM_API_BASE_URL } from "./constants";
 import { Data } from "api/types";
 import { formatStartTime } from "./utils";
 
-const EMAIL = "daflowoftime@outlook.com";
+const EMAIL = "daflowoftime@outlook.com"; // add as env
 type Meeting = any; // zoom meeting response
 
 interface MeetingPlatform {

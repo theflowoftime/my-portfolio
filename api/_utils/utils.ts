@@ -1,18 +1,23 @@
-import { isValid } from "date-fns";
+import { parseISO, format } from "date-fns";
 
-export function formatStartTime(
-  date: Date | undefined,
-  time: string | undefined
-) {
-  if (!date || !time) return null;
-  // Combine date and time into a full ISO 8601 string
-  const startDateTime = new Date(`${date}T${time}:00`);
+/**
+ * Formats a date and time into the required Zoom start_time format.
+ *
+ * @param {string} date - The date string in YYYY-MM-DD format.
+ * @param {string} time - The time string in HH:mm format.
+ * @returns {string} - The combined date-time string in yyyy-MM-ddTHH:mm:ss format.
+ */
+export function formatStartTime(date: string, time: string): string {
+  try {
+    // Combine date and time into a single ISO string
+    const combinedDateTime = parseISO(`${date}T${time}:00`);
 
-  if (!isValid(startDateTime)) {
-    throw new Error(
-      "Invalid date or time format. Please use yyyy-MM-dd for date and HH:mm for time."
-    );
+    // Format the date-time in Zoom's required format
+    const start_time = format(combinedDateTime, "yyyy-MM-dd'T'HH:mm:ss");
+    console.log(start_time);
+
+    return start_time;
+  } catch (error) {
+    throw new Error("Invalid date or time format");
   }
-
-  return startDateTime.toISOString(); // Ensures it is in UTC
 }
