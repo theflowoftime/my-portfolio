@@ -8,15 +8,29 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer";
-import { cn } from "@/lib/utils";
+import { cn, computeDefaultMeetingDate } from "@/lib/utils";
 import { useCursorStore } from "@/stores/cursor-store";
 import { useLanguageStore } from "@/stores/language-store";
 import { CalendarClock } from "lucide-react";
 import ScheduleMeetingForm from "./form-meeting";
+import { useForm } from "react-hook-form";
+import { MeetSchemaType } from "@/types/types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { buildFormSchema } from "@/lib/zod-schemas";
 
 export default function ScheduleMeeting() {
   const language = useLanguageStore((state) => state.language);
   const animateCursor = useCursorStore((state) => state.animateCursor);
+
+  const formSchema = buildFormSchema(null, "meet"); // will pass in meetData.errorMessages instead of null
+  const form = useForm<MeetSchemaType>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      date: computeDefaultMeetingDate(),
+      time: "09:00",
+      platform: "zoom",
+    },
+  });
 
   return (
     <Drawer>
@@ -40,12 +54,15 @@ export default function ScheduleMeeting() {
         </Button>
       </DrawerTrigger>
       <DrawerContent className="max-h-screen space-y-2">
-        <DrawerHeader>
-          <DrawerTitle>Let's talk about your buisness!</DrawerTitle>
-          <DrawerDescription>Schedule an online meeting</DrawerDescription>
-        </DrawerHeader>
+        {!form.formState.isSubmitSuccessful ? (
+          <DrawerHeader>
+            <DrawerTitle>Let's talk about your buisness!</DrawerTitle>
+            <DrawerDescription>Schedule an online meeting</DrawerDescription>
+          </DrawerHeader>
+        ) : null}
+
         <div className="container">
-          <ScheduleMeetingForm />
+          <ScheduleMeetingForm form={form} />
         </div>
         <DrawerFooter className="p-2"></DrawerFooter>
       </DrawerContent>
