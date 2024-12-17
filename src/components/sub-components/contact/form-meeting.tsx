@@ -55,8 +55,7 @@ export default function ScheduleMeetingForm() {
   const form = useForm<MeetSchemaType>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      // date: computeDefaultMeetingDate(),
-      date: new Date(),
+      date: computeDefaultMeetingDate(),
       time: "09:00",
       platform: "zoom",
     },
@@ -86,6 +85,7 @@ export default function ScheduleMeetingForm() {
 
   const onSubmit = (data: MeetSchemaType) => {
     console.log(data);
+    console.log({ "formatted ": formatDateForSanity(data.date) });
 
     throttledSubmit({
       ...data,
