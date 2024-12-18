@@ -140,13 +140,13 @@ function CopyJoinUrl({ join_url }: { join_url: string }) {
             <Tooltip open={isCopied}>
               <TooltipTrigger>
                 <motion.div
-                  className="max-w-[390px] truncate text-wrap font-semibold"
+                  className="max-w-[390px] text-wrap font-semibold"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 0.6 }}
                   transition={{ delay: 2, duration: 0.9 }}
                 >
                   <Input
-                    className="bg-transparent"
+                    className="truncate bg-transparent border-none"
                     ref={linkTextElRef}
                     type="text"
                     value={join_url}
@@ -237,7 +237,7 @@ function CopyJoinUrlButton({
       className="p-4 bg-green-800 rounded-full h-fit"
       onClick={async (e: MouseEvent<HTMLButtonElement>) => await handleClick(e)}
     >
-      {isCopied ? <CopyCheckIcon /> : <LucideCopy />}
+      {isCopied ? <CopyCheckIcon /> : <LucideCopy className="stroke-white" />}
     </Button>
   );
 }
