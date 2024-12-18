@@ -49,7 +49,7 @@ export function SuccessMeetingScheduling({
     >
       <div
         className={cn(
-          "absolute inset-0 h-full w-full bg-gradient-to-r from-teal-300 to-green-500"
+          "absolute -z-10 inset-0 h-full w-full bg-gradient-to-r from-teal-300 to-green-500"
         )}
       />
 
@@ -60,7 +60,7 @@ export function SuccessMeetingScheduling({
 
           {/* Expanding green box with sliding text */}
           <motion.div
-            className="flex justify-center overflow-hidden bg-green-800 rounded-full gap-x-4"
+            className="z-0 flex justify-center overflow-hidden bg-green-800 rounded-full gap-x-4"
             initial={{ width: "0rem" }}
             animate={{ width: "12rem" }}
             transition={{ delay: 0.5, duration: 0.8 }}
@@ -68,7 +68,7 @@ export function SuccessMeetingScheduling({
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1, transition: { delay: 1.5 } }}
-              className="flex flex-col items-center content-center justify-center w-4 text-3xl text-white bg-green-800 rounded-full"
+              className="z-10 flex flex-col items-center content-center justify-center w-4 text-3xl text-white bg-green-800 rounded-full"
             >
               {" "}
               {/* Adjusted size */}
@@ -121,46 +121,46 @@ function CopyJoinUrl({ join_url }: { join_url: string }) {
           <Link />
         </div>
         <div className="flex items-center w-full text-gray-800">
-          {/* <TooltipProvider>
+          <TooltipProvider>
             <Tooltip open={isCopied}>
-              <TooltipTrigger> */}
-          <motion.div
-            className="max-w-[390px] truncate text-wrap font-semibold"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.6 }}
-            transition={{ delay: 2, duration: 0.9 }}
-          >
-            <Input
-              className="bg-transparent"
-              ref={linkTextElRef}
-              type="text"
-              value={join_url}
-              readOnly
-            />
-          </motion.div>
-          {/* </TooltipTrigger>
+              <TooltipTrigger>
+                <motion.div
+                  className="max-w-[390px] truncate text-wrap font-semibold"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 0.6 }}
+                  transition={{ delay: 2, duration: 0.9 }}
+                >
+                  <Input
+                    className="bg-transparent"
+                    ref={linkTextElRef}
+                    type="text"
+                    value={join_url}
+                    readOnly
+                  />
+                </motion.div>
+              </TooltipTrigger>
               <TooltipContent side="bottom">
                 <p>Your zoom join url</p>
               </TooltipContent>
             </Tooltip>
-          </TooltipProvider> */}
+          </TooltipProvider>
         </div>
       </div>
 
-      {/* <TooltipProvider>
+      <TooltipProvider>
         <Tooltip>
-          <TooltipTrigger> */}
-      <CopyJoinUrlButton
-        elRef={linkTextElRef}
-        isCopied={isCopied}
-        setIsCopied={setIsCopied}
-      />
-      {/* </TooltipTrigger>
+          <TooltipTrigger>
+            <CopyJoinUrlButton
+              elRef={linkTextElRef}
+              isCopied={isCopied}
+              setIsCopied={setIsCopied}
+            />
+          </TooltipTrigger>
           <TooltipContent align="center">
             {!isCopied ? <p>Copy to clipboard</p> : <p>Copied!</p>}
           </TooltipContent>
         </Tooltip>
-      </TooltipProvider> */}
+      </TooltipProvider>
     </motion.div>
   );
 }
