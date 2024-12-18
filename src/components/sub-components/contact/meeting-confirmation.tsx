@@ -12,6 +12,7 @@ import { CopyCheckIcon, Link, LucideCopy } from "lucide-react";
 import {
   ComponentProps,
   Dispatch,
+  MouseEvent,
   RefObject,
   SetStateAction,
   useEffect,
@@ -48,7 +49,7 @@ export function SuccessMeetingScheduling({
     >
       <div
         className={cn(
-          "absolute inset-0 -z-10 h-full w-full bg-gradient-to-r from-teal-300 to-green-500"
+          "absolute inset-0 h-full w-full bg-gradient-to-r from-teal-300 to-green-500"
         )}
       />
 
@@ -59,7 +60,7 @@ export function SuccessMeetingScheduling({
 
           {/* Expanding green box with sliding text */}
           <motion.div
-            className="z-0 flex justify-center overflow-hidden bg-green-800 rounded-full gap-x-4"
+            className="flex justify-center overflow-hidden bg-green-800 rounded-full gap-x-4"
             initial={{ width: "0rem" }}
             animate={{ width: "12rem" }}
             transition={{ delay: 0.5, duration: 0.8 }}
@@ -67,7 +68,7 @@ export function SuccessMeetingScheduling({
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1, transition: { delay: 1.5 } }}
-              className="z-10 flex flex-col items-center content-center justify-center w-4 text-3xl text-white bg-green-800 rounded-full"
+              className="flex flex-col items-center content-center justify-center w-4 text-3xl text-white bg-green-800 rounded-full"
             >
               {" "}
               {/* Adjusted size */}
@@ -150,7 +151,7 @@ function CopyJoinUrl({ join_url }: { join_url: string }) {
         <Tooltip>
           <TooltipTrigger> */}
       <CopyJoinUrlButton
-        el={linkTextElRef.current}
+        elRef={linkTextElRef}
         isCopied={isCopied}
         setIsCopied={setIsCopied}
       />
@@ -165,15 +166,17 @@ function CopyJoinUrl({ join_url }: { join_url: string }) {
 }
 
 function CopyJoinUrlButton({
-  el,
+  elRef,
   isCopied,
   setIsCopied,
 }: {
-  el: HTMLInputElement | null;
+  elRef: RefObject<HTMLInputElement>;
   isCopied: boolean;
   setIsCopied: Dispatch<SetStateAction<boolean>>;
 }) {
-  const handleClick = async () => {
+  const handleClick = async (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    const el = elRef.current;
     if (el) {
       console.log("Element found:", el.value);
       try {
@@ -203,7 +206,7 @@ function CopyJoinUrlButton({
     <Button
       variant="ghost"
       className="p-4 bg-green-800 rounded-full h-fit"
-      onClick={async () => await handleClick()}
+      onClick={async (e: MouseEvent<HTMLButtonElement>) => await handleClick(e)}
     >
       {isCopied ? (
         <CopyCheckIcon />
