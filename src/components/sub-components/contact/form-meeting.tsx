@@ -103,7 +103,7 @@ export default function ScheduleMeetingForm({
     form.formState.isSubmitSuccessful &&
     responseData
   ) {
-    return <SuccessMeetingScheduling form={form} response={responseData} />;
+    return <SuccessMeetingScheduling form={form} generated={responseData} />;
   }
 
   return (
