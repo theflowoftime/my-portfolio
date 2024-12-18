@@ -26,7 +26,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { cn, formatDateForSanity } from "@/lib/utils";
+import { cn, computeDatefnsLocale, formatDateForSanity } from "@/lib/utils";
 import { useCursorStore } from "@/stores/cursor-store";
 import { useLanguageStore } from "@/stores/language-store";
 import useThemeStore from "@/stores/theme-store";
@@ -150,7 +150,7 @@ export default function ScheduleMeetingForm({
                             { before: new Date() },
                             { dayOfWeek: [0, 6] },
                           ]}
-                          // locale
+                          locale={computeDatefnsLocale()}
                         />
                       </PopoverContent>
                     </Popover>

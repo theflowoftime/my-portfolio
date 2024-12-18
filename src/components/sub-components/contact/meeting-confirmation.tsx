@@ -105,6 +105,12 @@ function CopyJoinUrl({
 }) {
   const [isCopied, setIsCopied] = useState(false);
 
+  useEffect(() => {
+    if (linkTextElRef.current) {
+      console.log("Ref initialized:", linkTextElRef.current.value);
+    }
+  }, []);
+
   return (
     <motion.div
       className="relative flex h-fit w-[600px] max-w-lg overflow-hidden gap-x-2 items-center"
@@ -132,7 +138,7 @@ function CopyJoinUrl({
                     ref={linkTextElRef}
                     type="text"
                     value={join_url}
-                    disabled
+                    readOnly
                   />
                 </motion.div>
               </TooltipTrigger>
@@ -171,6 +177,19 @@ function CopyJoinUrlButton({
   isCopied: boolean;
   setIsCopied: Dispatch<SetStateAction<boolean>>;
 }) {
+  const handleClick = async () => {
+    if (el) {
+      try {
+        await navigator.clipboard.writeText(el.value);
+        setIsCopied(true);
+      } catch (err) {
+        console.error("Clipboard copy failed:", err);
+      }
+    } else {
+      console.error("Element reference is null.");
+    }
+  };
+
   useEffect(() => {
     const id = setInterval(() => {
       setIsCopied(false);
@@ -183,15 +202,7 @@ function CopyJoinUrlButton({
     <Button
       variant="ghost"
       className="p-4 bg-green-800 rounded-full h-fit"
-      onClick={async () => {
-        if (el) {
-          const { value } = el;
-          if (value) {
-            await navigator.clipboard.writeText(el.value);
-            setIsCopied(true);
-          }
-        }
-      }}
+      onClick={async () => await handleClick()}
     >
       {isCopied ? (
         <CopyCheckIcon />
