@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Tooltip,
   TooltipContent,
@@ -108,6 +109,8 @@ function CopyJoinUrl({
   useEffect(() => {
     if (linkTextElRef.current) {
       console.log("Ref initialized:", linkTextElRef.current.value);
+    } else {
+      console.error("linkTextElRef is null!");
     }
   }, []);
 
@@ -133,7 +136,7 @@ function CopyJoinUrl({
                   animate={{ opacity: 0.6 }}
                   transition={{ delay: 2, duration: 0.9 }}
                 >
-                  <motion.input
+                  <Input
                     className="bg-transparent"
                     ref={linkTextElRef}
                     type="text"
@@ -179,11 +182,12 @@ function CopyJoinUrlButton({
 }) {
   const handleClick = async () => {
     if (el) {
+      console.log("Element found:", el.value);
       try {
         await navigator.clipboard.writeText(el.value);
         setIsCopied(true);
       } catch (err) {
-        console.error("Clipboard copy failed:", err);
+        console.error("Failed to copy:", err);
       }
     } else {
       console.error("Element reference is null.");
