@@ -11,12 +11,40 @@ import {
 import { cn, computeDefaultMeetingDate } from "@/lib/utils";
 import { useCursorStore } from "@/stores/cursor-store";
 import { useLanguageStore } from "@/stores/language-store";
-import { CalendarClock } from "lucide-react";
+import { CalendarClock, Loader2 } from "lucide-react";
 import ScheduleMeetingForm from "./form-meeting";
-import { useForm } from "react-hook-form";
+import { FormState, useForm } from "react-hook-form";
 import { MeetSchemaType } from "@/types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { buildFormSchema } from "@/lib/zod-schemas";
+
+function DrawerHeaderContent({
+  formState,
+}: {
+  formState: FormState<MeetSchemaType>;
+}) {
+  if (formState.isSubmitting) {
+    return <Loader2 />;
+  }
+
+  if (formState.isSubmitSuccessful) {
+    return (
+      <>
+        <DrawerTitle>Created a meeting!</DrawerTitle>
+        <DrawerDescription>
+          Looking forward to talking with you 😊
+        </DrawerDescription>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <DrawerTitle>Let's talk about your business!</DrawerTitle>
+      <DrawerDescription>Schedule an online meeting</DrawerDescription>
+    </>
+  );
+}
 
 export default function ScheduleMeeting() {
   const language = useLanguageStore((state) => state.language);
@@ -55,19 +83,7 @@ export default function ScheduleMeeting() {
       </DrawerTrigger>
       <DrawerContent className="max-h-screen space-y-2">
         <DrawerHeader>
-          {!form.formState.isSubmitted ? (
-            <>
-              <DrawerTitle>Let's talk about your buisness!</DrawerTitle>
-              <DrawerDescription>Schedule an online meeting</DrawerDescription>
-            </>
-          ) : (
-            <>
-              <DrawerTitle>Created a meeting!</DrawerTitle>
-              <DrawerDescription>
-                looking forward to talking with you &#x1F603;
-              </DrawerDescription>
-            </>
-          )}
+          <DrawerHeaderContent formState={form.formState} />
         </DrawerHeader>
 
         <div className="container">
