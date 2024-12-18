@@ -12,12 +12,14 @@ import { cn, computeDefaultMeetingDate } from "@/lib/utils";
 import { useCursorStore } from "@/stores/cursor-store";
 import { useLanguageStore } from "@/stores/language-store";
 import { CalendarClock, Loader2 } from "lucide-react";
-import ScheduleMeetingForm from "./form-meeting";
+// import ScheduleMeetingForm from "./form-meeting";
 import { useForm } from "react-hook-form";
 import { MeetSchemaType } from "@/types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { buildFormSchema } from "@/lib/zod-schemas";
-import { useState } from "react";
+import { lazy, Suspense, useRef, useState } from "react";
+
+const ScheduleMeetingForm = lazy(() => import("./form-meeting"));
 
 function DrawerHeaderContent({
   status,
@@ -55,7 +57,6 @@ export default function ScheduleMeeting() {
   const language = useLanguageStore((state) => state.language);
   const animateCursor = useCursorStore((state) => state.animateCursor);
   const [formStatus, setFormStatus] = useState<string>("idle");
-
   const updateFormStatus = (status: string) => {
     setFormStatus(status);
   };
@@ -99,7 +100,12 @@ export default function ScheduleMeeting() {
           />
         </DrawerHeader>
         <div className="container">
-          <ScheduleMeetingForm form={form} onStatusChange={updateFormStatus} />
+          <Suspense fallback={<Loader2 className="animate-spin" />}>
+            <ScheduleMeetingForm
+              form={form}
+              onStatusChange={updateFormStatus}
+            />
+          </Suspense>
         </div>
         <DrawerFooter className="p-2"></DrawerFooter>
       </DrawerContent>
