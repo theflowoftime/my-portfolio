@@ -127,46 +127,46 @@ function CopyJoinUrl({
           <Link />
         </div>
         <div className="flex items-center w-full text-gray-800">
-          <TooltipProvider>
+          {/* <TooltipProvider>
             <Tooltip open={isCopied}>
-              <TooltipTrigger>
-                <motion.div
-                  className="max-w-[390px] truncate text-wrap font-semibold"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 0.6 }}
-                  transition={{ delay: 2, duration: 0.9 }}
-                >
-                  <Input
-                    className="bg-transparent"
-                    ref={linkTextElRef}
-                    type="text"
-                    value={join_url}
-                    readOnly
-                  />
-                </motion.div>
-              </TooltipTrigger>
+              <TooltipTrigger> */}
+          <motion.div
+            className="max-w-[390px] truncate text-wrap font-semibold"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.6 }}
+            transition={{ delay: 2, duration: 0.9 }}
+          >
+            <Input
+              className="bg-transparent"
+              ref={linkTextElRef}
+              type="text"
+              value={join_url}
+              readOnly
+            />
+          </motion.div>
+          {/* </TooltipTrigger>
               <TooltipContent side="bottom">
                 <p>Your zoom join url</p>
               </TooltipContent>
             </Tooltip>
-          </TooltipProvider>
+          </TooltipProvider> */}
         </div>
       </div>
 
-      <TooltipProvider>
+      {/* <TooltipProvider>
         <Tooltip>
-          <TooltipTrigger>
-            <CopyJoinUrlButton
-              el={linkTextElRef.current}
-              isCopied={isCopied}
-              setIsCopied={setIsCopied}
-            />
-          </TooltipTrigger>
+          <TooltipTrigger> */}
+      <CopyJoinUrlButton
+        el={linkTextElRef.current}
+        isCopied={isCopied}
+        setIsCopied={setIsCopied}
+      />
+      {/* </TooltipTrigger>
           <TooltipContent align="center">
             {!isCopied ? <p>Copy to clipboard</p> : <p>Copied!</p>}
           </TooltipContent>
         </Tooltip>
-      </TooltipProvider>
+      </TooltipProvider> */}
     </motion.div>
   );
 }
@@ -195,11 +195,15 @@ function CopyJoinUrlButton({
   };
 
   useEffect(() => {
-    const id = setInterval(() => {
-      setIsCopied(false);
-    }, 4000);
+    let id: NodeJS.Timeout;
+    if (isCopied)
+      id = setInterval(() => {
+        setIsCopied(false);
+      }, 4000);
 
-    return () => clearInterval(id);
+    return () => {
+      if (id) clearInterval(id);
+    };
   }, [isCopied]);
 
   return (

@@ -90,17 +90,19 @@ export default function ScheduleMeetingForm({
     form.reset();
   }, [language]);
 
-  if (status === "success" && form.formState.isSubmitSuccessful && data) {
-    return (
-      <SuccessMeetingScheduling
-        email={form.getValues("email")}
-        start_time={form.getValues("date")}
-        time={form.getValues("time")}
-        join_url={data.link}
-        password={data.password}
-      />
-    );
-  }
+  // if (status === "success" && form.formState.isSubmitSuccessful && data) {
+  return (
+    <SuccessMeetingScheduling
+      email={form.getValues("email")}
+      start_time={form.getValues("date")}
+      time={form.getValues("time")}
+      // join_url={data.link}
+      join_url="crrf"
+      password=""
+      // password={data.password}
+    />
+  );
+  // }
 
   return (
     <Form {...form}>
