@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { DrawerClose } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
 import {
   Tooltip,
@@ -97,6 +98,9 @@ export function SuccessMeetingScheduling({
             <small>{combineAndFormat(start_time, time)}</small>
           </div>
         </div>
+        <DrawerClose className="w-full border rounded-lg font-unbounded outline-1 outline-input border-input bg-background hover:bg-accent hover:text-accent-foreground">
+          close
+        </DrawerClose>
       </div>
     </div>
   );
