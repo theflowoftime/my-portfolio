@@ -8,7 +8,12 @@ import {
 } from "@/components/ui/tooltip";
 import { cn, combineAndFormat } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { CopyCheckIcon, Link, LucideCopy } from "lucide-react";
+import {
+  CopyCheckIcon,
+  Link as LucideLink,
+  LucideCopy,
+  ExternalLink,
+} from "lucide-react";
 import {
   ComponentProps,
   Dispatch,
@@ -19,6 +24,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { Link, NavLink } from "react-router-dom";
 
 type SuccessMeetingProps = {
   join_url: string;
@@ -100,6 +106,15 @@ function CopyJoinUrl({ join_url }: { join_url: string }) {
   const linkTextElRef = useRef<HTMLInputElement>(null);
   const [isCopied, setIsCopied] = useState(false);
 
+  const handleOpenInNewTab = () => {
+    const url = linkTextElRef.current?.value || join_url;
+    if (url) {
+      window.open(url, "_blank", "noopener,noreferrer");
+    } else {
+      console.error("Cannot open a null or undefined URL.");
+    }
+  };
+
   useEffect(() => {
     if (linkTextElRef.current) {
       console.log("Ref initialized:", linkTextElRef.current.value);
@@ -118,7 +133,7 @@ function CopyJoinUrl({ join_url }: { join_url: string }) {
       {/* Message box */}
       <div className="flex w-full px-6 py-4 my-4 border rounded-lg shadow-lg gap-x-4 h-fit border-white/40 bg-white/30 bg-opacity-90 backdrop-blur-md">
         <div className="flex items-center justify-center h-12 text-white bg-green-800 rounded-full min-w-12">
-          <Link />
+          <LucideLink />
         </div>
         <div className="flex items-center w-full text-gray-800">
           <TooltipProvider>
@@ -146,6 +161,21 @@ function CopyJoinUrl({ join_url }: { join_url: string }) {
           </TooltipProvider>
         </div>
       </div>
+
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger>
+            <Button
+              variant="ghost"
+              className="p-4 text-white bg-blue-500 rounded-full"
+              onClick={handleOpenInNewTab}
+            >
+              <ExternalLink />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent align="center">Open Link</TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
 
       <TooltipProvider>
         <Tooltip>
@@ -178,7 +208,6 @@ function CopyJoinUrlButton({
     e.stopPropagation();
     const el = elRef.current;
     if (el) {
-      console.log("Element found:", el.value);
       try {
         await navigator.clipboard.writeText(el.value);
         setIsCopied(true);
