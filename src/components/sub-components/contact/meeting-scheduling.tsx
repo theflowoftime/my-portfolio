@@ -13,21 +13,21 @@ import { useCursorStore } from "@/stores/cursor-store";
 import { useLanguageStore } from "@/stores/language-store";
 import { CalendarClock, Loader2 } from "lucide-react";
 import ScheduleMeetingForm from "./form-meeting";
-import { FormState, useForm } from "react-hook-form";
+import { useForm, UseFormReturn } from "react-hook-form";
 import { MeetSchemaType } from "@/types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { buildFormSchema } from "@/lib/zod-schemas";
 
 function DrawerHeaderContent({
-  formState,
+  form,
 }: {
-  formState: FormState<MeetSchemaType>;
+  form: UseFormReturn<MeetSchemaType>;
 }) {
-  if (formState.isSubmitting) {
+  if (form.formState.isSubmitting) {
     return <Loader2 />;
   }
 
-  if (formState.isSubmitSuccessful) {
+  if (form.formState.isSubmitSuccessful) {
     return (
       <>
         <DrawerTitle>Created a meeting!</DrawerTitle>
@@ -83,7 +83,7 @@ export default function ScheduleMeeting() {
       </DrawerTrigger>
       <DrawerContent className="max-h-screen space-y-2">
         <DrawerHeader>
-          <DrawerHeaderContent formState={form.formState} />
+          <DrawerHeaderContent form={form} />
         </DrawerHeader>
 
         <div className="container">
