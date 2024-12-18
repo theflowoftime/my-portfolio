@@ -12,12 +12,11 @@ import { cn, computeDefaultMeetingDate } from "@/lib/utils";
 import { useCursorStore } from "@/stores/cursor-store";
 import { useLanguageStore } from "@/stores/language-store";
 import { CalendarClock, Loader2 } from "lucide-react";
-// import ScheduleMeetingForm from "./form-meeting";
 import { useForm } from "react-hook-form";
 import { MeetSchemaType } from "@/types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { buildFormSchema } from "@/lib/zod-schemas";
-import { lazy, Suspense, useRef, useState } from "react";
+import { lazy, Suspense, useState } from "react";
 
 const ScheduleMeetingForm = lazy(() => import("./form-meeting"));
 
@@ -28,29 +27,29 @@ function DrawerHeaderContent({
   status: string;
   platform: string;
 }) {
-  if (status === "pending") {
-    return <Loader2 className="animate-spin" />;
-  }
+  switch (status) {
+    case "pending":
+      return <Loader2 className="animate-spin" />;
+    case "success":
+      return (
+        <>
+          <DrawerTitle className="text-black">
+            Created a {platform} meeting!
+          </DrawerTitle>
+          <DrawerDescription className="text-black/80">
+            Looking forward to talking with you 😊
+          </DrawerDescription>
+        </>
+      );
 
-  if (status === "success") {
-    return (
-      <>
-        <DrawerTitle className="text-black">
-          Created a {platform} meeting!
-        </DrawerTitle>
-        <DrawerDescription className="text-black/80">
-          Looking forward to talking with you 😊
-        </DrawerDescription>
-      </>
-    );
+    default:
+      return (
+        <>
+          <DrawerTitle>Let's talk about your business!</DrawerTitle>
+          <DrawerDescription>Schedule an online meeting</DrawerDescription>
+        </>
+      );
   }
-
-  return (
-    <>
-      <DrawerTitle>Let's talk about your business!</DrawerTitle>
-      <DrawerDescription>Schedule an online meeting</DrawerDescription>
-    </>
-  );
 }
 
 export default function ScheduleMeeting() {

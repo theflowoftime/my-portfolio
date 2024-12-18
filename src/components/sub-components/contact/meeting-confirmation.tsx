@@ -7,6 +7,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn, combineAndFormat } from "@/lib/utils";
+import { MeetSchemaType } from "@/types/types";
 import { motion } from "framer-motion";
 import {
   Link as LucideLink,
@@ -24,27 +25,25 @@ import {
   useRef,
   useState,
 } from "react";
+import { UseFormReturn } from "react-hook-form";
+import { RessponseData } from "./form-meeting";
 
 type SuccessMeetingProps = {
-  join_url: string;
-  start_time: Date;
-  password: string;
-  email: string;
-  time: string;
+  form: UseFormReturn<MeetSchemaType>;
+  generated: RessponseData;
 };
 
 const successMessage = "success"; // TODO: will be replaced to be dynamic
 
 export function SuccessMeetingScheduling({
   className: containerClassName,
-
-  join_url,
-  start_time,
-  password,
-  email,
-  time,
+  form,
+  generated,
   ...props
 }: SuccessMeetingProps & ComponentProps<"div">) {
+  const { date: start_time, platform, time } = form.getValues();
+  const { link: join_url, password } = generated;
+
   return (
     <div
       className={cn(
@@ -92,7 +91,7 @@ export function SuccessMeetingScheduling({
         </div>
 
         <motion.div className="flex flex-col items-center p-4 border-dashed border-input gap-y-2">
-          <CopyJoinUrl join_url={join_url} />
+          <CopyJoinUrl join_url={join_url} platform={platform} />
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -107,7 +106,13 @@ export function SuccessMeetingScheduling({
   );
 }
 
-function CopyJoinUrl({ join_url }: { join_url: string }) {
+function CopyJoinUrl({
+  join_url,
+  platform,
+}: {
+  join_url: string;
+  platform: string;
+}) {
   const linkTextElRef = useRef<HTMLInputElement>(null);
   const [isCopied, setIsCopied] = useState(false);
 
@@ -152,7 +157,7 @@ function CopyJoinUrl({ join_url }: { join_url: string }) {
                 </motion.div>
               </TooltipTrigger>
               <TooltipContent side="bottom">
-                <p>Your zoom join url is copied!</p>
+                <p>Your {platform} join url is copied!</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>

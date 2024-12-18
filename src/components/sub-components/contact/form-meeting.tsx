@@ -41,7 +41,7 @@ import { VisitorTimezoneAndOffset } from "./visitor-timezone-offset";
 
 const meetingOptions = ["google meets", "zoom", "microsoft teams", "other"]; // will be replaced to be dynamic
 
-type Data = {
+export type RessponseData = {
   link: string;
   password: string;
 };
@@ -57,7 +57,7 @@ export default function ScheduleMeetingForm({
   const theme = useThemeStore((state) => state.theme);
   const animateCursor = useCursorStore((state) => state.animateCursor);
 
-  const [responseData, setResponseData] = useState<Data | null>(null);
+  const [responseData, setResponseData] = useState<RessponseData | null>(null);
 
   const handleSuccess = (data: any) => {
     if (data) setResponseData(data.data);
@@ -103,15 +103,7 @@ export default function ScheduleMeetingForm({
     form.formState.isSubmitSuccessful &&
     responseData
   ) {
-    return (
-      <SuccessMeetingScheduling
-        email={form.getValues("email")}
-        start_time={form.getValues("date")}
-        time={form.getValues("time")}
-        join_url={responseData.link}
-        password={responseData.password}
-      />
-    );
+    return <SuccessMeetingScheduling form={form} response={responseData} />;
   }
 
   return (
