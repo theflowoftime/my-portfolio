@@ -55,10 +55,10 @@ export default function ScheduleMeetingForm({
   const theme = useThemeStore((state) => state.theme);
   const animateCursor = useCursorStore((state) => state.animateCursor);
 
-  const [data, setData] = useState<Data | null>(null);
+  const [responseData, setResponseData] = useState<Data | null>(null);
 
   const handleSuccess = (data: any) => {
-    if (data) setData(data.data);
+    if (data) setResponseData(data.data);
   };
 
   const handleError = (errorKey: "recaptcha" | "rateLimit" | "message") => {
@@ -90,14 +90,18 @@ export default function ScheduleMeetingForm({
     form.reset();
   }, [language]);
 
-  if (status === "success" && form.formState.isSubmitSuccessful && data) {
+  if (
+    status === "success" &&
+    form.formState.isSubmitSuccessful &&
+    responseData
+  ) {
     return (
       <SuccessMeetingScheduling
         email={form.getValues("email")}
         start_time={form.getValues("date")}
         time={form.getValues("time")}
-        join_url={data.link}
-        password={data.password}
+        join_url={responseData.link}
+        password={responseData.password}
       />
     );
   }

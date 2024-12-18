@@ -38,8 +38,6 @@ export function SuccessMeetingScheduling({
   time,
   ...props
 }: SuccessMeetingProps & ComponentProps<"div">) {
-  const linkTextElRef = useRef<HTMLInputElement>(null);
-
   return (
     <div
       className={cn(
@@ -87,7 +85,7 @@ export function SuccessMeetingScheduling({
         </div>
 
         <div className="flex flex-col items-center gap-y-2">
-          <CopyJoinUrl linkTextElRef={linkTextElRef} join_url={join_url} />
+          <CopyJoinUrl join_url={join_url} />
           <div className="w-full text-lg tracking-wide text-center text-black font-fira">
             <small>{combineAndFormat(start_time, time)}</small>
           </div>
@@ -97,13 +95,8 @@ export function SuccessMeetingScheduling({
   );
 }
 
-function CopyJoinUrl({
-  linkTextElRef,
-  join_url,
-}: {
-  linkTextElRef: RefObject<HTMLInputElement>;
-  join_url: string;
-}) {
+function CopyJoinUrl({ join_url }: { join_url: string }) {
+  const linkTextElRef = useRef<HTMLInputElement>(null);
   const [isCopied, setIsCopied] = useState(false);
 
   useEffect(() => {
