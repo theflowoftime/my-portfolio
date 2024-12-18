@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { DrawerClose } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
 import {
   Tooltip,
@@ -10,10 +9,10 @@ import {
 import { cn, combineAndFormat } from "@/lib/utils";
 import { motion } from "framer-motion";
 import {
-  CopyCheckIcon,
   Link as LucideLink,
-  LucideCopy,
   ExternalLink,
+  LucideClipboardCopy,
+  ClipboardCheck,
 } from "lucide-react";
 import {
   ComponentProps,
@@ -25,7 +24,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { Link, NavLink } from "react-router-dom";
 
 type SuccessMeetingProps = {
   join_url: string;
@@ -35,7 +33,7 @@ type SuccessMeetingProps = {
   time: string;
 };
 
-const successMessage = "success";
+const successMessage = "success"; // TODO: will be replaced to be dynamic
 
 export function SuccessMeetingScheduling({
   className: containerClassName,
@@ -49,7 +47,7 @@ export function SuccessMeetingScheduling({
   return (
     <div
       className={cn(
-        "group flex justify-center py-24 font-unbounded",
+        "group flex justify-center items-center py-8 font-unbounded",
         containerClassName
       )}
       {...props}
@@ -61,7 +59,7 @@ export function SuccessMeetingScheduling({
       />
 
       {/* Parent Container for message */}
-      <div className="flex flex-col items-center h-64 max-w-lg gap-y-4">
+      <div className="flex flex-col items-center max-w-lg gap-y-4">
         <div className="flex overflow-hidden bg-green-800 rounded-full h-14">
           {/* Checkmark */}
 
@@ -92,15 +90,17 @@ export function SuccessMeetingScheduling({
           </motion.div>
         </div>
 
-        <div className="flex flex-col items-center border-dashed border-input gap-y-2">
+        <motion.div className="flex flex-col items-center p-4 border-dashed border-input gap-y-2">
           <CopyJoinUrl join_url={join_url} />
-          <div className="w-full text-lg tracking-wide text-center text-black font-fira">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1.0, delay: 2 }}
+            className="w-full text-lg tracking-wide text-center text-black font-fira"
+          >
             <small>{combineAndFormat(start_time, time)}</small>
-          </div>
-        </div>
-        <DrawerClose className="px-4 py-2 border rounded-lg font-unbounded w-fit outline-1 outline-input border-input bg-background hover:bg-accent hover:text-accent-foreground">
-          exit
-        </DrawerClose>
+          </motion.div>
+        </motion.div>
       </div>
     </div>
   );
@@ -118,14 +118,6 @@ function CopyJoinUrl({ join_url }: { join_url: string }) {
       console.error("Cannot open a null or undefined URL.");
     }
   };
-
-  useEffect(() => {
-    if (linkTextElRef.current) {
-      console.log("Ref initialized:", linkTextElRef.current.value);
-    } else {
-      console.error("linkTextElRef is null!");
-    }
-  }, []);
 
   return (
     <motion.div
@@ -150,7 +142,7 @@ function CopyJoinUrl({ join_url }: { join_url: string }) {
                   transition={{ delay: 2, duration: 0.9 }}
                 >
                   <Input
-                    className="truncate bg-transparent border-none"
+                    className="tracking-wide truncate bg-transparent border-none focus-visible:ring-0 focus-visible:ring-offset-0"
                     ref={linkTextElRef}
                     type="text"
                     value={join_url}
@@ -241,7 +233,11 @@ function CopyJoinUrlButton({
       className="p-4 bg-green-800 rounded-full h-fit"
       onClick={async (e: MouseEvent<HTMLButtonElement>) => await handleClick(e)}
     >
-      {isCopied ? <CopyCheckIcon /> : <LucideCopy className="stroke-white" />}
+      {isCopied ? (
+        <ClipboardCheck />
+      ) : (
+        <LucideClipboardCopy className="stroke-white" />
+      )}
     </Button>
   );
 }
