@@ -33,7 +33,7 @@ import useThemeStore from "@/stores/theme-store";
 import type { MeetSchemaType } from "@/types/types";
 import { format } from "date-fns";
 import { CalendarIcon, Globe, Loader2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { UseFormReturn } from "react-hook-form";
 import { SuccessMeetingScheduling } from "./meeting-confirmation";
@@ -48,8 +48,10 @@ type Data = {
 
 export default function ScheduleMeetingForm({
   form,
+  onStatusChange,
 }: {
   form: UseFormReturn<MeetSchemaType>;
+  onStatusChange: (status: string) => void;
 }) {
   const language = useLanguageStore((state) => state.language);
   const theme = useThemeStore((state) => state.theme);
@@ -89,6 +91,12 @@ export default function ScheduleMeetingForm({
   useEffect(() => {
     form.reset();
   }, [language]);
+
+  useEffect(() => {
+    if (onStatusChange) {
+      onStatusChange(status); // Notify parent of the new status
+    }
+  }, [status, onStatusChange]);
 
   if (
     status === "success" &&

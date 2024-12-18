@@ -13,28 +13,25 @@ import { useCursorStore } from "@/stores/cursor-store";
 import { useLanguageStore } from "@/stores/language-store";
 import { CalendarClock, Loader2 } from "lucide-react";
 import ScheduleMeetingForm from "./form-meeting";
-import { useForm, UseFormReturn } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { MeetSchemaType } from "@/types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { buildFormSchema } from "@/lib/zod-schemas";
+import { useState } from "react";
 
-function DrawerHeaderContent({
-  form,
-}: {
-  form: UseFormReturn<MeetSchemaType>;
-}) {
-  if (form.formState.isSubmitting) {
+function DrawerHeaderContent({ status }: { status: string }) {
+  if (status === "pending") {
     return <Loader2 />;
   }
 
-  if (form.formState.isSubmitSuccessful) {
+  if (status === "success") {
     return (
-      <>
+      <div className="text-black">
         <DrawerTitle>Created a meeting!</DrawerTitle>
         <DrawerDescription>
           Looking forward to talking with you 😊
         </DrawerDescription>
-      </>
+      </div>
     );
   }
 
@@ -49,6 +46,11 @@ function DrawerHeaderContent({
 export default function ScheduleMeeting() {
   const language = useLanguageStore((state) => state.language);
   const animateCursor = useCursorStore((state) => state.animateCursor);
+  const [formStatus, setFormStatus] = useState<string>("idle");
+
+  const updateFormStatus = (status: string) => {
+    setFormStatus(status);
+  };
 
   const formSchema = buildFormSchema(null, "meet"); // will pass in meetData.errorMessages instead of null
   const form = useForm<MeetSchemaType>({
@@ -83,10 +85,10 @@ export default function ScheduleMeeting() {
       </DrawerTrigger>
       <DrawerContent className="max-h-screen space-y-2">
         <DrawerHeader>
-          <DrawerHeaderContent form={form} />
+          <DrawerHeaderContent status={formStatus} />
         </DrawerHeader>
         <div className="container">
-          <ScheduleMeetingForm form={form} />
+          <ScheduleMeetingForm form={form} onStatusChange={updateFormStatus} />
         </div>
         <DrawerFooter className="p-2"></DrawerFooter>
       </DrawerContent>
