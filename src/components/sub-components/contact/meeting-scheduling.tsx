@@ -19,7 +19,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { buildFormSchema } from "@/lib/zod-schemas";
 import { useState } from "react";
 
-function DrawerHeaderContent({ status }: { status: string }) {
+function DrawerHeaderContent({
+  status,
+  platform,
+}: {
+  status: string;
+  platform: string;
+}) {
   if (status === "pending") {
     return <Loader2 className="animate-spin" />;
   }
@@ -27,7 +33,9 @@ function DrawerHeaderContent({ status }: { status: string }) {
   if (status === "success") {
     return (
       <>
-        <DrawerTitle className="text-black">Created a meeting!</DrawerTitle>
+        <DrawerTitle className="text-black">
+          Created a {platform} meeting!
+        </DrawerTitle>
         <DrawerDescription className="text-black/80">
           Looking forward to talking with you 😊
         </DrawerDescription>
@@ -85,7 +93,10 @@ export default function ScheduleMeeting() {
       </DrawerTrigger>
       <DrawerContent className="max-h-screen space-y-2">
         <DrawerHeader>
-          <DrawerHeaderContent status={formStatus} />
+          <DrawerHeaderContent
+            status={formStatus}
+            platform={form.getValues("platform")}
+          />
         </DrawerHeader>
         <div className="container">
           <ScheduleMeetingForm form={form} onStatusChange={updateFormStatus} />
