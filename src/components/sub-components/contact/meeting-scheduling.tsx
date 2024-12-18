@@ -21,17 +21,17 @@ import { useState } from "react";
 
 function DrawerHeaderContent({ status }: { status: string }) {
   if (status === "pending") {
-    return <Loader2 />;
+    return <Loader2 className="animate-spin" />;
   }
 
   if (status === "success") {
     return (
-      <div className="text-black">
-        <DrawerTitle>Created a meeting!</DrawerTitle>
-        <DrawerDescription>
+      <>
+        <DrawerTitle className="text-black">Created a meeting!</DrawerTitle>
+        <DrawerDescription className="text-black/80">
           Looking forward to talking with you 😊
         </DrawerDescription>
-      </div>
+      </>
     );
   }
 
