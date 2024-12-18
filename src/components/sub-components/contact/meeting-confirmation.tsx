@@ -155,27 +155,12 @@ function CopyJoinUrl({ join_url }: { join_url: string }) {
                 </motion.div>
               </TooltipTrigger>
               <TooltipContent side="bottom">
-                <p>Your zoom join url</p>
+                <p>Your zoom join url is copied!</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
         </div>
       </div>
-
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger>
-            <Button
-              variant="ghost"
-              className="p-4 text-white bg-blue-500 rounded-full"
-              onClick={handleOpenInNewTab}
-            >
-              <ExternalLink />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent align="center">Open Link</TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
 
       <TooltipProvider>
         <Tooltip>
@@ -189,6 +174,21 @@ function CopyJoinUrl({ join_url }: { join_url: string }) {
           <TooltipContent align="center">
             {!isCopied ? <p>Copy to clipboard</p> : <p>Copied!</p>}
           </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger>
+            <Button
+              variant="ghost"
+              className="p-4 text-white bg-green-800 rounded-full h-fit"
+              onClick={handleOpenInNewTab}
+            >
+              <ExternalLink />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent align="center">Open Link</TooltipContent>
         </Tooltip>
       </TooltipProvider>
     </motion.div>
@@ -237,11 +237,7 @@ function CopyJoinUrlButton({
       className="p-4 bg-green-800 rounded-full h-fit"
       onClick={async (e: MouseEvent<HTMLButtonElement>) => await handleClick(e)}
     >
-      {isCopied ? (
-        <CopyCheckIcon />
-      ) : (
-        <LucideCopy className="w-full h-full stroke-white" />
-      )}
+      {isCopied ? <CopyCheckIcon /> : <LucideCopy />}
     </Button>
   );
 }
