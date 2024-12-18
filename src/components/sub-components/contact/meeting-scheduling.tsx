@@ -85,7 +85,6 @@ export default function ScheduleMeeting() {
         <DrawerHeader>
           <DrawerHeaderContent form={form} />
         </DrawerHeader>
-
         <div className="container">
           <ScheduleMeetingForm form={form} />
         </div>

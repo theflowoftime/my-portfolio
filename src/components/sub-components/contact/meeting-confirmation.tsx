@@ -37,6 +37,7 @@ const successMessage = "success"; // TODO: will be replaced to be dynamic
 
 export function SuccessMeetingScheduling({
   className: containerClassName,
+
   join_url,
   start_time,
   password,
