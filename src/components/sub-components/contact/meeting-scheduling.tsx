@@ -54,12 +54,21 @@ export default function ScheduleMeeting() {
         </Button>
       </DrawerTrigger>
       <DrawerContent className="max-h-screen space-y-2">
-        {!form.formState.isSubmitSuccessful ? (
-          <DrawerHeader>
-            <DrawerTitle>Let's talk about your buisness!</DrawerTitle>
-            <DrawerDescription>Schedule an online meeting</DrawerDescription>
-          </DrawerHeader>
-        ) : null}
+        <DrawerHeader>
+          {!form.formState.isSubmitSuccessful ? (
+            <>
+              <DrawerTitle>Let's talk about your buisness!</DrawerTitle>
+              <DrawerDescription>Schedule an online meeting</DrawerDescription>
+            </>
+          ) : (
+            <>
+              <DrawerTitle>Created a meeting!</DrawerTitle>
+              <DrawerDescription>
+                looking forward to talking with you &#x1F603;
+              </DrawerDescription>
+            </>
+          )}
+        </DrawerHeader>
 
         <div className="container">
           <ScheduleMeetingForm form={form} />
