@@ -92,14 +92,14 @@ export function SuccessMeetingScheduling({
           </motion.div>
         </div>
 
-        <div className="flex flex-col items-center gap-y-2">
+        <div className="flex flex-col items-center border-dashed border-input gap-y-2">
           <CopyJoinUrl join_url={join_url} />
           <div className="w-full text-lg tracking-wide text-center text-black font-fira">
             <small>{combineAndFormat(start_time, time)}</small>
           </div>
         </div>
-        <DrawerClose className="w-full border rounded-lg font-unbounded outline-1 outline-input border-input bg-background hover:bg-accent hover:text-accent-foreground">
-          close
+        <DrawerClose className="px-4 py-2 border rounded-lg font-unbounded w-fit outline-1 outline-input border-input bg-background hover:bg-accent hover:text-accent-foreground">
+          exit
         </DrawerClose>
       </div>
     </div>
