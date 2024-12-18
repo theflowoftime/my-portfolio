@@ -55,7 +55,7 @@ export default function ScheduleMeeting() {
       </DrawerTrigger>
       <DrawerContent className="max-h-screen space-y-2">
         <DrawerHeader>
-          {!form.formState.isSubmitSuccessful ? (
+          {!form.formState.isSubmitted ? (
             <>
               <DrawerTitle>Let's talk about your buisness!</DrawerTitle>
               <DrawerDescription>Schedule an online meeting</DrawerDescription>
