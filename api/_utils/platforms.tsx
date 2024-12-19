@@ -75,7 +75,8 @@ class GoogleMeetPlatform implements MeetingPlatform {
   ];
   private readonly googleTokenURL = "https://oauth2.googleapis.com/token";
   private readonly googleCalendarURL =
-    "https://www.googleapis.com/calendar/v3/calendars/primary/events";
+    "https://www.googleapis.com/calendar/v3/calendars/primary/events?conferenceDataVersion=1";
+
   private readonly duration = 1; // hours
   private readonly expiration = 3600; // 1 hour
 
@@ -168,9 +169,6 @@ class GoogleMeetPlatform implements MeetingPlatform {
           headers: {
             Authorization: `Bearer ${accessToken}`,
             "Content-Type": "application/json",
-          },
-          params: {
-            conferenceDataVersion: 1, // Add conferenceDataVersion query parameter
           },
         }
       );
