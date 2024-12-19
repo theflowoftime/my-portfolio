@@ -171,7 +171,7 @@ class GoogleMeetPlatform implements MeetingPlatform {
 
       // Now grant read access using ACL
       const aclResponse = await axios.post(
-        `https://www.googleapis.com/calendar/v3/calendars/primary/acl`,
+        `https://www.googleapis.com/calendar/v3/calendars/${eventId}/acl`,
         {
           role: "reader",
           scope: {
