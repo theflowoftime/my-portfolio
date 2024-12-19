@@ -133,8 +133,6 @@ class GoogleMeetPlatform implements MeetingPlatform {
         dateTime: formatGoogleMeetEndTime(data.date, data.time, this.duration),
         timeZone: timezone,
       },
-      // need domain-wide delegation which requires G Suite and domain verification
-      // attendees: [{ email: data.email }],
       conferenceData: {
         createRequest: {
           requestId: this.requestId,
@@ -167,11 +165,13 @@ class GoogleMeetPlatform implements MeetingPlatform {
         }
       );
 
+      console.log("Event Created:", eventResponse.data);
+
       eventId = eventResponse.data.id; // Get the event ID
 
       // Now grant read access using ACL
       const aclResponse = await axios.post(
-        `https://www.googleapis.com/calendar/v3/calendars/${eventId}/acl`,
+        `https://www.googleapis.com/calendar/v3/calendars/primary/acl`,
         {
           role: "reader",
           scope: {
