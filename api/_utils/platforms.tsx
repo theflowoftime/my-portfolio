@@ -136,7 +136,7 @@ class GoogleMeetPlatform implements MeetingPlatform {
       conferenceData: {
         createRequest: {
           requestId: this.requestId,
-          conferenceSolution: { key: { type: "hangoutsMeet" } },
+          // conferenceSolution: { key: { type: "hangoutsMeet" } },
         },
       },
     };
@@ -155,17 +155,27 @@ class GoogleMeetPlatform implements MeetingPlatform {
       const calendarEvent = this.createEvent(data, timezone);
 
       const eventResponse = await axios.post(
-        `${this.googleCalendarURL}?conferenceDataVersion=1`, // Add conferenceDataVersion query parameter
+        this.googleCalendarURL,
         calendarEvent,
         {
           headers: {
             Authorization: `Bearer ${accessToken}`,
             "Content-Type": "application/json",
           },
+          params: {
+            conferenceDataVersion: 1, // Add conferenceDataVersion query parameter
+          },
         }
       );
 
-      console.log("Event Created:", eventResponse.data);
+      // Extract the Meet link from `conferenceData`
+      const meetLink = eventResponse.data.conferenceData?.entryPoints?.find(
+        (entry: any) => entry.entryPointType === "video"
+      )?.uri;
+
+      console.log("Meet Link:", meetLink);
+
+      console.log("Event Created:", eventResponse);
 
       eventId = eventResponse.data.id; // Get the event ID
 
