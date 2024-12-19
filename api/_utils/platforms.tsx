@@ -9,7 +9,6 @@ import {
 import jwt from "jsonwebtoken";
 import fs from "fs";
 import crypto from "crypto";
-import { ax } from "node_modules/@upstash/redis/zmscore-Dc6Llqgr.d.mts";
 
 export type Meeting = any;
 export type Conference = any;
@@ -175,6 +174,12 @@ class GoogleMeetPlatform implements MeetingPlatform {
           scope: {
             type: "user",
             value: data.email,
+          },
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
           },
         }
       );
