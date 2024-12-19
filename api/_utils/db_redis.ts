@@ -2,19 +2,31 @@ import { Redis } from "@upstash/redis";
 import { Info } from "api/types";
 
 const redis = Redis.fromEnv();
+const BASE_RATE_LIMIT_WINDOW = 60 * 5; // 5 minutes
+export const MAX_ATTEMPTS = 10;
+const BAN_DURATION = 60 * 60 * 24; // 24 hours
 
-export const verifyIPRateLimit = async (ipKey: string) => {
+export const verifyIPRateLimit = async (
+  ipKey: string
+): Promise<number | null> => {
   try {
-    return await redis.get(ipKey);
+    const count: string | null = await redis.get(ipKey);
+    return count ? parseInt(count, 10) : null;
   } catch (error) {
     console.error("Error retrieving the ip from the database:", error);
     throw new Error("Failed to retrieve the ip from the database");
   }
 };
 
-export const storeIP = async (ipKey: string) => {
+export const storeIP = async (
+  ipKey: string,
+  count: number,
+  ban: boolean = false
+) => {
   try {
-    return await redis.setex(ipKey, 3600, Date.now().toString());
+    const expiration = ban ? BAN_DURATION : BASE_RATE_LIMIT_WINDOW * count;
+    await redis.setex(ipKey, expiration, count);
+    return expiration;
   } catch (error) {
     console.error("Error storing ip in the database:", error);
     throw new Error("Failed to store ip in the database");

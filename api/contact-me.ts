@@ -2,7 +2,12 @@ import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { buildFormSchema } from "./../src/lib/zod-schemas";
 import { FORM_RESPONSES } from "./_utils/constants";
 import { sendMessage } from "./_utils/sanity-cms";
-import { getVisitorInfo, storeIP, verifyIPRateLimit } from "./_utils/db_redis";
+import {
+  getVisitorInfo,
+  MAX_ATTEMPTS,
+  storeIP,
+  verifyIPRateLimit,
+} from "./_utils/db_redis";
 import { verifyCaptcha } from "./_utils/verify-google-recaptcha";
 import { retrieveIp } from "./_utils/network";
 import { MeetingPlatformFactory } from "./_utils/platforms";
@@ -45,9 +50,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
     const ipKey = `${FORM_RESPONSES[formName].ip_prefix}${ip}`;
-    const lastMessageTimestamp = await verifyIPRateLimit(ipKey);
+    const attemptedCount = await verifyIPRateLimit(ipKey);
 
-    if (lastMessageTimestamp) {
+    if (attemptedCount !== null) {
+      let expiration;
+      if (Number(attemptedCount) >= MAX_ATTEMPTS) {
+        // final rate limit reached
+        expiration = await storeIP(ipKey, MAX_ATTEMPTS, true); // Ban IP for 24 hours
+        return errorHandler(res, null, "rateLimit", formName);
+      }
+
+      expiration = await storeIP(ipKey, attemptedCount + 1);
+      console.log(expiration / 60, "minutes remaining for", ipKey);
       return errorHandler(res, null, "rateLimit", formName);
     }
 
@@ -64,9 +78,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             info?.timezone
           );
 
-          link = meeting.join_url;
-          password = meeting.password;
-          start_time = meeting.start_time;
+          if (formData.platform === "zoom") {
+            link = meeting.join_url;
+            password = meeting.password;
+            start_time = meeting.start_time;
+          }
         } catch (err) {
           const errorMessage = getErrorMessage(err);
           console.error(`Error generating join URL: ${errorMessage}`, {
@@ -78,7 +94,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
     }
 
-    await storeIP(ipKey);
+    await storeIP(ipKey, 1);
     await sendMessage(
       { ...formData, userInfo: info, meeting: { password, start_time, link } },
       FORM_RESPONSES[formName]._type

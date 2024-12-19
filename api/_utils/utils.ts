@@ -1,4 +1,4 @@
-import { parseISO, format } from "date-fns";
+import { parseISO, format, add } from "date-fns";
 
 /**
  * Formats a date and time into the required Zoom start_time format.
@@ -20,3 +20,23 @@ export function formatStartTime(date: string, time: string): string {
     throw new Error("Invalid date or time format");
   }
 }
+
+export const formatGoogleMeetStartTime = (
+  date: string,
+  time: string
+): string => {
+  const combinedISO = `${date}T${time}:00`; // Combine date and time into ISO format
+  const parsedDate = parseISO(combinedISO); // Parse into a Date object
+  return format(parsedDate, "yyyy-MM-dd'T'HH:mm:ssXXX"); // Format into Google API-compatible format
+};
+
+export const formatGoogleMeetEndTime = (
+  date: string,
+  time: string,
+  duration: number
+): string => {
+  const combinedISO = `${date}T${time}:00`; // Combine date and time into ISO format
+  const parsedDate = parseISO(combinedISO); // Parse into a Date object
+  const endDate = add(parsedDate, { hours: duration }); // Add 1 hour
+  return format(endDate, "yyyy-MM-dd'T'HH:mm:ssXXX"); // Format into Google API-compatible format
+};

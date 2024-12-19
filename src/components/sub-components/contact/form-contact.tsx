@@ -76,10 +76,6 @@ export function ContactForm({ contactData }: { contactData: TContact }) {
 
   const onError = () => {};
 
-  useEffect(() => {
-    form.reset();
-  }, [language]);
-
   return (
     <Form {...form}>
       <form

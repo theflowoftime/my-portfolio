@@ -89,10 +89,6 @@ export default function ScheduleMeetingForm({
   const onError = () => {};
 
   useEffect(() => {
-    form.reset();
-  }, [language]);
-
-  useEffect(() => {
     if (onStatusChange) {
       onStatusChange(status); // Notify parent of the new status
     }

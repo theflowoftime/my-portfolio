@@ -1,19 +1,27 @@
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
 import { tokenCheck } from "./zoom/token";
 import { ZOOM_API_BASE_URL } from "./constants";
 import { Data } from "api/types";
-import { formatStartTime } from "./utils";
+import {
+  formatGoogleMeetEndTime,
+  formatGoogleMeetStartTime,
+  formatStartTime,
+} from "./utils";
+import jwt from "jsonwebtoken";
+import fs from "fs";
+import path from "path";
+import crypto from "crypto";
 
 const EMAIL = "daflowoftime@outlook.com"; // add as env
 export type Meeting = any; // zoom meeting response
+export type Conference = any;
+const requestId = crypto.randomBytes(12).toString("hex"); // Unique request ID generated once
+
+export const SCOPES = ["https://www.googleapis.com/auth/calendar"];
+export const GOOGLE_TOKEN_URL = "https://oauth2.googleapis.com/token";
 
 interface MeetingPlatform {
   createMeeting(data: Data, timezone?: string): Promise<Meeting | null>;
-  generateConfirmationEmailData(
-    data: Meeting,
-    email: string,
-    timeZone: string | undefined
-  ): void;
 }
 
 class ZoomPlatform implements MeetingPlatform {
@@ -57,29 +65,92 @@ class ZoomPlatform implements MeetingPlatform {
       return null;
     }
   }
-
-  generateConfirmationEmailData(
-    { join_url, start_url, password, start_time }: Meeting,
-    email: string,
-    timeZone: string
-  ) {
-    if (!join_url || !start_time || !password) {
-      console.error("Missing email details", {
-        join_url,
-        start_time,
-        password,
-      });
-      throw new Error("Required email details are missing.");
-    }
-  }
 }
 
 class GoogleMeetPlatform implements MeetingPlatform {
-  createMeeting(data: Data): Promise<string> {
+  async createMeeting(
+    data: Data,
+    timezone: string
+  ): Promise<Conference | null> {
     // Logic to generate a Google Meet join URL
-    return new Promise(() => {});
+    try {
+      // Load service account key JSON
+      const serviceAccountKey = JSON.parse(
+        fs.readFileSync(
+          path.resolve("./google-meet/portfolio-445121-3d0bc9ad3590.json"),
+          "utf8"
+        )
+      );
+
+      // Step 1: Create a JWT for Service Account Authentication
+      const iat = Math.floor(Date.now() / 1000); // Current time in seconds
+      const exp = iat + 3600; // 1-hour expiration
+
+      const jwtToken = jwt.sign(
+        {
+          iss: serviceAccountKey.client_email, // Service account email
+          scope: SCOPES.join(" "), // Scopes for Calendar API
+          aud: GOOGLE_TOKEN_URL, // Audience
+          exp,
+          iat,
+        },
+        serviceAccountKey.private_key, // Service account private key
+        { algorithm: "RS256" }
+      );
+
+      // Step 2: Exchange JWT for an Access Token
+      const { data: tokenResponse } = await axios.post(GOOGLE_TOKEN_URL, {
+        grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
+        assertion: jwtToken,
+      });
+
+      const accessToken = tokenResponse.access_token;
+
+      const DURATION = 1; // hours
+      // Step 3: Create a Calendar Event with a Google Meet Link
+      const calendarEvent = {
+        summary: "Meeting",
+        description: "Discuss project.",
+        start: {
+          dateTime: formatGoogleMeetStartTime(data.date, data.time), // change to Date
+          timeZone: timezone,
+        },
+        end: {
+          dateTime: formatGoogleMeetEndTime(data.date, data.time, DURATION), // Replace with your date/time
+          timeZone: timezone,
+        },
+        attendees: [{ email: data.email }],
+        conferenceData: {
+          createRequest: {
+            requestId,
+            conferenceSolutionKey: { type: "hangoutsMeet" }, // Google Meet
+          },
+        },
+      };
+
+      const response = await axios.post(
+        "https://www.googleapis.com/calendar/v3/calendars/primary/events?conferenceDataVersion=1",
+        calendarEvent,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("Meet Link:", response.data.hangoutLink);
+      console.log("Event Created:", response.data);
+      return response.data;
+    } catch (error) {
+      if (isAxiosError(error))
+        console.error(
+          "Error creating Google Meet conference:",
+          error.response?.data || error.message
+        );
+      throw error;
+    }
   }
-  generateConfirmationEmailData() {}
 }
 
 class MicrosoftTeamsPlatform implements MeetingPlatform {
@@ -87,8 +158,6 @@ class MicrosoftTeamsPlatform implements MeetingPlatform {
     // Logic to generate a Microsoft Teams join URL
     return new Promise(() => {});
   }
-
-  generateConfirmationEmailData() {}
 }
 
 export class MeetingPlatformFactory {
