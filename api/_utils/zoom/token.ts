@@ -1,11 +1,12 @@
 import axios, { isAxiosError } from "axios";
-import { ZOOM_OAUTH_ENDPOINT } from "../constants";
+
 import { Redis } from "@upstash/redis";
 
 const redis = Redis.fromEnv();
 
 const getToken = async () => {
   try {
+    const ZOOM_OAUTH_ENDPOINT = "https://zoom.us/oauth/token";
     const { ZOOM_ACCOUNT_ID, ZOOM_CLIENT_ID, ZOOM_CLIENT_SECRET } = process.env;
 
     const request = await axios.post(

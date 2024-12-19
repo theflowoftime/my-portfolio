@@ -53,6 +53,3 @@ export const FORM_RESPONSES: TFORM_RESPONSES = {
 
 export const FIELDS_NUMERIC = 60551167;
 export const DEFAULT_LANG = "EN";
-
-export const ZOOM_OAUTH_ENDPOINT = "https://zoom.us/oauth/token";
-export const ZOOM_API_BASE_URL = "https://api.zoom.us/v2";
