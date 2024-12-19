@@ -101,6 +101,7 @@ class GoogleMeetPlatform implements MeetingPlatform {
         {
           iss: serviceAccountKey.client_email, // Service account email
           scope: SCOPES.join(" "), // Scopes for Calendar API
+
           aud: GOOGLE_TOKEN_URL, // Audience
           exp,
           iat,
@@ -130,7 +131,7 @@ class GoogleMeetPlatform implements MeetingPlatform {
           dateTime: formatGoogleMeetEndTime(data.date, data.time, DURATION), // Replace with your date/time
           timeZone: timezone,
         },
-        attendees: [{ email: data.email }],
+        // attendees: [{ email: data.email }],
         conferenceData: {
           createRequest: {
             requestId,
