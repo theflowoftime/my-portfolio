@@ -140,10 +140,8 @@ class GoogleMeetPlatform implements MeetingPlatform {
       conferenceData: {
         createRequest: {
           requestId: this.requestId,
-          conferenceSolution: {
-            key: {
-              type: "hangoutsMeet",
-            },
+          conferenceSolutionKey: {
+            type: "hangoutsMeet",
           },
         },
       },
