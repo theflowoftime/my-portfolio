@@ -133,7 +133,8 @@ class GoogleMeetPlatform implements MeetingPlatform {
         dateTime: formatGoogleMeetEndTime(data.date, data.time, this.duration),
         timeZone: timezone,
       },
-      // attendees: [{ email: data.email }], // need domain-wide delegation which requires G Suite and domain verification
+      // need domain-wide delegation which requires G Suite and domain verification
+      // attendees: [{ email: data.email }],
       conferenceData: {
         createRequest: {
           requestId: this.requestId,
@@ -147,13 +148,15 @@ class GoogleMeetPlatform implements MeetingPlatform {
     data: Data,
     timezone: string
   ): Promise<Conference | null> {
+    let accessToken: string | undefined;
+    let eventId: string | undefined;
     try {
       const serviceAccountKey = this.getPrivateKey();
       const jwtToken = this.generateJWT(serviceAccountKey);
-      const accessToken = await this.exchangeJWTForAccessToken(jwtToken);
+      accessToken = await this.exchangeJWTForAccessToken(jwtToken);
       const calendarEvent = this.createEvent(data, timezone);
 
-      const response = await axios.post(
+      const eventResponse = await axios.post(
         `${this.googleCalendarURL}?conferenceDataVersion=1`, // Add conferenceDataVersion query parameter
         calendarEvent,
         {
@@ -164,10 +167,10 @@ class GoogleMeetPlatform implements MeetingPlatform {
         }
       );
 
-      console.log("Event Created:", response.data);
+      eventId = eventResponse.data.id; // Get the event ID
 
-      // provide read access to the user
-      const r = await axios.post(
+      // Now grant read access using ACL
+      const aclResponse = await axios.post(
         `https://www.googleapis.com/calendar/v3/calendars/primary/acl`,
         {
           role: "reader",
@@ -183,16 +186,28 @@ class GoogleMeetPlatform implements MeetingPlatform {
           },
         }
       );
-      console.log("Event Created:", r.data);
 
-      return response.data;
+      console.log("Event Created:", eventResponse.data);
+      console.log("ACL updated:", aclResponse.data);
+
+      return eventResponse.data;
     } catch (error) {
-      if (isAxiosError(error))
-        console.error(
-          "Error creating Google Meet conference:",
-          error.response?.data || error.message
-        );
-      throw error;
+      // Handle errors appropriately.  If the event creation failed, there's nothing to clean up.  But if the event was created successfully and the ACL update failed, you should ideally delete the event to maintain consistency.
+      console.error("Error creating meeting:", error);
+      if (eventId && accessToken) {
+        // attempt to delete the event if the ACL update failed, but consider retrying the ACL update in a production environment
+        try {
+          await axios.delete(`${this.googleCalendarURL}/${eventId}`, {
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+            },
+          });
+          console.log(`Event with ID ${eventId} deleted due to ACL failure`);
+        } catch (deleteError) {
+          console.error("Error deleting event:", deleteError);
+        }
+      }
+      throw error; // re-throw for higher level handling
     }
   }
 }
