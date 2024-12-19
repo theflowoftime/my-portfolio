@@ -69,7 +69,10 @@ class ZoomPlatform implements MeetingPlatform {
 
 class GoogleMeetPlatform implements MeetingPlatform {
   private readonly requestId = crypto.randomBytes(12).toString("hex"); // Unique request ID generated once
-  private readonly scopes = ["https://www.googleapis.com/auth/calendar"];
+  private readonly scopes = [
+    "https://www.googleapis.com/auth/calendar",
+    "https://www.googleapis.com/auth/calendar.events",
+  ];
   private readonly googleTokenURL = "https://oauth2.googleapis.com/token";
   private readonly googleCalendarURL =
     "https://www.googleapis.com/calendar/v3/calendars/primary/events";
@@ -136,10 +139,11 @@ class GoogleMeetPlatform implements MeetingPlatform {
       conferenceData: {
         createRequest: {
           requestId: this.requestId,
-          conferenceSolutionKey: {
-            type: "hangoutsMeet",
+          conferenceSolution: {
+            key: {
+              type: "hangoutsMeet",
+            },
           },
-          // conferenceSolution: { key: { type: "hangoutsMeet" } },
         },
       },
     };
