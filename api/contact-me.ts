@@ -82,6 +82,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             link = meeting.join_url;
             password = meeting.password;
             start_time = meeting.start_time;
+          } else if (formData.platform === "google meet") {
+            link = meeting.htmlLink;
+            start_time = meeting.start.dateTime;
           }
         } catch (err) {
           const errorMessage = getErrorMessage(err);
