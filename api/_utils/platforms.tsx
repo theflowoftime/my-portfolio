@@ -74,13 +74,24 @@ class GoogleMeetPlatform implements MeetingPlatform {
   ): Promise<Conference | null> {
     // Logic to generate a Google Meet join URL
     try {
-      // Load service account key JSON
-      const serviceAccountKey = JSON.parse(
-        fs.readFileSync(
-          path.resolve("./google-meet/portfolio-445121-3d0bc9ad3590.json"),
-          "utf8"
-        )
-      );
+      // Check for the base64-encoded service account key in the environment
+      const serviceAccountKeyBase64 = process.env.GOOGLE_SERVICE_ACCOUNT_KEY;
+      if (!serviceAccountKeyBase64) {
+        throw new Error(
+          "Missing GOOGLE_SERVICE_ACCOUNT_KEY environment variable."
+        );
+      }
+
+      // Decode the base64 string and write to a temporary file
+      const decodedKey = Buffer.from(
+        serviceAccountKeyBase64,
+        "base64"
+      ).toString("utf-8");
+      const tempKeyPath = "/tmp/service-account.json"; // Use a safe, temporary location
+      fs.writeFileSync(tempKeyPath, decodedKey);
+
+      // Parse the service account key JSON
+      const serviceAccountKey = JSON.parse(decodedKey);
 
       // Step 1: Create a JWT for Service Account Authentication
       const iat = Math.floor(Date.now() / 1000); // Current time in seconds
