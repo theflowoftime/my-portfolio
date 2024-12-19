@@ -74,7 +74,6 @@ class GoogleMeetPlatform implements MeetingPlatform {
   ): Promise<Conference | null> {
     // Logic to generate a Google Meet join URL
     try {
-<<<<<<< HEAD
       // Check for the base64-encoded service account key in the environment
       const serviceAccountKeyBase64 = process.env.GOOGLE_SERVICE_ACCOUNT_KEY;
       if (!serviceAccountKeyBase64) {
@@ -93,15 +92,6 @@ class GoogleMeetPlatform implements MeetingPlatform {
 
       // Parse the service account key JSON
       const serviceAccountKey = JSON.parse(decodedKey);
-=======
-      // Load service account key JSON
-      const serviceAccountKey = JSON.parse(
-        fs.readFileSync(
-          path.resolve("./google-meet/portfolio-445121-3d0bc9ad3590.json"),
-          "utf8"
-        )
-      );
->>>>>>> fa0daa0 (gradual increase in rate limit ban && added google meet api conference creation to generate a link)
 
       // Step 1: Create a JWT for Service Account Authentication
       const iat = Math.floor(Date.now() / 1000); // Current time in seconds
