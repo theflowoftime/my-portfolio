@@ -271,11 +271,11 @@ class MicrosoftTeamsPlatform implements MeetingPlatform {
     return access_token;
   }
 
-  async #createOnlineMeeting(userId: string, meetingData: any) {
+  async #createOnlineMeeting(meetingData: any) {
     const token = await this.#getAccessToken();
 
     const response = await axios.post(
-      `${this.#graphEndpoint}/me/events`,
+      `${this.#graphEndpoint}/${this.#userId}/events`,
       meetingData,
       {
         headers: {
@@ -321,10 +321,7 @@ class MicrosoftTeamsPlatform implements MeetingPlatform {
     };
 
     try {
-      const response = await this.#createOnlineMeeting(
-        this.#userId,
-        meetingData
-      );
+      const response = await this.#createOnlineMeeting(meetingData);
       console.log("Microsoft Teams meeting created:", response);
       return response;
     } catch (error) {
