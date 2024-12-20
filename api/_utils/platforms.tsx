@@ -248,17 +248,20 @@ class MicrosoftTeamsPlatform implements MeetingPlatform {
     }
 
     // Generate a new token if not found in Redis
-    const tokenResponse = await axios.post(this.#tokenEndpoint, null, {
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      data: new URLSearchParams({
+    const tokenResponse = await axios.post(
+      this.#tokenEndpoint,
+      new URLSearchParams({
         client_id: this.#clientId,
         scope: "https://graph.microsoft.com/.default",
         client_secret: this.#clientSecret,
         grant_type: "client_credentials",
       }).toString(),
-    });
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
 
     console.log(tokenResponse.data);
 
@@ -313,7 +316,7 @@ class MicrosoftTeamsPlatform implements MeetingPlatform {
           },
         ],
       },
-      subject: "test",
+      subject: "Discuss project",
     };
 
     try {
