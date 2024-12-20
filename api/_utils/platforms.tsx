@@ -263,8 +263,6 @@ class MicrosoftTeamsPlatform implements MeetingPlatform {
       }
     );
 
-    console.log(tokenResponse.data);
-
     const { access_token, expires_in } = tokenResponse.data;
 
     // Store the token in Redis with an expiration time
@@ -277,7 +275,7 @@ class MicrosoftTeamsPlatform implements MeetingPlatform {
     const token = await this.#getAccessToken();
 
     const response = await axios.post(
-      `${this.#graphEndpoint}/users/${userId}/onlineMeetings`,
+      `${this.#graphEndpoint}/me/events`,
       meetingData,
       {
         headers: {
@@ -291,32 +289,35 @@ class MicrosoftTeamsPlatform implements MeetingPlatform {
     return response.data.joinUrl;
   }
 
-  async createMeeting(data: Data): Promise<string> {
+  async createMeeting(data: Data, timezone: string): Promise<string> {
     // Logic to generate a Microsoft Teams join URL
     const { email, date, time } = data;
     // const userId = "b50863e9-a9e1-4946-9daa-4e1a5ae6f366";
+
     const meetingData = {
-      startDateTime: formatGoogleMeetStartTime(date, time),
-      endDateTime: formatGoogleMeetEndTime(date, time, 1), // 1 hour meeting
-      participants: {
-        organizer: {
-          identity: {
-            user: {
-              id: this.#userId,
-            },
-          },
-        },
-        attendees: [
-          {
-            identity: {
-              user: {
-                id: email,
-              },
-            },
-          },
-        ],
-      },
       subject: "Discuss project",
+      start: {
+        dateTime: formatGoogleMeetStartTime(date, time),
+        timeZone: timezone,
+      },
+      end: {
+        dateTime: formatGoogleMeetEndTime(date, time, 1), // 1 hour meeting
+        timeZone: timezone,
+      },
+      "attendees:": [
+        {
+          emailAddress: {
+            address: email,
+            name: "Partner",
+          },
+          type: "required",
+        },
+      ],
+      isOnlineMeeting: true,
+      onlineMeetingProvider: "teamsForBusiness",
+      originalStartTimeZone: "Africa/Tunis",
+      allowNewTimeProposals: true,
+      isReminderOn: true,
     };
 
     try {
