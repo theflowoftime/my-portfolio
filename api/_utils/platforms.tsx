@@ -9,6 +9,7 @@ import {
 import jwt from "jsonwebtoken";
 import fs from "fs";
 import crypto from "crypto";
+import { Redis } from "@upstash/redis";
 
 export type Meeting = any;
 export type Conference = any;
@@ -228,9 +229,108 @@ class GoogleMeetPlatform implements MeetingPlatform {
 }
 
 class MicrosoftTeamsPlatform implements MeetingPlatform {
-  createMeeting(data: Data): Promise<string> {
+  #tokenKey = "ms-access-token";
+  #tenantId = process.env.MS_TENANT_ID!;
+  #clientId = process.env.MS_CLIENT_ID!;
+  #clientSecret = process.env.MS_CLIENT_SECRET!; // Replace with your client secret
+  #userId = process.env.MS_USER_ID!;
+  #tokenEndpoint = `https://login.microsoftonline.com/${
+    this.#tenantId
+  }/oauth2/v2.0/token`;
+  #graphEndpoint = "https://graph.microsoft.com/v1.0";
+  #redis = Redis.fromEnv();
+
+  async #getAccessToken() {
+    // Check if the token exists in Redis
+    const cachedToken = await this.#redis.get(this.#tokenKey);
+    if (cachedToken) {
+      return cachedToken;
+    }
+
+    // Generate a new token if not found in Redis
+    const tokenResponse = await axios.post(this.#tokenEndpoint, null, {
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      data: new URLSearchParams({
+        client_id: this.#clientId,
+        scope: "https://graph.microsoft.com/.default",
+        client_secret: this.#clientSecret,
+        grant_type: "client_credentials",
+      }).toString(),
+    });
+
+    console.log(tokenResponse.data);
+
+    const { access_token, expires_in } = tokenResponse.data;
+
+    // Store the token in Redis with an expiration time
+    await this.#redis.setex(this.#tokenKey, expires_in - 60, access_token); // Set a buffer to avoid expiration issues
+
+    return access_token;
+  }
+
+  async #createOnlineMeeting(userId: string, meetingData: any) {
+    const token = await this.#getAccessToken();
+
+    const response = await axios.post(
+      `${this.#graphEndpoint}/users/${userId}/onlineMeetings`,
+      meetingData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          // "Accept-Language": data.locale,
+        },
+      }
+    );
+
+    return response.data.joinUrl;
+  }
+
+  async createMeeting(data: Data): Promise<string> {
     // Logic to generate a Microsoft Teams join URL
-    return new Promise(() => {});
+    const { email, date, time } = data;
+    // const userId = "b50863e9-a9e1-4946-9daa-4e1a5ae6f366";
+    const meetingData = {
+      startDateTime: formatGoogleMeetStartTime(date, time),
+      endDateTime: formatGoogleMeetEndTime(date, time, 1), // 1 hour meeting
+      participants: {
+        organizer: {
+          identity: {
+            user: {
+              id: this.#userId,
+            },
+          },
+        },
+        attendees: [
+          {
+            identity: {
+              user: {
+                id: email,
+              },
+            },
+          },
+        ],
+      },
+      subject: "test",
+    };
+
+    try {
+      const response = await this.#createOnlineMeeting(
+        this.#userId,
+        meetingData
+      );
+      console.log("Microsoft Teams meeting created:", response);
+      return response;
+    } catch (error) {
+      if (isAxiosError(error))
+        console.error(
+          "Error creating online meeting:",
+          error.response?.data || error.message
+        );
+      throw new Error("Failed to create Microsoft Teams meeting.");
+    }
   }
 }
 
