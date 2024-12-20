@@ -275,7 +275,7 @@ class MicrosoftTeamsPlatform implements MeetingPlatform {
     const token = await this.#getAccessToken();
 
     const response = await axios.post(
-      `${this.#graphEndpoint}/${this.#userId}/events`,
+      `${this.#graphEndpoint}/users/${this.#userId}/events`,
       meetingData,
       {
         headers: {
