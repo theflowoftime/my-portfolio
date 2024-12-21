@@ -278,6 +278,7 @@ class MicrosoftTeamsPlatform implements MeetingPlatform {
   async #createOnlineMeeting(meetingData: any) {
     const token = await this.#getAccessToken();
 
+    console.log({ token });
     const response = await axios.post(
       `${this.#graphEndpoint}/users/12a542e70b9f80a9/events`, //daflowoftime@outlook.com
       meetingData,
@@ -308,7 +309,7 @@ class MicrosoftTeamsPlatform implements MeetingPlatform {
         dateTime: formatGoogleMeetEndTime(date, time, 1), // 1 hour meeting
         timeZone: timezone,
       },
-      "attendees": [
+      attendees: [
         {
           emailAddress: {
             address: email,
