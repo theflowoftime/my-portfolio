@@ -233,10 +233,11 @@ class MicrosoftTeamsPlatform implements MeetingPlatform {
   #tenantId = process.env.MS_TENANT_ID!;
   #clientId = process.env.MS_CLIENT_ID!;
   #clientSecret = process.env.MS_CLIENT_SECRET!; // Replace with your client secret
-  #userId = process.env.MS_USER_ID!;
-  #tokenEndpoint = `https://login.microsoftonline.com/${
-    this.#tenantId
-  }/oauth2/v2.0/token`;
+  // #userId = process.env.MS_USER_ID!;
+  // #tokenEndpoint = `https://login.microsoftonline.com/${
+  //   this.#tenantId
+  // }/oauth2/v2.0/token`;
+  #tokenEndpoint = `https://login.microsoftonline.com/1ca2e233-fbc5-48b6-a49d-df215bfa96a7/oauth2/v2.0/token`;
   #graphEndpoint = "https://graph.microsoft.com/v1.0";
   #redis = Redis.fromEnv();
 
@@ -275,7 +276,7 @@ class MicrosoftTeamsPlatform implements MeetingPlatform {
     const token = await this.#getAccessToken();
 
     const response = await axios.post(
-      `${this.#graphEndpoint}/users/12a542e70b9f80a9/events`,
+      `${this.#graphEndpoint}/users/12a542e70b9f80a9/events`, //daflowoftime@outlook.com
       meetingData,
       {
         headers: {
