@@ -230,14 +230,17 @@ class GoogleMeetPlatform implements MeetingPlatform {
 
 class MicrosoftTeamsPlatform implements MeetingPlatform {
   #tokenKey = "ms-access-token";
-  #tenantId = process.env.MS_TENANT_ID!;
+  #tenantId =
+    process.env.MS_TENANT_ID! || "1ca2e233-fbc5-48b6-a49d-df215bfa96a7";
   #clientId = process.env.MS_CLIENT_ID!;
   #clientSecret = process.env.MS_CLIENT_SECRET!; // Replace with your client secret
   // #userId = process.env.MS_USER_ID!;
   // #tokenEndpoint = `https://login.microsoftonline.com/${
   //   this.#tenantId
   // }/oauth2/v2.0/token`;
-  #tokenEndpoint = `https://login.microsoftonline.com/1ca2e233-fbc5-48b6-a49d-df215bfa96a7/oauth2/v2.0/token`;
+  #tokenEndpoint = `https://login.microsoftonline.com/${
+    this.#tenantId
+  }/oauth2/v2.0/token`;
   #graphEndpoint = "https://graph.microsoft.com/v1.0";
   #redis = Redis.fromEnv();
 
@@ -305,7 +308,7 @@ class MicrosoftTeamsPlatform implements MeetingPlatform {
         dateTime: formatGoogleMeetEndTime(date, time, 1), // 1 hour meeting
         timeZone: timezone,
       },
-      "attendees:": [
+      "attendees": [
         {
           emailAddress: {
             address: email,
