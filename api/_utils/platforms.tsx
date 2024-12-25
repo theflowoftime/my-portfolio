@@ -276,7 +276,7 @@ class MicrosoftTeamsPlatform implements MeetingPlatform {
 
     console.log({ token });
     const response = await axios.post(
-      `${this.#graphEndpoint}/users/12a542e70b9f80a9/calendar/events`, //daflowoftime@outlook.com
+      `${this.#graphEndpoint}/users/daflowoftime@outlook.com/events`, //12a542e70b9f80a9
       meetingData,
       {
         headers: {
