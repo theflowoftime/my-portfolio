@@ -12,13 +12,7 @@ import { verifyCaptcha } from "./_utils/verify-google-recaptcha";
 import { retrieveIp } from "./_utils/network";
 import { MeetingPlatformFactory } from "./_utils/platforms";
 import { errorHandler } from "./_utils/error";
-import { isAxiosError } from "axios";
-
-function getErrorMessage(err: unknown): string {
-  if (isAxiosError(err)) return err.message;
-  if (err instanceof Error) return err.message;
-  return "An unknown error occurred";
-}
+import { getErrorMessage } from "./_utils/get-error-message";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const formName = req.query?.formName as keyof typeof FORM_RESPONSES;
@@ -84,6 +78,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             start_time = meeting.start_time;
           } else if (formData.platform === "google meet") {
             link = meeting.htmlLink;
+            start_time = meeting.start.dateTime;
+          } else if (formData.platform === "microsoft teams") {
+            link = meeting.onlineMeetingUrl;
             start_time = meeting.start.dateTime;
           }
         } catch (err) {

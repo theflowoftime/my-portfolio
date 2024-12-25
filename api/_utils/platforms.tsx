@@ -230,14 +230,10 @@ class GoogleMeetPlatform implements MeetingPlatform {
 
 class MicrosoftTeamsPlatform implements MeetingPlatform {
   #tokenKey = "ms-access-token";
-  #tenantId =
-    process.env.MS_TENANT_ID! || "1ca2e233-fbc5-48b6-a49d-df215bfa96a7";
+  #tenantId = process.env.MS_TENANT_ID!;
   #clientId = process.env.MS_CLIENT_ID!;
   #clientSecret = process.env.MS_CLIENT_SECRET!; // Replace with your client secret
   // #userId = process.env.MS_USER_ID!;
-  // #tokenEndpoint = `https://login.microsoftonline.com/${
-  //   this.#tenantId
-  // }/oauth2/v2.0/token`;
   #tokenEndpoint = `https://login.microsoftonline.com/${
     this.#tenantId
   }/oauth2/v2.0/token`;
@@ -280,7 +276,9 @@ class MicrosoftTeamsPlatform implements MeetingPlatform {
 
     console.log({ token });
     const response = await axios.post(
-      `${this.#graphEndpoint}/users/12a542e70b9f80a9/events`, //daflowoftime@outlook.com
+      `${
+        this.#graphEndpoint
+      }/users/daflowoftime_outlook.com#EXT#@daflowoftimeoutlook.onmicrosoft.com/events`, //daflowoftime@outlook.com
       meetingData,
       {
         headers: {
