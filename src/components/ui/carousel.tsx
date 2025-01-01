@@ -355,19 +355,19 @@ const DotButtons = React.forwardRef<
           <HoverCardContent className="w-80">
             <div className="flex justify-between space-x-4">
               <Avatar>
-                <AvatarImage src={urlFor(project.image).url()} />
+                <AvatarImage src={urlFor(project.images.thumbnails[0]).url()} />
                 <AvatarFallback>VC</AvatarFallback>
               </Avatar>
               <div className="space-y-1">
                 <h4 className="text-sm font-semibold">{project.title}</h4>
-                <p className="text-xs">{project.description}</p>
+                <p className="text-xs">{project.summary}</p>
                 <div className="flex items-center pt-2">
                   <CalendarDays className="w-4 h-4 mr-2 opacity-70" />{" "}
                   <span className="text-xs text-muted-foreground">
-                    Started: {formatDate(project.started_at)}
+                    Started: {formatDate(project.timeframe.started_at)}
                   </span>
                   <span className="text-xs text-muted-foreground">
-                    Delivered: {formatDate(project.delivered_at)}
+                    Delivered: {formatDate(project.timeframe.delivered_at)}
                   </span>
                 </div>
               </div>

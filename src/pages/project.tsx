@@ -3,21 +3,13 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useProject } from "@/hooks/useProject";
 import { useScrollToTop } from "@/hooks/useScrollToTop";
+import { urlFor } from "@/lib/utils";
 import { queryClient } from "@/main";
 import { useLanguageStore } from "@/stores/language-store";
 import { Projects } from "@/types/types";
+import { differenceInMonths } from "date-fns";
 import { Link } from "lucide-react";
 import { useLocation, useOutletContext, useParams } from "react-router-dom";
-
-const tags = ["Branding", "Web"];
-const services = [
-  "Product Design",
-  "Strategy Branding",
-  "No-Code",
-  "Development",
-];
-const stacks = ["Framer", "Figma", "Adobe CC"];
-const timeline = "4 weeks";
 
 function Project() {
   const { projectName } = useParams();
@@ -38,22 +30,23 @@ function Project() {
       {/* might add a breadcrumb /all projects/project-1 */}
       <div className="flex flex-col gap-y-16 ">
         {/* Info Showcase */}
-        <div className="flex flex-col gap-y-4 w-[46%] h-[calc(100vh_-_4.56rem)] justify-center pt-8 -tracking-[0.02em]">
-          <h1 className="text-[5.35rem] font-instrument ">Remix Supply</h1>
-          <div className="flex font-mono gap-x-4">
-            {tags.map((tag) => (
-              <Badge
-                variant="outline"
-                className="text-[1.05rem] font-light px-3"
-              >
-                {tag}
-              </Badge>
-            ))}
+        <div className="flex flex-col gap-y-6 h-[calc(100vh_-_4.56rem)] justify-center -tracking-[0.02em]">
+          <div>
+            <h1 className="text-[5.35rem] font-instrument ">{project.title}</h1>
+            <div className="flex font-mono gap-x-4">
+              {project.tags.map((tag) => (
+                <Badge
+                  variant="outline"
+                  className="text-[0.8rem] font-light px-3"
+                >
+                  {tag}
+                </Badge>
+              ))}
+            </div>
           </div>
-          <strong className="font-mono text-[1.3rem] leading-relaxed text-balance opacity-80">
-            A personal project with a mission to help designers and makers to
-            showcase their skills and do is as fast as possible.
-          </strong>
+          <p className="font-mono font-light -tracking-[0.03em] leading-relaxed text-[1.25rem] opacity-60 w-full lg:w-1/2">
+            {project.summary}
+          </p>
           <Button
             className="px-5 py-6 text-white bg-black rounded-full w-fit"
             style={{
@@ -70,7 +63,9 @@ function Project() {
         <div
           className="w-full min-h-screen rounded-2xl"
           style={{
-            backgroundImage: "url('/project1/project-1.avif')",
+            backgroundImage: `url(${urlFor(
+              project.images.thumbnails[0]
+            ).url()})`,
             backgroundRepeat: "no-repeat",
             height: "100%",
             backgroundSize: "cover",
@@ -86,10 +81,10 @@ function Project() {
                 Services
               </em>
             </h3>
-            {services.map((service, index) => (
+            {project.tags.map((service, index) => (
               <div>
                 {service}
-                {services.length - 1 !== index ? "," : ""}
+                {project.tags.length - 1 !== index ? "," : ""}
               </div>
             ))}
           </div>
@@ -100,11 +95,11 @@ function Project() {
                 Stack
               </em>
             </h3>
-            {stacks.map((stack, index) => (
+            {project.stack.technologies.map((stack, index) => (
               <span>
                 {stack}
-                {stacks.length - 1 !== index ? ", " : ""}
-                {stacks.length - 2 === index ? <br /> : ""}
+                {project.stack.technologies.length - 1 !== index ? ", " : ""}
+                {project.stack.technologies.length - 2 === index ? <br /> : ""}
               </span>
             ))}
           </div>
@@ -115,15 +110,31 @@ function Project() {
                 Timeline
               </em>
             </h3>
-            {timeline}
+            {differenceInMonths(
+              project.timeframe.delivered_at,
+              project.timeframe.started_at
+            )}{" "}
+            months
           </div>
         </div>
 
-        {[2, 3, 4, 5].map((i) => (
+        <div
+          className="w-full min-h-screen rounded-2xl"
+          style={{
+            backgroundImage: `url(${urlFor(
+              project.images.thumbnails[1]
+            ).url()})`,
+            backgroundRepeat: "no-repeat",
+            height: "100%",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
+        {project.images.gallery.map((img) => (
           <div
             className="w-full min-h-screen rounded-2xl"
             style={{
-              backgroundImage: `url('/project1/project-${i}.avif')`,
+              backgroundImage: `url(${urlFor(img).url()})`,
               backgroundRepeat: "no-repeat",
               height: "100%",
               backgroundSize: "cover",
@@ -132,26 +143,25 @@ function Project() {
           />
         ))}
       </div>
+      {projects.length > 1 ? (
+        <>
+          {/* See also */}
+          <div className="flex flex-col items-center w-full h-full space-y-8 font-instrument">
+            <span className="text-[1.5rem] tracking-0 leading-[1.2em] italic">
+              See also
+            </span>
+            <h3>
+              <em className="opacity-80 leading-[1.15em] -tracking-[0.02em] text-[4rem]">
+                More Projects
+              </em>
+            </h3>
+          </div>
 
-      {/* See also */}
-      <div className="flex flex-col items-center w-full h-full space-y-8 font-instrument">
-        <span className="text-[1.5rem] tracking-0 leading-[1.2em] italic">
-          See also
-        </span>
-        <h3>
-          <em className="opacity-80 leading-[1.15em] -tracking-[0.02em] text-[4rem]">
-            More Projects
-          </em>
-        </h3>
-
-        {/* <div className="grid w-full grid-cols-2 gap-x-8">
-          <div className="bg-white h-96 rounded-2xl">1</div>
-          <div className="bg-white h-96 rounded-2xl">2</div>
-        </div> */}
-      </div>
-      <ProjectsCarousel
-        projects={projects.filter((project) => project._id !== state._id)}
-      />
+          <ProjectsCarousel
+            projects={projects.filter((project) => project._id !== state._id)}
+          />
+        </>
+      ) : null}
     </div>
   );
 }

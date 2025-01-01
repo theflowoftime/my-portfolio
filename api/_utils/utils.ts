@@ -7,7 +7,7 @@ import { parseISO, format, add } from "date-fns";
  * @param {string} time - The time string in HH:mm format.
  * @returns {string} - The combined date-time string in yyyy-MM-ddTHH:mm:ss format.
  */
-export function formatStartTime(date: string, time: string): string {
+export function formatZoomStartTime(date: string, time: string): string {
   try {
     // Combine date and time into a single ISO string
     const combinedDateTime = parseISO(`${date}T${time}:00`);
@@ -21,16 +21,13 @@ export function formatStartTime(date: string, time: string): string {
   }
 }
 
-export const formatGoogleMeetStartTime = (
-  date: string,
-  time: string
-): string => {
+export const formatStartTime = (date: string, time: string): string => {
   const combinedISO = `${date}T${time}:00`; // Combine date and time into ISO format
   const parsedDate = parseISO(combinedISO); // Parse into a Date object
   return format(parsedDate, "yyyy-MM-dd'T'HH:mm:ssXXX"); // Format into Google API-compatible format
 };
 
-export const formatGoogleMeetEndTime = (
+export const formatEndTime = (
   date: string,
   time: string,
   duration: number

@@ -12,24 +12,7 @@ import AnimatedButton from "./sub-components/animated-button";
 import LazyBackground from "./sub-components/lazy-bg-img-sanity";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
-
-// export type Project = {
-//   _id: string;
-//   title: string;
-//   isPublic: boolean;
-//   summary: string;
-//   links: { repo: {button: {text: string; url: string}}; live: {button: {text: string; url: string}} };
-//   images: SanityImageSource[];
-//   status: "planned" | "on-going"|"delivered"
-//   timeframe: {
-//   started_at: Date;
-//   delivered_at: Date;}
-// stack: {
-//   type: "front" | "back" | "full";
-//   technologies: [];
-// };
-// tags: [];
-// };
+import { log } from "console";
 
 function Projects() {
   const { navLinks } = useCachedNavLinks();
@@ -60,6 +43,9 @@ function Projects() {
   const scales = [project1_scale, project2_scale];
 
   const { projects, isLoading, error } = useProjects(language);
+
+  console.log("projects", projects);
+
   if (isLoading || !projects) return <SectionLayout slug={slug} />;
   if (error) return <p>Error fetching projects: {error.message}</p>;
 
@@ -97,7 +83,7 @@ function Projects() {
               <LazyBackground
                 className="relative overflow-hidden transition-all duration-1000 ease-in bg-no-repeat bg-contain rounded-lg sm:bg-cover h-96"
                 size="lg"
-                image={project.image}
+                image={project.images.thumbnails[0]}
               >
                 <Link
                   className="flex items-center justify-between h-full gap-x-2 "
@@ -114,21 +100,22 @@ function Projects() {
               {/* Project Details */}
               <div className="flex flex-col justify-between">
                 <div className="flex flex-col text-3xl font-extrabold gap-y-2">
-                  <span>Dolor amet</span>
-                  <span>lorem</span>
+                  <span>{project.title}</span>
                   {/* Badges */}
                   <div className="flex text-xs gap-x-2">
-                    <Badge className="font-light" variant="outline">
-                      JAVASCRIPT
-                    </Badge>
-                    <Badge className="font-light" variant="outline">
-                      REACT
-                    </Badge>
+                    {project.stack.technologies.map((tech) => (
+                      <Badge
+                        key={tech}
+                        variant="outline"
+                        className="font-light"
+                      >
+                        {tech}
+                      </Badge>
+                    ))}
                   </div>
                 </div>
                 <p className="text-base font-light leading-relaxed text-pretty font-fira">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Aliquam, dolorem iure perspiciatis.
+                  {project.summary}
                 </p>
               </div>
             </motion.div>

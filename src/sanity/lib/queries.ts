@@ -1,28 +1,22 @@
-export const navBar_QUERY = `*[_type == "navBar" && language == $language][0]{
+import groq from "groq";
+
+export const navBar_QUERY = groq`*[_type == "navBar" && language == $language][0]{
     links[],
     button,
     languages[],
     themes[]
   }`;
 
-export const aboutMe_Query = `*[_type == "aboutMe" && language == $language][0] {
+export const aboutMe_Query = groq`*[_type == "aboutMe" && language == $language][0] {
   introduction,
   career
 }`;
 
-export const projects_QUERY = `*[_type == "project" && language == $language] | order(dateTime(delivered_at) - dateTime(started_at)) {
-    _id,
-    title,
-    description,
-    link,
-    image,
-    started_at,
-    delivered_at
-  }`;
+export const projects_QUERY = groq`*[_type == "project" && language == $language && isPublic == true]`;
 
-export const project_QUERY = `*[_type == "project" && _id == $_id && language == $language][0]`;
+export const project_QUERY = groq`*[_type == "project" && _id == $_id && language == $language && isPublic == true][0]`;
 
-export const hero_QUERY = `*[_type == "hero" && language == $language][0] {
+export const hero_QUERY = groq`*[_type == "hero" && language == $language][0] {
     mainTextLines {
       ...,
       line {
@@ -51,7 +45,7 @@ export const hero_QUERY = `*[_type == "hero" && language == $language][0] {
     avatarSize[]
   }`;
 
-export const contact_QUERY = `*[_type == "contact" && language == $language][0]{
+export const contact_QUERY = groq`*[_type == "contact" && language == $language][0]{
     _id,
     fields {
       inputs[] {
@@ -86,6 +80,6 @@ export const contact_QUERY = `*[_type == "contact" && language == $language][0]{
     HeaderWords[]
   }`;
 
-export const contact_email_exists_QUERY = `*[_type == "message" && language == $language && email == $email] {
+export const contact_email_exists_QUERY = groq`*[_type == "message" && language == $language && email == $email] {
   createdAt,
 }`;

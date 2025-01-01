@@ -1,11 +1,7 @@
 import axios, { isAxiosError } from "axios";
 import { tokenCheck } from "./zoom/token";
 import { Data } from "api/types";
-import {
-  formatGoogleMeetEndTime,
-  formatGoogleMeetStartTime,
-  formatStartTime,
-} from "./utils";
+import { formatEndTime, formatStartTime, formatZoomStartTime } from "./utils";
 import jwt from "jsonwebtoken";
 import fs from "fs";
 import crypto from "crypto";
@@ -42,7 +38,7 @@ class ZoomPlatform implements MeetingPlatform {
         duration: this.duration,
         pre_schedule: true,
         // schedule_for: email, // needs permission on behalf of another user meaning oauth2
-        start_time: formatStartTime(date, time),
+        start_time: formatZoomStartTime(date, time),
         timezone,
         topic: this.topic,
         type: 2,
@@ -131,11 +127,11 @@ class GoogleMeetPlatform implements MeetingPlatform {
       summary: "Meeting",
       description: "Discuss project.",
       start: {
-        dateTime: formatGoogleMeetStartTime(data.date, data.time),
+        dateTime: formatStartTime(data.date, data.time),
         timeZone: timezone,
       },
       end: {
-        dateTime: formatGoogleMeetEndTime(data.date, data.time, this.duration),
+        dateTime: formatEndTime(data.date, data.time, this.duration),
         timeZone: timezone,
       },
       conferenceData: {
@@ -298,11 +294,11 @@ class MicrosoftTeamsPlatform implements MeetingPlatform {
     const meetingData = {
       subject: "Discuss project",
       start: {
-        dateTime: formatGoogleMeetStartTime(date, time),
+        dateTime: formatStartTime(date, time),
         timeZone: timezone,
       },
       end: {
-        dateTime: formatGoogleMeetEndTime(date, time, 1), // 1 hour meeting
+        dateTime: formatEndTime(date, time, 1), // 1 hour meeting
         timeZone: timezone,
       },
       attendees: [

@@ -105,7 +105,7 @@ export default function ProjectsCarousel({ projects }: { projects: Projects }) {
               >
                 <LazyBackground
                   size="lg"
-                  image={project.image}
+                  image={project.images.thumbnails[0]}
                   className="w-full bg-no-repeat bg-contain sm:bg-cover"
                 />
                 <div
@@ -121,9 +121,9 @@ export default function ProjectsCarousel({ projects }: { projects: Projects }) {
                       {project.title}
                     </span>
                     <div className="flex flex-col gap-2 p-0">
-                      {project.link ? (
+                      {project.links ? (
                         <CarouselLinkButton
-                          to={project.link}
+                          to={project.links.live.button.url}
                           state={{ _id: project._id }}
                           label="visit live website"
                           Icon={ExternalLink}
@@ -148,36 +148,32 @@ export default function ProjectsCarousel({ projects }: { projects: Projects }) {
         <motion.div
           variants={waterFall} // Define stagger children in the parent
         >
-          {projects.length > 1 ? (
-            <>
-              <CarouselControls projects={projects} />
-              <div className="flex justify-center">
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        className="appearance-none bg-transparent hover:text-white dark:hover:text-popover-foreground touch-manipulation inline-flex no-underline cursor-pointer shadow-[inset_0_0_0_0.2rem_var(--detail-medium-contrast)] w-[3rem] h-[3rem] z-[1] text-[color:var(--text-body)] items-center justify-center m-0 p-0 border-0"
-                        onClick={handleClick}
-                      >
-                        {orientation === "horizontal" ? (
-                          <GalleryHorizontal />
-                        ) : (
-                          <GalleryVertical />
-                        )}
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <p>
-                        {`flip the projects slider ${
-                          orientation === "vertical" ? "horizontal" : "vertical"
-                        }ly`}
-                      </p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </div>
-            </>
-          ) : null}
+          <CarouselControls projects={projects} />
+          <div className="flex justify-center">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    className="appearance-none bg-transparent hover:text-white dark:hover:text-popover-foreground touch-manipulation inline-flex no-underline cursor-pointer shadow-[inset_0_0_0_0.2rem_var(--detail-medium-contrast)] w-[3rem] h-[3rem] z-[1] text-[color:var(--text-body)] items-center justify-center m-0 p-0 border-0"
+                    onClick={handleClick}
+                  >
+                    {orientation === "horizontal" ? (
+                      <GalleryHorizontal />
+                    ) : (
+                      <GalleryVertical />
+                    )}
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>
+                    {`flip the projects slider ${
+                      orientation === "vertical" ? "horizontal" : "vertical"
+                    }ly`}
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
         </motion.div>
       </motion.div>
     </Carousel>

@@ -81,14 +81,36 @@ export type AboutMe = {
 
 export type Orientation = "horizontal" | "vertical";
 
+// export type Project = {
+//   _id: string;
+//   title: string;
+//   description: string;
+//   link: string;
+//   image: SanityImageSource;
+//   started_at: Date;
+//   delivered_at: Date;
+// };
+
 export type Project = {
   _id: string;
   title: string;
-  description: string;
-  link: string;
-  image: SanityImageSource;
-  started_at: Date;
-  delivered_at: Date;
+  isPublic: boolean;
+  summary: string;
+  links: {
+    repo: { button: { text: string; url: string } };
+    live: { button: { text: string; url: string } };
+  };
+  images: { thumbnails: SanityImageSource[]; gallery: SanityImageSource[] };
+  status: "planned" | "on-going" | "delivered";
+  timeframe: {
+    started_at: Date;
+    delivered_at: Date;
+  };
+  stack: {
+    type: "front" | "back" | "full";
+    technologies: string[];
+  };
+  tags: [];
 };
 
 export type Projects = Project[];
@@ -149,21 +171,6 @@ type Contact = {
 };
 
 export type FormName = "contact" | "meet";
-
-// to do types (updated)
-
-// export type Project = {
-//   _id: string;
-//   title: string;
-//   isPublic: boolean;
-//   summary: string;
-//   links: { repo: string; live: string };
-//   images: SanityImageSource[];
-//   status: "planned" | "on-going"|"delivered"
-//   timeframe: {
-//   started_at: Date;
-//   delivered_at: Date;}
-// };
 
 // VisitorInfoStore store
 export type InfoVisitor = {

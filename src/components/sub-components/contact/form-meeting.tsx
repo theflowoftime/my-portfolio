@@ -39,7 +39,8 @@ import { UseFormReturn } from "react-hook-form";
 import { SuccessMeetingScheduling } from "./meeting-confirmation";
 import { VisitorTimezoneAndOffset } from "./visitor-timezone-offset";
 
-const meetingOptions = ["google meet", "zoom", "microsoft teams", "other"]; // will be replaced to be dynamic
+// const meetingOptions = ["google meet", "zoom", "microsoft teams", "other"]; // will be replaced to be dynamic
+const meetingOptions = ["google meet", "zoom", "other"]; // will be replaced to be dynamic
 
 export type RessponseData = {
   link: string;

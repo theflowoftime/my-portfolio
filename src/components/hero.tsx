@@ -75,7 +75,7 @@ function Hero() {
       whileInView="visible"
       viewport={{ once: true, amount: 0.2 }}
       variants={waterFall}
-      className="relative flex flex-col justify-around h-full min-h-screen"
+      className="relative flex flex-col justify-center  gap-16 h-full min-h-[calc(100vh_-_4.56rem)]"
     >
       <motion.div className="container flex flex-col items-center h-full text-center dark:text-white">
         <motion.div
@@ -205,7 +205,10 @@ function Hero() {
                     }}
                   >
                     <AvatarImage
-                      className={cn(lineIndex === 0 && "object-contain")}
+                      className={cn(
+                        lineIndex === 0 &&
+                          "object-contain w-full h-full overflow-hidden"
+                      )}
                       src={urlFor(item.line.img.images?.[0])
                         .fit("max")
                         .quality(100)
@@ -226,7 +229,7 @@ function Hero() {
                 key={lineIndex}
                 variants={waterFall}
                 className={cn(
-                  "flex items-center justify-center rounded-lg gap-x-2 whitespace-nowrap w-full px-2 py-1"
+                  "flex justify-center rounded-lg gap-x-2 whitespace-nowrap w-full px-2 py-1 items-center"
                 )}
               >
                 {textWithImage}
@@ -238,7 +241,7 @@ function Hero() {
         <motion.p
           variants={waterFall}
           className={cn(
-            "break-words whitespace-pre mx-auto  text-[1.05rem] text-balance dark:text-white/60 text-black/40 text-opacity-40 -tracking-[0.03] leading-[27.3px] font-mono text-center",
+            "break-words whitespace-pre mx-auto text-[0.9rem] text-balance w-[40rem] dark:text-white/60 text-black/40 text-opacity-40 -tracking-[0.03em] leading-loose font-mono text-center",
             language === "AR" && "text-lg font-baloo tracking-[0.125em]"
           )}
         >
