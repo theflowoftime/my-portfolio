@@ -9,6 +9,7 @@ import { useCachedNavLinks } from "@/hooks/useCachedNavLinks";
 import AnimatedButton from "./sub-components/animated-button";
 import { cn } from "@/lib/utils";
 import { useLanguageStore } from "@/stores/language-store";
+import { Link } from "react-router-dom";
 
 function AboutMe() {
   const { navLinks } = useCachedNavLinks();
@@ -76,7 +77,9 @@ function AboutMe() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ type: "tween", duration: 0.6, delay: 0.2 }}
         >
-          <AnimatedButton textContent="download resume" />
+          <Link to="/resume">
+            <AnimatedButton textContent="view resume" />
+          </Link>
         </motion.div>
       </div>
     </SectionLayout>

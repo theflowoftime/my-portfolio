@@ -83,3 +83,13 @@ export const contact_QUERY = groq`*[_type == "contact" && language == $language]
 export const contact_email_exists_QUERY = groq`*[_type == "message" && language == $language && email == $email] {
   createdAt,
 }`;
+
+export const resume_QUERY = groq`
+*[_type == "resume" && language == $language][0]{
+  cv{
+    asset->{
+      url
+    }
+  }
+}
+`;

@@ -1,15 +1,11 @@
-import { queryClient } from "@/main";
-import { useLanguageStore } from "@/stores/language-store";
-import { Language, Projects } from "@/types/types";
-import { Link, useOutletContext } from "react-router-dom";
-
-import { motion } from "framer-motion";
-import { useProjects } from "@/hooks/useProjects";
 import { Badge } from "@/components/ui/badge";
+import { cachedProjects } from "@/hooks/useCachedProjects";
+import { useProjects } from "@/hooks/useProjects";
 import { urlFor } from "@/lib/utils";
-
-export const cachedProjects = (language: Language): Projects =>
-  useOutletContext() || queryClient.getQueryData(["projects", language]);
+import { useLanguageStore } from "@/stores/language-store";
+import { Projects } from "@/types/types";
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 export default function AllProjects() {
   const language = useLanguageStore((state) => state.language);
@@ -30,37 +26,31 @@ export default function AllProjects() {
             >
               <motion.div className="aspect-[1.33/1] w-full h-full relative overflow-hidden rounded-3xl">
                 {/* image1 */}
-                <motion.div className="origin-[50%_50%_0px] w-full h-full absolute top-0 left-0">
+                <motion.div className="absolute top-0 left-0 w-full h-full">
                   <div className="absolute inset-0">
                     <img
                       className="block object-cover object-center w-full h-full"
                       src={urlFor(project.images.thumbnails[0]).url()}
-                      alt=""
+                      alt="Image 1"
                     />
                   </div>
                 </motion.div>
-
                 {/* image2 */}
                 <motion.div
                   className="absolute top-0 left-0 w-full h-full"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileHover={{
-                    opacity: 1,
-                    scale: 1,
-                    transformOrigin: "50% 50% 0px",
-                  }}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileHover={{ opacity: 1, scale: 1 }}
                   transition={{
                     duration: 0.5,
                     type: "tween",
                     ease: "easeInOut",
-                    stiffness: 200,
                   }}
                 >
                   <div className="absolute inset-0">
                     <img
                       className="block object-cover object-center w-full h-full"
                       src={urlFor(project.images.thumbnails[1]).url()}
-                      alt=""
+                      alt="Image 2"
                     />
                   </div>
                 </motion.div>

@@ -291,7 +291,7 @@ export default function ScheduleMeetingForm({
               )}
             </Button>
             {/* <Separator className="bg-input" /> */}
-            <DrawerClose className="w-full border rounded-lg font-unbounded outline-1 outline-input border-input bg-background hover:bg-accent hover:text-accent-foreground">
+            <DrawerClose className="w-full h-10 text-sm border rounded-lg font-unbounded outline-1 outline-input border-input bg-background hover:bg-accent hover:text-accent-foreground">
               cancel
             </DrawerClose>
           </div>
