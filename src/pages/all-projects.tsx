@@ -15,7 +15,7 @@ export default function AllProjects() {
   console.log(projects);
 
   return (
-    <div className="grid w-full grid-cols-2 gap-10 mt-16 auto-rows-fr h-min">
+    <div className="grid w-full grid-cols-2 gap-10 mt-32 mb-48 auto-rows-fr h-min">
       {projects.map((project, index) => (
         <div className="contents" key={index}>
           <div className="relative self-start w-full h-full justify-self-start">

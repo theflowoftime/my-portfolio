@@ -1,3 +1,4 @@
+import Footer from "@/components/footer";
 import NavBar from "@/components/sub-components/navbar";
 import { ComponentPropsWithoutRef } from "react";
 
@@ -10,6 +11,7 @@ export default function PageLayout({
       <div className="container">
         <div>{children}</div>
       </div>
+      <Footer />
     </div>
   );
 }

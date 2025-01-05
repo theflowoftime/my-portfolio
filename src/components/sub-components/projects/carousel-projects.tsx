@@ -15,20 +15,20 @@ import Autoplay from "embla-carousel-autoplay";
 import { motion } from "framer-motion";
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "../ui/button";
+import { Button } from "../../ui/button";
 import {
   Carousel,
   CarouselContent,
   CarouselControls,
   CarouselItem,
-} from "../ui/carousel";
-import LazyBackground from "./lazy-bg-img-sanity";
+} from "../../ui/carousel";
+import LazyBackground from "../lazy-bg-img-sanity";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "../ui/tooltip";
+} from "../../ui/tooltip";
 
 export function CarouselLinkButton({
   to,

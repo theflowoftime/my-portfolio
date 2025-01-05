@@ -12,7 +12,7 @@ export default function ResumeViewer() {
 
   return resumeUrl ? (
     <iframe
-      className="min-h-screen"
+      className="min-h-screen bg-black dark:invert"
       src={resumeUrl}
       width="100%"
       height="100%"

@@ -1,4 +1,4 @@
-import ProjectsCarousel from "@/components/sub-components/carousel-projects";
+import ProjectsCarousel from "@/components/sub-components/projects/carousel-projects";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useProject } from "@/hooks/useProject";
@@ -8,10 +8,15 @@ import { queryClient } from "@/main";
 import { useLanguageStore } from "@/stores/language-store";
 import { Projects } from "@/types/types";
 import { differenceInMonths } from "date-fns";
-import { Link } from "lucide-react";
-import { useLocation, useOutletContext, useParams } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useOutletContext,
+  useParams,
+} from "react-router-dom";
 import { motion } from "framer-motion";
 import { waterFall } from "@/lib/framer-variants";
+import { Breadcrumb } from "@/components/sub-components/projects/breadcrumbs";
 
 function Project() {
   const { projectName } = useParams();
@@ -28,19 +33,16 @@ function Project() {
   if (!project) return <div>404</div>;
 
   return (
-    <div className="space-y-16">
-      {/* might add a breadcrumb /all projects/project-1 */}
-      <motion.div
-        className="flex flex-col gap-y-16"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: "some" }}
-        variants={waterFall}
-      >
+    <div className="space-y-16 mb-32 relative">
+      <Breadcrumb />
+      <motion.div className="flex flex-col gap-y-16">
         {/* Info Showcase */}
         <motion.div
           className="flex flex-col gap-y-6 h-[calc(100vh_-_4.56rem)] justify-center -tracking-[0.02em]"
           variants={waterFall}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: "some" }}
         >
           <motion.div variants={waterFall}>
             <h1 className="text-[5.35rem] font-instrument ">{project.title}</h1>
@@ -70,14 +72,17 @@ function Project() {
                   "rgba(0, 0, 0, 0.008) 0.565274px 0.565274px 1.75872px 0px, rgba(0, 0, 0, 0.02) 1.44525px 1.44525px 4.49656px 0px, rgba(0, 0, 0, 0.042) 2.89741px 2.89741px 9.01462px 0px, rgba(0, 0, 0, 0.08) 5.49248px 5.49248px 17.0886px 0px, rgba(0, 0, 0, 0.16) 10.9174px 10.9174px 33.967px 0px, rgba(0, 0, 0, 0.35) 24px 24px 74.6705px 0px, rgb(0, 0, 0) 0px -16px 48px 0px inset",
               }}
             >
-              Live Link
-              <Link />
+              {project.links.live.button.text}
+              <Link to={project.links.live.button.url} />
             </Button>
           </motion.div>
         </motion.div>
 
         {/* Image 1 */}
         <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
           className="w-full min-h-screen rounded-2xl"
           style={{
             backgroundImage: `url(${urlFor(
@@ -92,7 +97,13 @@ function Project() {
         />
 
         {/* Stack Section */}
-        <motion.div className="flex justify-between" variants={waterFall}>
+        <motion.div
+          className="flex justify-between"
+          variants={waterFall}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.5 }}
+        >
           <motion.div className="flex flex-col gap-y-2" variants={waterFall}>
             <h3 className="font-instrument">
               <em className="opacity-80 leading-[1.2em] text-[1.5rem]">
@@ -138,6 +149,9 @@ function Project() {
 
         {/* Gallery Images */}
         <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: "some" }}
           className="w-full min-h-screen rounded-2xl"
           style={{
             backgroundImage: `url(${urlFor(
@@ -150,8 +164,13 @@ function Project() {
           }}
           variants={waterFall}
         />
+
         {project.images.gallery.map((img, index) => (
           <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: "some" }}
+            variants={waterFall}
             key={index}
             className="w-full min-h-screen rounded-2xl"
             style={{
@@ -161,14 +180,19 @@ function Project() {
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
-            variants={waterFall}
           />
         ))}
       </motion.div>
       {projects.length > 1 ? (
         <>
           {/* See also */}
-          <div className="flex flex-col items-center w-full h-full space-y-8 font-instrument">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: "some" }}
+            variants={waterFall}
+            className="flex flex-col items-center w-full h-full space-y-8 font-instrument"
+          >
             <span className="text-[1.5rem] tracking-0 leading-[1.2em] italic">
               See also
             </span>
@@ -177,7 +201,7 @@ function Project() {
                 More Projects
               </em>
             </h3>
-          </div>
+          </motion.div>
 
           <ProjectsCarousel
             projects={projects.filter((project) => project._id !== state._id)}
