@@ -8,7 +8,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import useSendMessage from "@/hooks/useSendMessage";
-
+import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { DrawerClose } from "@/components/ui/drawer";
@@ -32,7 +32,7 @@ import { useLanguageStore } from "@/stores/language-store";
 import useThemeStore from "@/stores/theme-store";
 import type { MeetSchemaType } from "@/types/types";
 import { format } from "date-fns";
-import { CalendarIcon, Globe, Loader2 } from "lucide-react";
+import { X, CalendarIcon, CheckIcon, Globe, Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import { UseFormReturn } from "react-hook-form";
@@ -129,7 +129,7 @@ export default function ScheduleMeetingForm({
                           <Button
                             variant="outline"
                             className={cn(
-                              "w-full pl-3 text-left font-normal",
+                              "w-full pl-3 text-left font-normal bg-transparent",
                               !field.value && "text-muted-foreground"
                             )}
                           >
@@ -173,7 +173,7 @@ export default function ScheduleMeetingForm({
                   <div className="w-full">
                     <FormControl>
                       <Input
-                        className="w-full"
+                        className="w-full dark:[color-scheme:dark] bg-transparent"
                         type="time"
                         min="09:00"
                         max="18:00"
@@ -215,6 +215,7 @@ export default function ScheduleMeetingForm({
                       <FormControl>
                         <SelectTrigger
                           className={cn(
+                            "bg-transparent",
                             language === "AR" &&
                               "data-[placeholder]:font-baloo font-baloo"
                           )}
@@ -248,7 +249,7 @@ export default function ScheduleMeetingForm({
                     </FormLabel>
                     <FormControl>
                       <Input
-                        className="w-full placeholder:text-center placeholder:opacity-20"
+                        className="w-full bg-transparent placeholder:text-center placeholder:opacity-20"
                         placeholder="your email address"
                         {...field}
                       />
@@ -265,6 +266,60 @@ export default function ScheduleMeetingForm({
             />
           </div>
 
+          {form.watch("platform") === "other" && (
+            <motion.div
+              className="flex flex-col w-full gap-4 lg:flex-row"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 0.5,
+                ease: "easeOut",
+                type: "spring",
+                stiffness: 100,
+                damping: 20,
+              }}
+            >
+              <FormField
+                control={form.control}
+                name="link"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col w-full">
+                    <FormLabel className="text-xs tracking-wide">
+                      Enter the meeting link
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        className="w-full bg-transparent placeholder:text-center placeholder:opacity-20"
+                        placeholder="meeting link"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-xs" />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col w-full">
+                    <FormLabel className="text-xs tracking-wide">
+                      Enter the meeting password (optional)
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        className="w-full bg-transparent placeholder:text-center placeholder:opacity-20"
+                        placeholder="meeting password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage className="text-xs" />
+                  </FormItem>
+                )}
+              />
+            </motion.div>
+          )}
+
           <ReCAPTCHA
             className="hidden"
             ref={recaptchaRef}
@@ -272,9 +327,9 @@ export default function ScheduleMeetingForm({
             size="invisible"
           />
 
-          <div className="flex flex-col justify-center w-full gap-x-8 gap-y-2 lg:px-32 lg:flex-row">
+          <div className="flex flex-col justify-center w-full gap-x-8 gap-y-2 lg:px-64 lg:flex-row">
             <Button
-              className="w-full font-unbounded"
+              className="w-full p-0 bg-transparent font-unbounded"
               onMouseEnter={() => animateCursor("buttonHover")}
               onMouseLeave={() => animateCursor("cursorEnter")}
               disabled={status === "pending" || form.formState.isSubmitting}
@@ -282,17 +337,13 @@ export default function ScheduleMeetingForm({
               type="submit"
             >
               {status === "pending" ? (
-                <>
-                  <Loader2 className="animate-spin" />
-                  sending...
-                </>
+                <Loader2 className="animate-spin" />
               ) : (
-                <>confirm</>
+                <CheckIcon />
               )}
             </Button>
-            {/* <Separator className="bg-input" /> */}
-            <DrawerClose className="w-full h-10 text-sm border rounded-lg font-unbounded outline-1 outline-input border-input bg-background hover:bg-accent hover:text-accent-foreground">
-              cancel
+            <DrawerClose className="flex items-center justify-center w-full h-10 text-sm bg-transparent border rounded-lg gap-x-2 font-unbounded outline-1 outline-input border-input hover:bg-accent hover:text-accent-foreground">
+              <X className="w-4" />
             </DrawerClose>
           </div>
         </div>

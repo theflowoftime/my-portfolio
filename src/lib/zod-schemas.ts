@@ -32,23 +32,38 @@ export function contactSchema(errorMessages: ErrorMessages = null) {
 }
 
 export function meetSchema() {
-  return z.object({
-    date: z
-      .union([
-        z.date(),
-        z.string().transform((val) => new Date(val)), // Automatically parse strings into Dates
-      ])
-      .refine((date) => !isNaN(date.getTime()), { message: "Invalid date" }), // Validate the date
-    time: z.string({
-      required_error: "A time of meeting is required.",
-    }),
-    platform: z.string({
-      required_error: "A meeting platform is required.",
-    }),
-    email: z.string().email({
-      message: "Please enter a valid email address",
-    }),
-  });
+  return z
+    .object({
+      date: z
+        .union([
+          z.date(),
+          z.string().transform((val) => new Date(val)), // Automatically parse strings into Dates
+        ])
+        .refine((date) => !isNaN(date.getTime()), { message: "Invalid date" }), // Validate the date
+      time: z.string({
+        required_error: "A time of meeting is required.",
+      }),
+      platform: z.string({
+        required_error: "A meeting platform is required.",
+      }),
+      email: z.string().email({
+        message: "Please enter a valid email address.",
+      }),
+      link: z.string().url({ message: "Please enter a valid url." }).optional(),
+      password: z.string().optional(),
+    })
+    .refine(
+      (data) => {
+        if (data.platform === "other" && !data.link) {
+          return false;
+        }
+        return true;
+      },
+      {
+        message: "Link is required when platform is 'other'",
+        path: ["link"],
+      }
+    );
 }
 
 export function buildFormSchema(

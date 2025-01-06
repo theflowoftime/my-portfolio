@@ -41,7 +41,7 @@ const Callto = ({ to: phone, className, children }: LinkProps) => {
 
 function Footer() {
   return (
-    <div className="opacity-90  h-[13rem] mt-16">
+    <div className="opacity-90 h-[13rem] mt-16 relative bottom-0 w-full">
       <div className="container flex flex-col justify-between min-h-full py-4 dark:text-white">
         <div className="flex flex-wrap justify-between">
           <div className="space-y-2">

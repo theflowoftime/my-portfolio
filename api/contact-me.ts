@@ -13,6 +13,7 @@ import { retrieveIp } from "./_utils/network";
 import { MeetingPlatformFactory } from "./_utils/platforms";
 import { errorHandler } from "./_utils/error";
 import { getErrorMessage } from "./_utils/get-error-message";
+import { formatStartTime } from "./_utils/utils";
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   const formName = req.query?.formName as keyof typeof FORM_RESPONSES;
@@ -63,33 +64,39 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (formName === "meet" && ip) {
       info = await getVisitorInfo(ip);
       if (formData.platform) {
-        try {
-          const platformHandler = MeetingPlatformFactory.getPlatform(
-            formData.platform
-          );
-          meeting = await platformHandler.createMeeting(
-            formData,
-            info?.timezone
-          );
+        if (formData.platform === "other") {
+          link = formData.link;
+          password = formData.password;
+          start_time = formatStartTime(formData.date, formData.time);
+        } else {
+          try {
+            const platformHandler = MeetingPlatformFactory.getPlatform(
+              formData.platform
+            );
+            meeting = await platformHandler.createMeeting(
+              formData,
+              info?.timezone
+            );
 
-          if (formData.platform === "zoom") {
-            link = meeting.join_url;
-            password = meeting.password;
-            start_time = meeting.start_time;
-          } else if (formData.platform === "google meet") {
-            link = meeting.htmlLink;
-            start_time = meeting.start.dateTime;
-          } else if (formData.platform === "microsoft teams") {
-            link = meeting.onlineMeetingUrl;
-            start_time = meeting.start.dateTime;
+            if (formData.platform === "zoom") {
+              link = meeting.join_url;
+              password = meeting.password;
+              start_time = meeting.start_time;
+            } else if (formData.platform === "google meet") {
+              link = meeting.htmlLink;
+              start_time = meeting.start.dateTime;
+            } else if (formData.platform === "microsoft teams") {
+              link = meeting.onlineMeetingUrl;
+              start_time = meeting.start.dateTime;
+            }
+          } catch (err) {
+            const errorMessage = getErrorMessage(err);
+            console.error(`Error generating join URL: ${errorMessage}`, {
+              formData,
+              error: err,
+            });
+            return errorHandler(res, errorMessage, "error", formName);
           }
-        } catch (err) {
-          const errorMessage = getErrorMessage(err);
-          console.error(`Error generating join URL: ${errorMessage}`, {
-            formData,
-            error: err,
-          });
-          return errorHandler(res, errorMessage, "error", formName);
         }
       }
     }

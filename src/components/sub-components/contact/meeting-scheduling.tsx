@@ -67,6 +67,8 @@ export default function ScheduleMeeting() {
       date: computeDefaultMeetingDate(),
       time: "09:00",
       platform: "zoom",
+      link: "",
+      password: "",
     },
   });
 
@@ -91,7 +93,7 @@ export default function ScheduleMeeting() {
           </div>
         </Button>
       </DrawerTrigger>
-      <DrawerContent className="max-h-screen space-y-2">
+      <DrawerContent className="max-h-screen space-y-2 dark:bg-black">
         <DrawerHeader>
           <DrawerHeaderContent
             status={formStatus}
