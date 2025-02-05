@@ -38,6 +38,7 @@ import ReCAPTCHA from "react-google-recaptcha";
 import { UseFormReturn } from "react-hook-form";
 import { SuccessMeetingScheduling } from "./meeting-confirmation";
 import { VisitorTimezoneAndOffset } from "./visitor-timezone-offset";
+import { log } from "console";
 
 // const meetingOptions = ["google meet", "zoom", "microsoft teams", "other"]; // will be replaced to be dynamic
 const meetingOptions = ["google meet", "zoom", "other"]; // will be replaced to be dynamic
@@ -80,6 +81,9 @@ export default function ScheduleMeetingForm({
   );
 
   const onSubmit = (data: MeetSchemaType) => {
+    // Debug
+    console.log("submitted data", data);
+
     throttledSubmit({
       ...data,
       date: formatDateForSanity(data.date), // Converts to YYYY-MM-DD
