@@ -67,7 +67,7 @@ export default function ScheduleMeeting() {
       date: computeDefaultMeetingDate(),
       time: "09:00",
       platform: "zoom",
-      // link: "",
+      link: "",
       password: "",
     },
   });

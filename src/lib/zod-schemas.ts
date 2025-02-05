@@ -49,13 +49,19 @@ export function meetSchema() {
       email: z.string().email({
         message: "Please enter a valid email address.",
       }),
-      link: z.string().url().optional(),
+      link: z.string().optional(),
       password: z.string().optional(),
     })
     .refine(
       (data) => {
-        if (data.platform === "other" && !data.link) {
-          return false;
+        if (data.platform === "other") {
+          if (!data.link) return false;
+          try {
+            new URL(data.link);
+            return true;
+          } catch {
+            return false;
+          }
         }
         return true;
       },
