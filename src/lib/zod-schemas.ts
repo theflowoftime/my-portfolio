@@ -52,18 +52,18 @@ export function meetSchema() {
       link: z.string().url({ message: "Please enter a valid url." }).optional(),
       password: z.string().optional(),
     })
-    // .refine(
-    //   (data) => {
-    //     if (data.platform === "other" && !data.link) {
-    //       return false;
-    //     }
-    //     return true;
-    //   },
-    //   {
-    //     message: "Link is required when platform is 'other'",
-    //     path: ["link"],
-    //   }
-    // );
+    .refine(
+      (data) => {
+        if (data.platform === "other" && !data.link) {
+          return false;
+        }
+        return true;
+      },
+      {
+        message: "Link is required when platform is 'other'",
+        path: ["link"],
+      }
+    );
 }
 
 export function buildFormSchema(
