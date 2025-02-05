@@ -90,8 +90,8 @@ export default function ScheduleMeetingForm({
     });
   };
 
-  const onError = () => {
-    console.error("Error submitting form");
+  const onError = (errors: any) => {
+    console.error("Error submitting form", errors);
   };
 
   useEffect(() => {
