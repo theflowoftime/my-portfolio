@@ -49,7 +49,7 @@ export function meetSchema() {
       email: z.string().email({
         message: "Please enter a valid email address.",
       }),
-      link: z.string().optional(),
+      link: z.string().url().optional(),
       password: z.string().optional(),
     })
     .refine(

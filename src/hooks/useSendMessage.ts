@@ -11,9 +11,6 @@ import { API_ENDPOINTS, THROTTLE_DELAY } from "@/lib/constants";
 type Payload<F> = F & { recaptchaToken: string };
 
 const SendMessage = async <F>(data: Payload<F>, formName: FormName) => {
-  // DEBUG
-  console.log("data", data);
-
   const response = await axios.post(API_ENDPOINTS["contact-me"], data, {
     params: { formName },
   });

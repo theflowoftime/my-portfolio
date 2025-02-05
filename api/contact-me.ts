@@ -79,9 +79,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             );
 
             if (formData.platform === "zoom") {
-              // Debug
-              console.log("meeting", meeting);
-
               link = meeting.join_url;
               password = meeting.password;
               start_time = meeting.start_time;

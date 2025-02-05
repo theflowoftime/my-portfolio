@@ -80,9 +80,6 @@ export default function ScheduleMeetingForm({
   );
 
   const onSubmit = (data: MeetSchemaType) => {
-    // Debug
-    console.log("submitted data", data);
-
     throttledSubmit({
       ...data,
       date: formatDateForSanity(data.date), // Converts to YYYY-MM-DD
