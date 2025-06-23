@@ -9,8 +9,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     const lang = (req.query?.lang as Language) || DEFAULT_LANG;
     const ip = retrieveIp(req);
-    console.log(ip, lang);
-    
     if (!ip) {
       console.error("Unable to retrieve the user's IP address.");
       return res.status(400).json({ error: "Unable to retrieve data." });

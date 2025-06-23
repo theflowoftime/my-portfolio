@@ -1,7 +1,10 @@
 import { Redis } from "@upstash/redis";
 import { Info } from "api/types";
 
-const redis = Redis.fromEnv();
+const redis = Redis.fromEnv({
+  url: process.env.KV_REDIS_URL!, // Ensure REDIS_URL is set in your environment variables
+  token: process.env.KV_KV_REST_API_TOKEN!, // Ensure REDIS_TOKEN is set in your environment variables
+});
 const BASE_RATE_LIMIT_WINDOW = 60 * 5; // 5 minutes
 export const MAX_ATTEMPTS = 10;
 const BAN_DURATION = 60 * 60 * 24; // 24 hours
